@@ -5,12 +5,15 @@
  * Le texte de l'étape 1 est rendu côté serveur ; les étapes suivantes sont présentes dans le HTML (hidden).
  */
 import PhoneFrame from './PhoneFrame.astro';
+import DemoPause from './DemoPause.astro';
 import { IA_STATUS, IA_STEPS } from '../../scripts/demo-data';
 
 interface Props {
   statusColor?: string;
+  /** Affiche un bouton pause à côté de « Étape suivante » (page /receptionniste-ia/). */
+  pause?: boolean;
 }
-const { statusColor = '#CBD5E1' } = Astro.props;
+const { statusColor = '#CBD5E1', pause = false } = Astro.props;
 
 const sys = "font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif";
 const mono = "font-family:'JetBrains Mono',ui-monospace,monospace";
@@ -178,6 +181,7 @@ const fields = [
       >
         <span data-text="dNextLabel">Étape suivante →</span>
       </button>
+      {pause && <DemoPause color="#CBD5E1" style="margin:14px 0 0 16px;vertical-align:top" />}
       <span class="sr-only" aria-live="polite" data-live></span>
     </div>
   </div>

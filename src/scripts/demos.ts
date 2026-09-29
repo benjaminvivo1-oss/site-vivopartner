@@ -93,6 +93,8 @@ function initDemos(root: HTMLElement) {
       b.title = label;
       b.querySelector<SVGElement>('[data-icon="pause"]')?.toggleAttribute('hidden', !isPlaying);
       b.querySelector<SVGElement>('[data-icon="play"]')?.toggleAttribute('hidden', isPlaying);
+      const text = b.querySelector<HTMLElement>('[data-pause-label]');
+      if (text) text.textContent = isPlaying ? 'Pause' : 'Lecture';
     });
     // Comme la maquette : la conversation défile jusqu'au dernier message.
     requestAnimationFrame(() =>

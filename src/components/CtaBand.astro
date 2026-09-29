@@ -1,0 +1,21 @@
+---
+/** Bandeau orange de fin de page (pages internes) : accroche + bouton « Réserver mon audit gratuit ». */
+import AuditCta from './AuditCta.astro';
+
+interface Props {
+  /** Largeur max de l'accroche, 26ch ou 24ch selon les pages de la maquette. */
+  maxWidth?: string;
+}
+const { maxWidth = '26ch' } = Astro.props;
+---
+
+<section
+  style="background:#F58220;color:#0F172A;padding:clamp(52px,6.6cqi,108px) clamp(18px,4cqi,64px);display:flex;gap:28px;flex-wrap:wrap;align-items:center;justify-content:space-between"
+>
+  <p
+    style={`margin:0;max-width:${maxWidth};font-family:Satoshi,sans-serif;font-weight:700;font-size:clamp(22px,2.8cqi,36px);line-height:1.12;letter-spacing:-.025em`}
+  >
+    <slot />
+  </p>
+  <AuditCta variant="dark" />
+</section>

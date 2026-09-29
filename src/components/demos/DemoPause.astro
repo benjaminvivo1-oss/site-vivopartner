@@ -1,0 +1,28 @@
+---
+/**
+ * Bouton pause / lecture de la démo (ajout accessibilité : les démos en lecture automatique
+ * doivent pouvoir être mises en pause). Piloté par src/scripts/demos.ts.
+ */
+interface Props {
+  color?: string;
+  style?: string;
+}
+const { color = '#CBD5E1', style = '' } = Astro.props;
+---
+
+<button
+  type="button"
+  class="btn-reset hv-light"
+  data-action="togglePause"
+  aria-label="Mettre la démo en pause"
+  style={`flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 2px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:${color};cursor:pointer;transition:color .22s ease;${style}`}
+>
+  <svg data-icon="pause" width="10" height="10" viewBox="0 0 14 14" aria-hidden="true" fill="currentColor">
+    <rect x="2.5" y="2" width="3" height="10" rx=".6"></rect>
+    <rect x="8.5" y="2" width="3" height="10" rx=".6"></rect>
+  </svg>
+  <svg data-icon="play" hidden width="10" height="10" viewBox="0 0 14 14" aria-hidden="true" fill="currentColor">
+    <path d="M4 2.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L4.9 1.7a.6.6 0 0 0-.9.5Z"></path>
+  </svg>
+  <span data-pause-label>Pause</span>
+</button>

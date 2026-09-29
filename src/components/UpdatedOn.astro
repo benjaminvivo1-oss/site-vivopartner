@@ -1,0 +1,21 @@
+---
+/** « Mis à jour le … » affiché sur les pages de service et la FAQ (même date que dateModified du JSON-LD). */
+import { UPDATED, formatDateFr, type PageKey } from '../data/site';
+
+interface Props {
+  page: PageKey;
+  color?: string;
+}
+const { page, color = '#94A3B8' } = Astro.props;
+const iso = UPDATED[page];
+---
+
+{
+  iso && (
+    <p
+      style={`margin:clamp(16px,2cqi,24px) 0 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${color}`}
+    >
+      Mis à jour le <time datetime={iso}>{formatDateFr(iso)}</time>
+    </p>
+  )
+}

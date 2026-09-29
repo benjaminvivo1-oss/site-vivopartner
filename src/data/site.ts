@@ -71,13 +71,15 @@ export const SEO: Record<PageKey, PageSeo> = {
       'Application sur mesure, réceptionniste IA et visibilité locale pour les entreprises du BTP. Audit gratuit.',
   },
   aplomb: {
-    title: 'Aplomb — Application sur mesure pour le BTP | Vivo Partner',
+    // Zone ajoutée au titre de la maquette (docs/SEO-LOCAL-IA-UX.md : métier + zone sur chaque page de service).
+    title: 'Aplomb — Application sur mesure pour le BTP à Carcassonne | Vivo Partner',
     description:
       'Aplomb, l’application sur mesure pour gérer devis, factures, chantiers, équipes et relances de votre entreprise du BTP.',
     label: 'Aplomb',
   },
   ia: {
-    title: 'Réceptionniste IA pour artisans et entreprises du BTP | Vivo Partner',
+    // Zone ajoutée au titre de la maquette (docs/SEO-LOCAL-IA-UX.md : métier + zone sur chaque page de service).
+    title: 'Réceptionniste IA pour artisans du BTP à Carcassonne | Vivo Partner',
     description:
       'Un réceptionniste IA qui répond aux appels, messages et mails de votre entreprise du BTP 24h/24, qualifie la demande et pose le rendez-vous. Sans changer de numéro.',
     label: 'Réceptionniste IA',

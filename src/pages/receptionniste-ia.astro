@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionSep from '../components/SectionSep.astro';
+import UpdatedOn from '../components/UpdatedOn.astro';
+import CtaBand from '../components/CtaBand.astro';
+import IaDemo from '../components/demos/IaDemo.astro';
+
+const flow = [
+  { title: 'Appel entrant', text: 'Votre numéro actuel, renvoyé vers le réceptionniste.' },
+  { title: 'Transcription', text: 'En français, en temps réel, pendant l’appel.' },
+  { title: 'Qualification', text: 'Nature du besoin, adresse, niveau d’urgence.' },
+  { title: 'Fiche + agenda', text: 'Création dans Aplomb, créneau posé dans l’agenda.' },
+  { title: 'Notification', text: 'SMS ou WhatsApp au dirigeant, trié par urgence.' },
+];
+
+const features = [
+  { text: 'Répond aux appels entrants et qualifie la demande', tilt: '-1.4deg' },
+  { text: 'Centralise les messages (SMS, mail, réseaux) au même endroit', tilt: '1.1deg' },
+  { text: 'Vous transmet uniquement l’essentiel, trié par urgence', tilt: '-.7deg' },
+  { text: 'Se connecte à Aplomb pour créer automatiquement un devis ou une fiche client', tilt: '1.5deg' },
+];
+
+const orangeGrid =
+  'position:absolute;inset:0;background-image:linear-gradient(rgba(245,130,32,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(245,130,32,.055) 1px,transparent 1px);background-size:64px 64px;pointer-events:none';
+---
+
+<BaseLayout page="ia">
+  <div data-screen-label="Réceptionniste IA" style="animation:vpRise 1s cubic-bezier(.16,1,.3,1) both">
+    <section style="position:relative;overflow:hidden;background:#0B2F6B;border-top:1px solid rgba(248,250,252,.12);padding:clamp(64px,8.6cqi,140px) clamp(18px,4cqi,64px)">
+      <SectionSep />
+      <div
+        aria-hidden="true"
+        style="position:absolute;inset:0;background:linear-gradient(rgba(245,130,32,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(245,130,32,.055) 1px,transparent 1px);background-size:64px 64px;pointer-events:none"
+      ></div>
+      <div style="position:relative">
+        <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#94A3B8">
+          Levier 02 — Réceptionniste IA
+        </div>
+        <h1 style="margin:clamp(22px,3cqi,40px) 0 0;max-width:24ch;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(30px,4.8cqi,64px);line-height:1.05;letter-spacing:-.04em;text-wrap:pretty">
+          Chaque demande entrante manquée est une demande de devis qui{' '}
+          <span style="color:#F58220">part chez le concurrent.</span>
+        </h1>
+        <p style="margin:clamp(20px,2.6cqi,32px) 0 0;max-width:60ch;font-size:clamp(15px,1.3cqi,17.5px);line-height:1.68;color:#CBD5E1">
+          Le réceptionniste IA répond à vos appels, messages et mails entrants, 24h/24 et 7j/7 — même sur chantier, même
+          en dehors des horaires de bureau. Pensé pour les artisans et entreprises du BTP, depuis Carcassonne et partout
+          en France, il démarre après un audit gratuit de 30 minutes.
+        </p>
+        <UpdatedOn page="ia" />
+      </div>
+    </section>
+
+    <section
+      data-screen-label="IA — démo"
+      data-demos
+      style="position:relative;overflow:hidden;background:#0A2A5E;border-top:1px solid rgba(248,250,252,.12);padding:clamp(64px,8.6cqi,140px) clamp(18px,4cqi,64px)"
+    >
+      <SectionSep />
+      <div aria-hidden="true" style={orangeGrid}></div>
+      <div style="position:relative">
+        <div style="display:flex;gap:clamp(20px,4cqi,64px);flex-wrap:wrap;align-items:flex-end">
+          <div style="flex:1 1 400px;min-width:0">
+            <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+              La démo
+            </span>
+            <h2 style="margin:14px 0 0;max-width:28ch;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(24px,3.2cqi,42px);line-height:1.08;letter-spacing:-.04em;text-wrap:pretty">
+              Un appel de chantier, étape par étape
+            </h2>
+          </div>
+          <p style="margin:0;flex:0 1 300px;font-size:14px;line-height:1.6;color:#94A3B8">
+            Avancez pas à pas : ce que le réceptionniste entend, ce qu’il extrait, ce qu’il déclenche.
+          </p>
+        </div>
+        <div style="margin-top:clamp(26px,3.4cqi,44px)">
+          <IaDemo statusColor="#CBD5E1" pause />
+        </div>
+      </div>
+    </section>
+
+    <section
+      data-screen-label="IA — flux technique"
+      style="position:relative;overflow:hidden;background:#0B2F6B;border-top:1px solid rgba(248,250,252,.12);padding:clamp(64px,8.6cqi,140px) clamp(18px,4cqi,64px)"
+    >
+      <SectionSep />
+      <div aria-hidden="true" style={orangeGrid}></div>
+      <div style="position:relative">
+        <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+          Le flux
+        </span>
+        <h2 style="margin:14px 0 0;max-width:30ch;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(24px,3.2cqi,42px);line-height:1.08;letter-spacing:-.04em;text-wrap:pretty">
+          De la sonnerie à la fiche client, sans intervention de votre part
+        </h2>
+        <ol style="list-style:none;margin:clamp(28px,3.4cqi,48px) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px">
+          {flow.map((f, i) => (
+            <>
+              {i > 0 && (
+                <li
+                  aria-hidden="true"
+                  style="flex:0 1 44px;min-width:24px;height:1px;background:rgba(248,250,252,.18);align-self:center;position:relative;overflow:hidden"
+                >
+                  <div
+                    style={`position:absolute;inset:0;background:linear-gradient(90deg,rgba(245,130,32,0),#F58220,rgba(245,130,32,0));background-size:45% 100%;background-repeat:no-repeat;animation:vpTrace 2.6s ${(i - 1) * 0.5}s linear infinite`}
+                  />
+                </li>
+              )}
+              <li style="flex:1 1 200px;min-width:0;box-sizing:border-box;background:#0B1424;border:1px solid rgba(245,130,32,.22);padding:20px">
+                <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#F58220">
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+                <h3 style="margin:14px 0 0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:17px;letter-spacing:-.01em">
+                  {f.title}
+                </h3>
+                <p style="margin:8px 0 0;font-size:13.5px;line-height:1.6;color:#94A3B8">{f.text}</p>
+              </li>
+            </>
+          ))}
+        </ol>
+        <p style="margin:clamp(24px,3cqi,36px) 0 0;max-width:62ch;font-size:14px;line-height:1.65;color:#94A3B8">
+          Aucun changement de numéro, aucun nouveau logiciel à apprendre : le réceptionniste se place devant vos outils
+          existants et écrit dedans.
+        </p>
+        <div style="display:flex;gap:clamp(24px,4cqi,72px);flex-wrap:wrap;margin-top:clamp(48px,6cqi,96px);padding-top:clamp(40px,5cqi,72px);border-top:1px solid rgba(248,250,252,.16)">
+          <div style="flex:1 1 260px;min-width:0">
+            <h2 style="margin:0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(24px,3cqi,40px);line-height:1.1;letter-spacing:-.04em">
+              Ce qu’il fait
+            </h2>
+            <div style="margin-top:28px;border-top:1px solid rgba(248,250,252,.22);padding-top:18px">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#CBD5E1">
+                Seul ou combiné
+              </div>
+              <p style="margin:10px 0 0;max-width:40ch;font-size:15px;line-height:1.65;color:#E2E8F0">
+                Le réceptionniste IA fonctionne de façon autonome, ou couplé à Aplomb pour centraliser toutes les
+                demandes entrantes au même endroit.
+              </p>
+            </div>
+          </div>
+          <ul style="list-style:none;margin:0;flex:1 1 420px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:26px 22px;padding:10px 0 0">
+            {features.map((f, i) => (
+              <li
+                class="hv-straighten"
+                style={`position:relative;box-sizing:border-box;background:#F8FAFC;color:#0F172A;border-radius:3px;padding:26px 20px 20px;box-shadow:0 16px 32px rgba(2,8,22,.35);transform:rotate(${f.tilt});transition:transform .35s cubic-bezier(.16,1,.3,1)`}
+              >
+                <span
+                  aria-hidden="true"
+                  style={`position:absolute;top:-8px;left:50%;width:60px;height:15px;margin-left:-30px;background:rgba(245,130,32,.85);transform:rotate(${i % 2 ? '-2deg' : '2deg'})`}
+                />
+                <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:#F58220;flex:none">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div style="margin-top:10px;font-size:16px;line-height:1.5;font-weight:500;color:#0B2F6B">{f.text}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section style="position:relative;background:#0A2A5E;color:#F8FAFC;border-top:1px solid rgba(248,250,252,.12);padding:clamp(52px,6.6cqi,108px) clamp(18px,4cqi,64px)">
+      <SectionSep />
+      <div data-vp-reveal="0" style="display:flex;gap:clamp(24px,4cqi,64px);flex-wrap:wrap;align-items:center">
+        <div
+          class="hv-straighten"
+          style="flex:0 1 auto;position:relative;box-sizing:border-box;background:#F8FAFC;color:#0F172A;border-radius:3px;padding:30px 30px 26px;box-shadow:0 16px 32px rgba(2,8,22,.35);transform:rotate(-.7deg);transition:transform .35s cubic-bezier(.16,1,.3,1)"
+        >
+          <span
+            aria-hidden="true"
+            style="position:absolute;top:-8px;left:50%;width:60px;height:15px;margin-left:-30px;background:rgba(245,130,32,.85);transform:rotate(-2deg)"
+          ></span>
+          <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#64748B">
+            Résultats attendus
+          </div>
+          <div style="margin-top:12px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:clamp(38px,5.6cqi,76px);line-height:.9;letter-spacing:-.04em;color:#0B2F6B">
+            +30%
+          </div>
+        </div>
+        <p style="margin:0;flex:1 1 280px;min-width:0;max-width:40ch;font-size:16px;line-height:1.65;color:#CBD5E1">
+          30% de demandes de devis en plus captées, grâce aux appels qui ne se perdent plus.
+        </p>
+      </div>
+    </section>
+
+    <CtaBand maxWidth="24ch">Ne plus rater un appel de chantier</CtaBand>
+  </div>
+</BaseLayout>

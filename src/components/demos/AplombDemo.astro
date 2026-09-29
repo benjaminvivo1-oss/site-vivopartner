@@ -5,11 +5,14 @@
  * (data-if = écran visible, data-pressed = entrée de menu active).
  */
 import LaptopFrame from './LaptopFrame.astro';
+import DemoPause from './DemoPause.astro';
 
 interface Props {
   captionColor?: string;
+  /** Affiche un bouton pause à droite de la légende (page /aplomb/). */
+  pause?: boolean;
 }
-const { captionColor = '#94A3B8' } = Astro.props;
+const { captionColor = '#94A3B8', pause = false } = Astro.props;
 
 const menu = ['Tableau de bord', 'Chantiers', 'Clients', 'Devis & factures', 'Relances', 'Compta', 'Planning équipes'];
 ---
@@ -531,11 +534,22 @@ const menu = ['Tableau de bord', 'Chantiers', 'Clients', 'Devis & factures', 'Re
       </div>
     </div>
   </LaptopFrame>
-  <p
-    style={`margin:18px 0 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:${captionColor}`}
-  >
-    Valeurs d’exemple — vos indicateurs après l’audit
-  </p>
+  {pause ? (
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:4px 16px;flex-wrap:wrap;margin-top:18px">
+      <p
+        style={`margin:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:${captionColor}`}
+      >
+        Valeurs d’exemple — vos indicateurs après l’audit
+      </p>
+      <DemoPause color={captionColor} style="margin:-15px 0" />
+    </div>
+  ) : (
+    <p
+      style={`margin:18px 0 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:${captionColor}`}
+    >
+      Valeurs d’exemple — vos indicateurs après l’audit
+    </p>
+  )}
 </div>
 
 <style>
