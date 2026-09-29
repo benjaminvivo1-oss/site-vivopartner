@@ -1,0 +1,215 @@
+---
+/**
+ * Démo réceptionniste IA : un appel de chantier en 6 étapes (conversation + fiche extraite).
+ * Utilisée sur l'accueil (onglet 02) et sur /receptionniste-ia/. États : src/scripts/demos.ts.
+ * Le texte de l'étape 1 est rendu côté serveur ; les étapes suivantes sont présentes dans le HTML (hidden).
+ */
+import PhoneFrame from './PhoneFrame.astro';
+import { IA_STATUS, IA_STEPS } from '../../scripts/demo-data';
+
+interface Props {
+  statusColor?: string;
+}
+const { statusColor = '#CBD5E1' } = Astro.props;
+
+const sys = "font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif";
+const mono = "font-family:'JetBrains Mono',ui-monospace,monospace";
+
+// Onde sonore : 26 barres, motif repris de la maquette.
+const heights = [
+  30, 58, 86, 44, 72, 100, 52, 38, 76, 94, 46, 66, 90, 36, 58, 82, 48, 68, 96, 42, 60, 34, 74, 54, 88, 40,
+];
+const bars = heights.map((h, i) => ({
+  h,
+  color: i % 4 === 0 ? '#0B2F6B' : 'rgba(11,47,107,.45)',
+  duration: Math.round((0.7 + (i % 6) * 0.13) * 100) / 100,
+  delay: (i * 70) % 900,
+}));
+
+// Conversation : step = étape à partir de laquelle la bulle apparaît.
+const messages = [
+  { step: 1, from: 'ia', text: 'Dupont Plomberie, bonjour. Que puis-je faire pour vous ?' },
+  { step: 2, from: 'client', text: 'J’ai une fuite sous l’évier, ça coule depuis ce matin.' },
+  {
+    step: 3,
+    from: 'ia',
+    text: 'C’est urgent, je m’en occupe. Pouvez-vous me donner vos nom, prénom et l’adresse de l’intervention ?',
+  },
+  { step: 4, from: 'client', text: 'Martin Durand, 14 rue des Lices à Carcassonne.' },
+  {
+    step: 5,
+    from: 'ia',
+    text: 'Merci M. Durand. Un technicien peut passer demain à 8h30, je vous le confirme par SMS.',
+  },
+];
+
+// Fiche extraite : la valeur apparaît à l'étape indiquée.
+const fields = [
+  { label: 'nature', step: 2, value: 'Fuite sous évier' },
+  { label: 'adresse', step: 4, value: '14 rue des Lices' },
+  { label: 'urgence', step: 3, value: 'Haute' },
+  { label: 'client', step: 4, value: 'Martin Durand' },
+  { label: 'créneau', step: 5, value: 'Demain 08:30' },
+  { label: 'suivi', step: 6, value: 'Aplomb + SMS' },
+];
+---
+
+<div data-demo-ia>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+    <span
+      aria-hidden="true"
+      style="display:block;width:7px;height:7px;border-radius:50%;background:#F58220;flex:none;animation:vpPulse 1.7s ease-in-out infinite"
+    ></span>
+    <span
+      style={`${mono};font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:${statusColor}`}
+      data-text="dStatus"
+    >
+      {IA_STATUS[1]}
+    </span>
+  </div>
+  <div style="display:flex;gap:clamp(18px,2.6cqi,36px);flex-wrap:wrap;align-items:flex-start">
+    <PhoneFrame screen="#F2F2F7">
+      <div style="margin:14px 11px 0;background:#FFFFFF;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(11,11,15,.08)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <div style="min-width:0">
+            <div
+              style={`${sys};font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#8A8A8E`}
+            >
+              Appel entrant
+            </div>
+            <div style={`margin-top:3px;${sys};font-size:16.5px;font-weight:600;color:#0B0B0F`}>Numéro inconnu</div>
+          </div>
+          <span style="flex:none;display:flex;align-items:center;gap:6px;background:rgba(11,47,107,.1);border-radius:999px;padding:5px 9px">
+            <i style="display:block;width:6px;height:6px;border-radius:50%;background:#0B2F6B;animation:vpPulse 1.7s ease-in-out infinite"></i>
+            <i style={`${sys};font-style:normal;font-size:10px;font-weight:600;color:#0F172A`}>IA en ligne</i>
+          </span>
+        </div>
+        <div aria-hidden="true" style="display:flex;align-items:flex-end;gap:2px;height:26px;margin-top:12px">
+          {bars.map((b) => (
+            <span
+              style={`flex:1;min-width:2px;height:${b.h}%;background:${b.color};border-radius:1px;transform-origin:bottom;animation:vpWave ${b.duration}s ${b.delay}ms ease-in-out infinite alternate`}
+            />
+          ))}
+        </div>
+      </div>
+      <div
+        data-conv
+        tabindex="0"
+        role="region"
+        aria-label="Conversation de démonstration"
+        style="margin:12px 11px 0;display:flex;flex-direction:column;gap:7px;height:172px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none"
+      >
+        {messages.map((m) => (
+          <div
+            data-if={`d${m.step}`}
+            hidden={m.step > 1}
+            style={`display:flex;justify-content:${m.from === 'ia' ? 'flex-end' : 'flex-start'};animation:vpRise .45s cubic-bezier(.16,1,.3,1) both`}
+          >
+            <p
+              style={`margin:0;max-width:82%;box-sizing:border-box;padding:8px 12px;border-radius:17px;background:${m.from === 'ia' ? '#0B2F6B' : '#E9E9EB'};color:${m.from === 'ia' ? '#FFFFFF' : '#0B0B0F'};${sys};font-size:12.5px;line-height:1.35`}
+            >
+              {m.text}
+            </p>
+          </div>
+        ))}
+        <div
+          data-if="d6"
+          hidden
+          style="display:flex;gap:9px;align-items:flex-start;background:#FFFFFF;border-radius:14px;padding:10px 12px;box-shadow:0 1px 3px rgba(11,11,15,.08);animation:vpRise .45s cubic-bezier(.16,1,.3,1) both"
+        >
+          <i style="flex:none;display:block;width:22px;height:22px;border-radius:6px;background:#F58220"></i>
+          <span style="min-width:0">
+            <i style={`display:block;${sys};font-style:normal;font-size:10.5px;font-weight:700;color:#0B0B0F`}>
+              Aplomb
+            </i>
+            <i
+              style={`display:block;margin-top:2px;${sys};font-style:normal;font-size:11.5px;line-height:1.4;color:#3A3A3C`}
+            >
+              Fiche créée · RDV posé demain 08:30 · SMS envoyé au dirigeant.
+            </i>
+          </span>
+        </div>
+      </div>
+      <div style={`margin:14px 11px 0;${sys};font-size:10.5px;line-height:1.45;color:#8A8A8E;text-align:center`}>
+        Transfert immédiat vers votre ligne si l’appel est une urgence vitale.
+      </div>
+    </PhoneFrame>
+    <div style="flex:1 1 280px;min-width:0;box-sizing:border-box;background:#0B1424;border:1px solid rgba(248,250,252,.07);padding:clamp(18px,2.2cqi,26px)">
+      <div
+        style={`${mono};font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8;margin-bottom:10px`}
+      >
+        Fiche extraite
+      </div>
+      {fields.map((f) => (
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(248,250,252,.1)">
+          <span style={`${mono};font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8`}>
+            {f.label}
+          </span>
+          <span
+            data-if={`d${f.step}`}
+            hidden
+            style={`${mono};font-size:12.5px;color:#F8FAFC;text-align:right;animation:vpFade .4s ease both`}
+          >
+            {f.value}
+          </span>
+          <span data-if={`dn${f.step}`} style={`${mono};font-size:12.5px;color:#7C8AA0`}>
+            en attente
+          </span>
+        </div>
+      ))}
+      <div role="group" aria-label="Étapes de l’appel" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
+        {IA_STEPS.map((label, i) => (
+          <button
+            type="button"
+            class="btn-reset ia-step"
+            data-action={`dGo${i + 1}`}
+            data-pressed={`da${i + 1}`}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        class="btn-reset hv-bg-orange"
+        data-action="dNext"
+        style="margin-top:14px;background:#F58220;color:#0F172A;border:none;border-radius:2px;padding:14px 22px;font-size:13.5px;font-weight:600;cursor:pointer;transition:background .28s ease,color .28s ease"
+      >
+        <span data-text="dNextLabel">Étape suivante →</span>
+      </button>
+      <span class="sr-only" aria-live="polite" data-live></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ia-step {
+    /* span dans la maquette : dimensions en content-box */
+    box-sizing: content-box;
+    flex: 1 1 92px;
+    min-width: 0;
+    cursor: pointer;
+    padding: 11px 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      color 0.25s ease;
+    background: rgba(248, 250, 252, 0.03);
+    border: 1px solid rgba(248, 250, 252, 0.07);
+    color: #94a3b8;
+  }
+  .ia-step[aria-pressed='true'] {
+    background: rgba(245, 130, 32, 0.14);
+    border-color: rgba(245, 130, 32, 0.55);
+    color: #f8fafc;
+  }
+</style>
+
+<script>
+  import '../../scripts/demos';
+</script>

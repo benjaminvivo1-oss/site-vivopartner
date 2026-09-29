@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Demos from '../components/home/Demos.astro';
+import Constat from '../components/home/Constat.astro';
+import Methode from '../components/home/Methode.astro';
+import Projets from '../components/home/Projets.astro';
+import Integrations from '../components/home/Integrations.astro';
+import CtaFinal from '../components/home/CtaFinal.astro';
+---
+
+<BaseLayout page="home">
+  <Hero />
+  <div data-screen-label="Home — suite" style="animation:vpRise 1s cubic-bezier(.16,1,.3,1) both">
+    <Demos />
+    <Constat />
+    <Methode />
+    <Projets />
+    <Integrations />
+    <CtaFinal />
+  </div>
+</BaseLayout>

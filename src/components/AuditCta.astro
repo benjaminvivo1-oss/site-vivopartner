@@ -1,0 +1,62 @@
+---
+/**
+ * Bouton pilule « Réserver un audit gratuit / 30 min · gratuit ».
+ * - variant "orange" : sur fond marine ; "dark" : sur les bandeaux orange.
+ * - as="button" pour le bouton d'envoi du formulaire de contact.
+ */
+import { ROUTES } from '../data/site';
+
+interface Props {
+  label?: string;
+  sub?: string;
+  variant?: 'orange' | 'dark';
+  href?: string;
+  as?: 'a' | 'button';
+  style?: string;
+}
+
+const {
+  label = 'Réserver mon audit gratuit',
+  sub = '30 min · gratuit',
+  variant = 'orange',
+  href = ROUTES.contact,
+  as = 'a',
+  style = '',
+} = Astro.props;
+
+const base =
+  variant === 'orange'
+    ? 'display:inline-flex;align-items:center;gap:12px;background:#F58220;color:#0F172A;border:none;border-radius:999px;padding:12px 28px;min-height:60px;box-sizing:border-box;cursor:pointer;text-align:left;font-family:inherit;box-shadow:0 10px 24px rgba(245,130,32,.25);transition:background .28s ease,box-shadow .28s ease,transform .28s ease'
+    : 'display:inline-flex;align-items:center;gap:12px;background:#0F172A;color:#F8FAFC;border:none;border-radius:999px;padding:12px 28px;min-height:60px;box-sizing:border-box;cursor:pointer;text-align:left;font-family:inherit;box-shadow:0 12px 26px rgba(2,8,22,.28);transition:background .28s ease,box-shadow .28s ease,transform .28s ease';
+const hover = variant === 'orange' ? 'hv-cta' : 'hv-cta-dark';
+const subColor = variant === 'orange' ? '#0F172A' : '#CBD5E1';
+const css = `flex:none;${base}${style ? `;${style}` : ''}`;
+---
+
+{as === 'button' ? (
+  <button type="submit" class={`btnlike ${hover}`} data-cta style={css}>
+    <span style="display:flex;align-items:center;gap:12px;min-width:0">
+      <span style="display:flex;flex-direction:column;gap:3px;line-height:1.15;min-width:0">
+        <span style="font-size:15px;font-weight:600;white-space:nowrap">{label}</span>
+        <span
+          style={`font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:${subColor}`}
+        >
+          {sub}
+        </span>
+      </span>
+    </span>
+  </button>
+) : (
+  <a href={href} class={`btnlike ${hover}`} data-cta style={css}>
+    <span style="display:flex;align-items:center;gap:12px;min-width:0">
+      <span style="display:flex;flex-direction:column;gap:3px;line-height:1.15;min-width:0">
+        <span style="font-size:15px;font-weight:600;white-space:nowrap">{label}</span>
+        <span
+          style={`font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:${subColor}`}
+        >
+          {sub}
+        </span>
+      </span>
+    </span>
+  </a>
+)}

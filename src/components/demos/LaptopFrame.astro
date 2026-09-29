@@ -1,0 +1,39 @@
+---
+/** Cadre « ordinateur portable » des démos (Aplomb, Visibilité). Le contenu de l'écran passe par le slot. */
+interface Props {
+  maxWidth?: string;
+}
+const { maxWidth = '820px' } = Astro.props;
+---
+
+<div style={`width:100%;max-width:${maxWidth};margin:0 auto`}>
+  <div style="position:relative;background:linear-gradient(165deg,#2E394C 0%,#1A2231 55%,#131A27 100%);border:1px solid rgba(248,250,252,.22);border-radius:16px 16px 6px 6px;margin:0 15px;padding:15px 15px 26px;box-shadow:0 44px 80px rgba(2,8,22,.62),inset 0 1px 0 rgba(248,250,252,.08)">
+    <span
+      aria-hidden="true"
+      style="position:absolute;top:6px;left:50%;transform:translateX(-50%);display:block;width:7px;height:7px;border-radius:50%;background:#070C14;box-shadow:inset 0 0 0 1px rgba(248,250,252,.18)"
+    ></span>
+    <span
+      aria-hidden="true"
+      style="position:absolute;left:50%;bottom:9px;transform:translateX(-50%);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8px;letter-spacing:.34em;color:rgba(248,250,252,.3)"
+    >
+      VIVO PARTNER
+    </span>
+    <div style="position:relative;background:#0B1424;border-radius:4px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(2,8,22,.9),0 0 34px rgba(248,250,252,.045)">
+      <span
+        aria-hidden="true"
+        style="position:absolute;inset:0;z-index:2;background:linear-gradient(118deg,rgba(248,250,252,.1) 0%,rgba(248,250,252,0) 34%,rgba(248,250,252,0) 74%,rgba(248,250,252,.05) 100%);pointer-events:none"
+      ></span>
+      <slot />
+    </div>
+  </div>
+  <div
+    aria-hidden="true"
+    style="position:relative;width:100%;margin-left:0;height:15px;background:linear-gradient(#49566E 0,#2B364A 2px,#1A2231 60%,#0E141F 100%);border-radius:0 0 14px 14px;box-shadow:0 22px 34px rgba(2,8,22,.55);box-sizing:border-box"
+  >
+    <span style="position:absolute;top:0;left:50%;transform:translateX(-50%);display:block;width:94px;height:6px;border-radius:0 0 7px 7px;background:linear-gradient(#0B111B,#1A2231)"></span>
+  </div>
+  <div
+    aria-hidden="true"
+    style="width:82%;height:18px;margin:6px auto 0;background:radial-gradient(50% 50% at 50% 0%,rgba(2,8,22,.5),rgba(2,8,22,0) 72%)"
+  ></div>
+</div>

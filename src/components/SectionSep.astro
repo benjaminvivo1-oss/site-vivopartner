@@ -1,0 +1,77 @@
+---
+/**
+ * Filet orange animé en haut de chaque section (data-vp-sep dans la maquette).
+ * Le parent doit être en position relative. L'animation est déclenchée par src/scripts/site.ts.
+ */
+---
+
+<div class="vp-sep" data-vp-sep aria-hidden="true">
+  <span class="vp-sep__line"></span>
+  <span class="vp-sep__bar"></span>
+  <span class="vp-sep__dot"></span>
+</div>
+
+<style>
+  .vp-sep {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px;
+    height: 5px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .vp-sep__line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: #f58220;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 1;
+    transition:
+      transform 1.1s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 1.2s ease 1.3s;
+  }
+  .vp-sep__bar {
+    position: absolute;
+    left: clamp(18px, 4cqi, 64px);
+    top: 0;
+    width: 96px;
+    height: 5px;
+    background: #f58220;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+  }
+  .vp-sep__dot {
+    position: absolute;
+    left: 0;
+    top: -4px;
+    width: 10px;
+    height: 10px;
+    background: #f58220;
+    opacity: 0;
+    transition:
+      left 1.1s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 0.3s ease;
+  }
+  .vp-sep.is-in .vp-sep__line,
+  :global(html:not(.js)) .vp-sep__line {
+    transform: scaleX(1);
+    opacity: 0.45;
+  }
+  .vp-sep.is-in .vp-sep__bar,
+  :global(html:not(.js)) .vp-sep__bar {
+    transform: scaleX(1);
+  }
+  .vp-sep.is-in .vp-sep__dot {
+    opacity: 1;
+    left: calc(100% - 10px);
+  }
+  .vp-sep.is-in.is-done .vp-sep__dot {
+    opacity: 0;
+  }
+</style>

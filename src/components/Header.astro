@@ -1,0 +1,243 @@
+---
+/**
+ * En-tête fixe. Deux variantes, choisies par requête de conteneur (< 900 px = mobile),
+ * comme le ResizeObserver de la maquette. Comportements : src/scripts/site.ts.
+ */
+import { Image } from 'astro:assets';
+import markLight from '../assets/brand/vp-mark-light.png';
+import wordmarkLight from '../assets/brand/vp-wordmark-light.png';
+import { ROUTES, type PageKey } from '../data/site';
+
+interface Props {
+  current: PageKey;
+}
+const { current } = Astro.props;
+
+const isService = current === 'aplomb' || current === 'ia' || current === 'visibilite';
+const services: { key: PageKey; label: string }[] = [
+  { key: 'aplomb', label: 'Aplomb' },
+  { key: 'ia', label: 'Réceptionniste IA' },
+  { key: 'visibilite', label: 'Visibilité' },
+];
+const after: { key: PageKey; label: string }[] = [
+  { key: 'apropos', label: 'À propos' },
+  { key: 'faq', label: 'FAQ' },
+  { key: 'contact', label: 'Contact' },
+];
+const aria = (key: PageKey) => (key === current ? 'page' : undefined);
+
+const desktopLink =
+  'position:relative;padding:4px 0;color:#CBD5E1;cursor:pointer;white-space:nowrap;flex:none;transition:color .22s ease';
+const activeBar =
+  'position:absolute;left:0;right:0;bottom:-2px;height:2px;background:#F58220;transform-origin:left;animation:vpBar .45s cubic-bezier(.16,1,.3,1) both';
+const mobileLink =
+  'display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(248,250,252,.08);font-size:16px;color:#F8FAFC;cursor:pointer';
+const mobileSubLink =
+  'display:flex;align-items:center;justify-content:space-between;padding:12px 0 12px 16px;border-bottom:1px solid rgba(248,250,252,.06);font-size:15px;color:#CBD5E1;cursor:pointer';
+const pageBadge =
+  "font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#F58220";
+const ctaSmall =
+  'flex:none;display:inline-flex;align-items:center;gap:8px;background:#F58220;color:#0F172A;border:none;border-radius:999px;padding:4px 18px;min-height:40px;box-sizing:border-box;font-size:12.5px;font-weight:600;white-space:nowrap;cursor:pointer;font-family:inherit;box-shadow:0 8px 20px rgba(245,130,32,.22);transition:background .28s ease,transform .28s ease,box-shadow .28s ease';
+---
+
+<header class="site-header" data-header>
+  <div class="hdr-mobile">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px 12px">
+      <a href={ROUTES.home} style="display:flex;align-items:center;gap:9px;cursor:pointer">
+        <Image
+          src={markLight}
+          alt=""
+          height={30}
+          densities={[1, 2]}
+          loading="eager"
+          style="height:30px;width:auto;display:block;flex:none"
+        />
+        <Image
+          src={wordmarkLight}
+          alt="Vivo Partner — accueil"
+          height={17}
+          densities={[1, 2]}
+          loading="eager"
+          style="height:17px;width:auto;display:block"
+        />
+      </a>
+      <div style="display:flex;align-items:center;gap:6px">
+        <a href={ROUTES.contact} class="btnlike hv-cta-sm" data-cta style={ctaSmall}>
+          <span>Audit gratuit</span>
+        </a>
+        <button
+          type="button"
+          class="btn-reset"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="menu-mobile"
+          data-menu-toggle
+          style="width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer"
+        >
+          <span style="display:block;width:20px;height:1.5px;background:#F8FAFC"></span>
+          <span style="display:block;width:20px;height:1.5px;background:#F8FAFC"></span>
+          <span style="display:block;width:20px;height:1.5px;background:#F8FAFC"></span>
+        </button>
+      </div>
+    </div>
+    <nav
+      id="menu-mobile"
+      aria-label="Navigation principale"
+      hidden
+      data-menu
+      style="border-top:1px solid rgba(248,250,252,.07);padding:6px 18px 14px;animation:vpRise .4s cubic-bezier(.16,1,.3,1) both"
+    >
+      <a href={ROUTES.home} aria-current={aria('home')} style={mobileLink}>
+        Accueil{current === 'home' && <span style={pageBadge}>Page</span>}
+      </a>
+      <button
+        type="button"
+        class="btn-reset"
+        aria-expanded="false"
+        aria-controls="menu-mobile-services"
+        data-svc-toggle
+        style={`width:100%;${mobileLink}`}
+      >
+        Services
+        <i style="display:block;width:6px;height:6px;border-right:1.6px solid #94A3B8;border-bottom:1.6px solid #94A3B8;transform:rotate(45deg) translateY(-2px)"></i>
+      </button>
+      <div id="menu-mobile-services" hidden data-svc-panel style="animation:vpRise .3s cubic-bezier(.16,1,.3,1) both">
+        {services.map((s) => (
+          <a href={ROUTES[s.key]} aria-current={aria(s.key)} style={mobileSubLink}>
+            {s.label}
+            {current === s.key && <span style={pageBadge}>Page</span>}
+          </a>
+        ))}
+      </div>
+      {after.map((l, i) => (
+        <a
+          href={ROUTES[l.key]}
+          aria-current={aria(l.key)}
+          style={
+            i === after.length - 1
+              ? mobileLink.replace('border-bottom:1px solid rgba(248,250,252,.08);', '')
+              : mobileLink
+          }
+        >
+          {l.label}
+          {current === l.key && <span style={pageBadge}>Page</span>}
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <div class="hdr-desktop">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,1.6cqi,32px);flex-wrap:nowrap;padding:14px clamp(18px,4cqi,64px)">
+      <a href={ROUTES.home} style="display:flex;align-items:center;gap:9px;cursor:pointer;flex:none">
+        <Image
+          src={markLight}
+          alt=""
+          height={26}
+          densities={[1, 2]}
+          loading="eager"
+          style="height:26px;width:auto;display:block;flex:none"
+        />
+        <Image
+          src={wordmarkLight}
+          alt="Vivo Partner — accueil"
+          height={15}
+          densities={[1, 2]}
+          loading="eager"
+          style="height:15px;width:auto;display:block;flex:none"
+        />
+      </a>
+      <nav
+        aria-label="Navigation principale"
+        style="display:flex;align-items:center;gap:clamp(8px,1.1cqi,20px);flex-wrap:nowrap;min-width:0;font-size:13px;font-weight:500"
+      >
+        <a href={ROUTES.home} class="hv-light" aria-current={aria('home')} style={desktopLink}>
+          Accueil{current === 'home' && <span style={activeBar}></span>}
+        </a>
+        <span
+          data-svc
+          style="position:relative;padding:4px 0;color:#CBD5E1;white-space:nowrap;flex:none;display:inline-flex;align-items:center;gap:6px;transition:color .22s ease"
+        >
+          <button
+            type="button"
+            class="btn-reset hv-light"
+            aria-expanded="false"
+            aria-controls="menu-services"
+            data-svc-toggle
+            style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:color .22s ease"
+          >
+            Services
+            <i style="display:block;width:5px;height:5px;border-right:1.4px solid currentColor;border-bottom:1.4px solid currentColor;transform:rotate(45deg) translate(-1px,-1px)"></i>
+          </button>
+          {isService && <span style={activeBar}></span>}
+          <span
+            id="menu-services"
+            hidden
+            data-svc-panel
+            style="position:absolute;top:calc(100% + 14px);left:-16px;z-index:60;display:flex;flex-direction:column;min-width:230px;background:#0F172A;border:1px solid rgba(248,250,252,.08);box-shadow:0 26px 50px rgba(2,8,22,.5);padding:6px 0;animation:vpRise .28s cubic-bezier(.16,1,.3,1) both"
+          >
+            <span style="padding:8px 16px 6px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#64748B">
+              Trois leviers
+            </span>
+            {services.map((s) => (
+              <a
+                href={ROUTES[s.key]}
+                class="hv-menu"
+                aria-current={aria(s.key)}
+                style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 16px;font-size:13.5px;color:#CBD5E1;cursor:pointer;white-space:nowrap;transition:background .2s ease,color .2s ease"
+              >
+                {s.label}
+                {current === s.key && (
+                  <i style="flex:none;display:block;width:5px;height:5px;border-radius:50%;background:#F58220" />
+                )}
+              </a>
+            ))}
+          </span>
+        </span>
+        {after.map((l) => (
+          <a href={ROUTES[l.key]} class="hv-light" aria-current={aria(l.key)} style={desktopLink}>
+            {l.label}
+            {current === l.key && <span style={activeBar} />}
+          </a>
+        ))}
+        <a href={ROUTES.contact} class="btnlike hv-cta-sm" data-cta style={ctaSmall}>
+          <span>Audit gratuit</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    transition:
+      background 0.45s ease,
+      backdrop-filter 0.45s ease,
+      border-color 0.45s ease,
+      box-shadow 0.45s ease;
+    background: #0b2f6b;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid rgba(248, 250, 252, 0);
+    box-shadow: none;
+  }
+  .site-header.is-scrolled {
+    background: rgba(15, 23, 42, 0.68);
+    backdrop-filter: saturate(180%) blur(22px);
+    -webkit-backdrop-filter: saturate(180%) blur(22px);
+    border-bottom-color: rgba(248, 250, 252, 0.14);
+    box-shadow: 0 12px 30px rgba(6, 20, 48, 0.28);
+  }
+  @container (max-width: 899.98px) {
+    .hdr-desktop {
+      display: none;
+    }
+  }
+  @container (min-width: 900px) {
+    .hdr-mobile {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SEO, ROUTES, SITE, absoluteUrl, type PageKey } from '../data/site';
+import { graphFor } from '../data/schema';
+
+interface Props {
+  page: PageKey;
+}
+
+const { page } = Astro.props;
+const seo = SEO[page];
+const canonical = absoluteUrl(ROUTES[page]);
+const ogImage = absoluteUrl(`/og/${page}.png`);
+const jsonLd = JSON.stringify(graphFor(page)).replace(/</g, '\\u003c');
+
+// Mesure d'audience sans cookies (Plausible), activée seulement si le domaine est configuré.
+const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.io/js/script.js';
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content={SITE.founder} />
+    <meta name="geo.region" content="FR-11" />
+    <meta name="geo.placename" content={SITE.city} />
+    <meta name="theme-color" content="#0B2F6B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={seo.ogTitle ?? seo.title} />
+    <meta property="og:description" content={seo.ogDescription ?? seo.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={seo.ogTitle ?? seo.title} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preload" href="/fonts/Inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Satoshi-Medium.woff2" as="font" type="font/woff2" crossorigin />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="application/ld+json" set:html={jsonLd} />
+    {plausibleDomain && (
+      <>
+        <script is:inline defer data-domain={plausibleDomain} src={plausibleSrc} />
+        <script is:inline>
+          window.plausible =
+            window.plausible ||
+            function () {
+              (window.plausible.q = window.plausible.q || []).push(arguments);
+            };
+        </script>
+      </>
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">
+      Aller au contenu
+    </a>
+    <div class="vp-root">
+      <Header current={page} />
+      <main id="contenu" tabindex="-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>

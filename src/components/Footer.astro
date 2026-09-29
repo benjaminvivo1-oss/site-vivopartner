@@ -1,0 +1,119 @@
+---
+/**
+ * Pied de page commun (NAP complet) + barre d'actions collante sur mobile (Appeler / Audit gratuit).
+ */
+import { Image } from 'astro:assets';
+import lockupLight from '../assets/brand/vp-lockup-light.png';
+import { ROUTES, SITE } from '../data/site';
+
+const colTitle =
+  "font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#94A3B8;margin-bottom:14px";
+const colList = 'display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:#CBD5E1';
+const year = new Date().getFullYear();
+---
+
+<footer style="background:#0B2F6B;border-top:1px solid rgba(248,250,252,.07);padding:clamp(40px,5cqi,72px) clamp(18px,4cqi,64px) clamp(28px,3cqi,44px)">
+  <div style="display:flex;gap:clamp(28px,4cqi,72px);flex-wrap:wrap;justify-content:space-between;align-items:flex-start">
+    <div style="flex:0 1 200px;min-width:0">
+      <a href={ROUTES.home} style="display:block">
+        <Image
+          src={lockupLight}
+          alt="VivoPartner — Automatise aujourd’hui. Accélère demain."
+          height={36}
+          densities={[1, 2]}
+          style="height:36px;width:auto;max-width:100%;display:block"
+        />
+      </a>
+    </div>
+    <div style="flex:1 1 auto;min-width:0;display:flex;gap:clamp(28px,4cqi,72px);flex-wrap:wrap;justify-content:flex-end">
+      <div style="flex:0 0 auto">
+        <div style={colTitle}>Contact</div>
+        <address style={`font-style:normal;${colList}`}>
+          <a href={`mailto:${SITE.email}`} class="hv-light">
+            {SITE.email}
+          </a>
+          <a href={SITE.phone.href} class="hv-light">
+            {SITE.phone.display}
+          </a>
+          <span style="color:#94A3B8">
+            {SITE.locality} · {SITE.area}
+          </span>
+        </address>
+      </div>
+      <nav aria-label="Services" style="flex:0 0 auto">
+        <div style={colTitle}>Services</div>
+        <div style={colList}>
+          <a href={ROUTES.aplomb} class="hv-light" style="cursor:pointer">
+            Aplomb
+          </a>
+          <a href={ROUTES.ia} class="hv-light" style="cursor:pointer">
+            Réceptionniste IA
+          </a>
+          <a href={ROUTES.visibilite} class="hv-light" style="cursor:pointer">
+            Visibilité
+          </a>
+        </div>
+      </nav>
+      <nav aria-label="Cabinet" style="flex:0 0 auto">
+        <div style={colTitle}>Cabinet</div>
+        <div style={colList}>
+          <a href={ROUTES.apropos} class="hv-light" style="cursor:pointer">
+            À propos
+          </a>
+          <a href={ROUTES.faq} class="hv-light" style="cursor:pointer">
+            FAQ
+          </a>
+          <a href={ROUTES.contact} class="hv-light" style="cursor:pointer">
+            Contact
+          </a>
+          <a href={ROUTES.legal} class="hv-light" style="cursor:pointer">
+            Mentions légales
+          </a>
+          <a href={ROUTES.rgpd} class="hv-light" style="cursor:pointer">
+            Confidentialité
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div style="margin-top:clamp(28px,3cqi,44px);padding-top:18px;border-top:1px solid rgba(248,250,252,.1);display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between;font-size:12.5px;color:#94A3B8">
+    <span>
+      {SITE.name} — {SITE.founder} · SIRET {SITE.siret}
+    </span>
+    <span>
+      © {year} {SITE.name}
+    </span>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <div style="height:72px"></div>
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(15,23,42,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(248,250,252,.07)">
+    <a
+      href={SITE.phone.href}
+      class="btnlike"
+      aria-label={`Appeler le ${SITE.phone.display}`}
+      style="flex:1 1 0;height:48px;background:transparent;color:#F8FAFC;border:1px solid rgba(248,250,252,.3);border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;box-sizing:border-box"
+    >
+      Appeler
+    </a>
+    <a
+      href={ROUTES.contact}
+      class="btnlike"
+      data-cta
+      style="flex:1.4 1 0;height:48px;display:flex;align-items:center;justify-content:center;gap:8px;background:#F58220;color:#0F172A;border:none;border-radius:999px;padding:4px 16px;box-sizing:border-box;font-size:14.5px;font-weight:600;font-family:inherit;cursor:pointer"
+    >
+      <span style="display:flex;align-items:center;gap:8px">
+        <span>Audit gratuit</span>
+      </span>
+    </a>
+  </div>
+</div>
+
+<style>
+  @container (min-width: 900px) {
+    .mobile-bar {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,144 @@
+---
+/**
+ * Accueil — stack & intégrations : 3 rangées de logos en défilement continu.
+ * Chaque rangée répète ses 6 outils 8 fois (la moitié exacte sert de boucle à vpMarq).
+ * Le défilement est décoratif (aria-hidden) : la liste lisible est fournie une seule fois en texte masqué.
+ * Logos auto-hébergés dans public/integrations/ (simple-icons, logos, vscode-icons : licences libres).
+ */
+import SectionSep from '../SectionSep.astro';
+
+type Tool = { label: string; icon?: string; badge?: { text: string; bg: string } };
+type Row = { duration: string; reverse?: boolean; tools: Tool[] };
+
+const rows: Row[] = [
+  {
+    duration: '176s',
+    tools: [
+      { label: 'Google Agenda', icon: 'googlecalendar' },
+      { label: 'Gmail', icon: 'gmail' },
+      { label: 'Outlook', icon: 'outlook' },
+      { label: 'WhatsApp', icon: 'whatsapp' },
+      { label: 'Pipedrive', icon: 'pipedrive' },
+      { label: 'HubSpot', icon: 'hubspot' },
+    ],
+  },
+  {
+    duration: '216s',
+    reverse: true,
+    tools: [
+      { label: 'Batappli', badge: { text: 'B', bg: '#E4002B' } },
+      { label: 'EBP', badge: { text: 'E', bg: '#0072BC' } },
+      { label: 'Sage', icon: 'sage' },
+      { label: 'Stripe', icon: 'stripe' },
+      { label: 'Qonto', badge: { text: 'Q', bg: '#111111' } },
+      { label: 'Google My Business', icon: 'google' },
+    ],
+  },
+  {
+    duration: '192s',
+    tools: [
+      { label: 'Meta Ads', icon: 'meta' },
+      { label: 'Slack', icon: 'slack' },
+      { label: 'Google Sheets', icon: 'googlesheets' },
+      { label: 'Excel', icon: 'excel' },
+      { label: 'Téléphonie SIP', badge: { text: 'T', bg: '#0F172A' } },
+      { label: 'Webhooks sur mesure', badge: { text: '{}', bg: '#0B2F6B' } },
+    ],
+  },
+];
+const REPEAT = 8;
+
+const guarantees = [
+  { title: 'Hébergement en France', text: 'Données stockées et traitées dans l’Union européenne.' },
+  { title: 'Conformité RGPD', text: 'Consentement, durée de conservation et droit de suppression.' },
+  { title: 'Échanges chiffrés', text: 'Chiffrement en transit sur toutes les intégrations.' },
+  { title: 'API & webhooks', text: 'Un outil métier non listé ? Il se connecte via son API.' },
+];
+---
+
+<section
+  data-screen-label="Home — intégrations"
+  style="position:relative;overflow:hidden;background:#0B2F6B;color:#F8FAFC;border-top:1px solid rgba(248,250,252,.12);padding:clamp(72px,9.5cqi,152px) clamp(18px,4cqi,64px)"
+>
+  <SectionSep />
+  <div style="position:relative;display:flex;gap:clamp(20px,4cqi,64px);flex-wrap:wrap;align-items:flex-end">
+    <div style="flex:1 1 420px;min-width:0">
+      <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#CBD5E1">
+        Stack &amp; intégrations
+      </span>
+      <h2 style="margin:14px 0 0;max-width:26ch;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(25px,3.4cqi,44px);line-height:1.08;letter-spacing:-.04em;text-wrap:pretty">
+        On se branche à vos outils, pas l’inverse
+      </h2>
+    </div>
+    <p style="margin:0;flex:0 1 320px;font-size:14.5px;line-height:1.6;color:#CBD5E1">
+      Agenda, messagerie, CRM, compta, téléphonie : on se connecte à la quasi-totalité des outils du marché. Les
+      exemples ci-dessous ne sont pas limitatifs.
+    </p>
+  </div>
+
+  <ul class="sr-only">
+    {rows
+      .flatMap((r) => r.tools)
+      .map((t) => (
+        <li>{t.label}</li>
+      ))}
+  </ul>
+
+  <div aria-hidden="true" style="display:flex;flex-direction:column;gap:2px;margin-top:clamp(22px,3cqi,40px)">
+    {rows.map((row) => (
+      <div
+        class="marquee"
+        style="overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)"
+      >
+        <div
+          class="marquee__track"
+          style={`display:flex;gap:14px;width:max-content;will-change:transform;padding:14px 0;animation:vpMarq ${row.duration} linear infinite${row.reverse ? ';animation-direction:reverse' : ''}`}
+        >
+          {Array.from({ length: REPEAT }, () => row.tools)
+            .flat()
+            .map((t) => (
+              <span style="flex:none;display:flex;align-items:center;justify-content:center;gap:11px;box-sizing:border-box;min-width:0;height:54px;background:#FFFFFF;border:1px solid rgba(15,23,42,.08);border-radius:10px;padding:0 20px;box-shadow:0 4px 14px rgba(15,23,42,.07);white-space:nowrap">
+                {t.icon ? (
+                  <img
+                    src={`/integrations/${t.icon}.svg`}
+                    alt=""
+                    width="22"
+                    height="22"
+                    loading="lazy"
+                    decoding="async"
+                    style="flex:none;display:block;width:22px;height:22px;object-fit:contain"
+                  />
+                ) : (
+                  <i
+                    style={`flex:none;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;background:${t.badge?.bg};color:#FFFFFF;font-family:Satoshi,Inter,sans-serif;font-style:normal;font-weight:700;font-size:12px`}
+                  >
+                    {t.badge?.text}
+                  </i>
+                )}
+                <i style="font-family:Satoshi,Inter,sans-serif;font-style:normal;font-weight:500;font-size:14px;color:#0F172A">
+                  {t.label}
+                </i>
+              </span>
+            ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3cqi,44px);margin-top:clamp(28px,3.4cqi,48px);padding-top:clamp(24px,3cqi,36px);border-top:1px solid rgba(248,250,252,.16)">
+    {guarantees.map((g) => (
+      <div style="flex:1 1 220px;min-width:0">
+        <h3 style="margin:0;font-weight:400;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#F58220">
+          {g.title}
+        </h3>
+        <p style="margin:10px 0 0;font-size:14px;line-height:1.6;color:#CBD5E1">{g.text}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+</style>

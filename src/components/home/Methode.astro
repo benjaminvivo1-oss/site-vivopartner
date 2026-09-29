@@ -1,0 +1,93 @@
+---
+/**
+ * Accueil — notre méthode (4 étapes).
+ */
+import SectionSep from '../SectionSep.astro';
+import AuditCta from '../AuditCta.astro';
+
+const steps = [
+  {
+    verb: 'Comprendre',
+    title: 'Audit gratuit de votre entreprise',
+    text: 'On comprend votre façon de travailler et vos process, puis on identifie ensemble toutes les problématiques et axes d’amélioration.',
+    note: '30 min · visio',
+    tilt: '-1.4deg',
+  },
+  {
+    verb: 'Prioriser',
+    title: 'Diagnostic priorisé',
+    text: 'On définit avec vous le MVP : les 2-3 leviers qui auront le plus d’impact immédiat sur votre activité.',
+    note: 'Plan d’action écrit',
+    tilt: '1.1deg',
+  },
+  {
+    verb: 'Déployer',
+    title: 'Déploiement sur mesure',
+    text: 'Chaque levier retenu (Aplomb, réceptionniste IA, visibilité) est mis en place selon vos priorités, votre budget et votre rythme.',
+    note: 'À votre rythme',
+    tilt: '-.9deg',
+  },
+  {
+    verb: 'Optimiser',
+    title: 'Suivi et optimisation',
+    text: 'On mesure les résultats, on ajuste les outils et on vous accompagne dans la durée.',
+    note: 'Dans la durée',
+    tilt: '1.4deg',
+  },
+];
+---
+
+<section
+  data-screen-label="Home — méthode"
+  style="position:relative;background:#0B2F6B;color:#F8FAFC;border-top:1px solid rgba(248,250,252,.12);padding:clamp(72px,9.5cqi,152px) clamp(18px,4cqi,64px)"
+>
+  <SectionSep />
+  <div style="display:flex;gap:24px clamp(40px,6cqi,104px);flex-wrap:wrap;align-items:flex-end;justify-content:space-between">
+    <div style="flex:1 1 380px;min-width:0">
+      <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#F8FAFC">
+        Notre méthode
+      </div>
+      <h2 style="margin:16px 0 0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(28px,3.8cqi,52px);line-height:1.06;letter-spacing:-.04em;color:#F8FAFC">
+        L’audit avant tout.
+      </h2>
+      <p style="margin:0;font-size:16px;line-height:1.65;color:#CBD5E1">
+        Avant de vous proposer quoi que ce soit, on regarde comment vous travaillez réellement.
+      </p>
+    </div>
+    <div style="flex:0 1 420px;min-width:0">
+      <AuditCta style="margin-top:20px" />
+    </div>
+  </div>
+  <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(clamp(calc(25% - 24px),(720px - 100%)*999,100%),1fr));gap:clamp(36px,4cqi,56px) 32px;margin-top:clamp(52px,6.4cqi,96px)">
+    <span
+      aria-hidden="true"
+      style="position:absolute;left:22px;top:20px;height:2px;width:clamp(0px,(100% - 720px)*999,calc(100% - 44px));background:repeating-linear-gradient(90deg,rgba(248,250,252,.35) 0 6px,transparent 6px 12px)"
+    ></span>
+    {steps.map((step, i) => (
+      <div data-vp-reveal={i} style="position:relative;display:flex;flex-direction:column;gap:22px">
+        <div style="position:relative;z-index:1;width:44px;height:44px;border-radius:50%;background:#F8FAFC;color:#0B2F6B;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;font-weight:600;box-shadow:0 0 0 6px #0B2F6B">
+          {String(i + 1).padStart(2, '0')}
+        </div>
+        <div
+          class="hv-straighten"
+          style={`flex:1 1 auto;position:relative;background:#FFFFFF;border-radius:3px;padding:26px 22px 22px;transform:rotate(${step.tilt});box-shadow:0 16px 32px rgba(2,8,22,.35);transition:transform .35s cubic-bezier(.16,1,.3,1)`}
+        >
+          <span
+            aria-hidden="true"
+            style={`position:absolute;top:-8px;left:50%;width:64px;height:16px;margin-left:-32px;background:rgba(245,130,32,.85);transform:rotate(${i % 2 ? '2deg' : '-2deg'})`}
+          />
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#F58220">
+            {step.verb}
+          </div>
+          <h3 style="margin:10px 0 0;font-family:Satoshi,sans-serif;font-weight:500;font-size:clamp(18px,1.6cqi,21px);line-height:1.2;letter-spacing:-.02em;color:#0B2F6B">
+            {step.title}
+          </h3>
+          <p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#64748B;text-wrap:pretty">{step.text}</p>
+          <div style="margin-top:16px;padding-top:12px;border-top:1px dashed #CBD5E1;font-size:12px;font-family:'JetBrains Mono',ui-monospace,monospace;color:#64748B">
+            {step.note}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

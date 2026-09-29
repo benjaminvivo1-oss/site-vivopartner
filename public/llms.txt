@@ -1,0 +1,23 @@
+# Vivo Partner
+
+> Partenaire digital des entreprises du BTP, basé à Carcassonne (Aude). Intervient partout en France et dans les pays francophones, à distance ou sur place. Chaque accompagnement commence par un audit gratuit de 30 minutes en visio, sans engagement, mené par le fondateur, Benjamin Vivo.
+
+Vivo Partner propose trois leviers, déployés seuls ou combinés selon les résultats de l'audit :
+
+- **Aplomb** : application de gestion sur mesure pour entreprise du BTP (devis, chantiers, planning, suivi), adaptée à la façon de travailler de l'entreprise.
+- **Réceptionniste IA** : répond aux appels, messages et e-mails entrants, qualifie les demandes et les transmet, pour ne plus manquer d'appel.
+- **Visibilité locale** : site internet, référencement local et fiche Google pour générer davantage de demandes de devis.
+
+## Pages
+- [Accueil](https://vivopartner.com/)
+- [Aplomb, application sur mesure](https://vivopartner.com/aplomb/)
+- [Réceptionniste IA](https://vivopartner.com/receptionniste-ia/)
+- [Visibilité locale](https://vivopartner.com/visibilite-locale/)
+- [À propos](https://vivopartner.com/a-propos/)
+- [FAQ](https://vivopartner.com/faq/)
+- [Contact et audit gratuit](https://vivopartner.com/contact/)
+
+## Contact
+- Téléphone : +33 6 40 20 22 46
+- E-mail : benjamin@vivopartner.com
+- Zone : Carcassonne, Aude, France entière, pays francophones

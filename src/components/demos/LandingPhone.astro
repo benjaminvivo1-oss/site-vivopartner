@@ -1,0 +1,49 @@
+---
+/** Page mobile d'exemple (landing « demande de devis ») de la démo Visibilité. */
+import PhoneFrame from './PhoneFrame.astro';
+---
+
+<PhoneFrame screen="#FFFFFF">
+  <div style="padding:16px 14px 0">
+    <div style="display:flex;align-items:center;gap:7px">
+      <i style="display:block;width:20px;height:20px;border-radius:5px;background:#0F172A"></i>
+      <i style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.02em;color:#0F172A">
+        DUPONT PLOMBERIE
+      </i>
+      <i style="margin-left:auto;display:block;width:15px;height:11px;border-top:2px solid #0F172A;border-bottom:2px solid #0F172A"></i>
+    </div>
+    <p style="margin:14px 0 0;font-family:Satoshi,Inter,sans-serif;font-weight:700;font-size:16px;line-height:1.2;color:#0F172A;animation:vpRise 1s 100ms cubic-bezier(.16,1,.3,1) both">
+      Dépannage plomberie à Carcassonne, sous 24h.
+    </p>
+    <p style="margin:7px 0 0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-size:11.5px;line-height:1.5;color:#5F6368;animation:vpFade .5s 200ms ease both">
+      Fuite, chauffe-eau, climatisation. Devis gratuit en 2 minutes.
+    </p>
+    <div style="margin-top:13px;display:flex;flex-direction:column;gap:7px">
+      <div style="display:flex;align-items:center;box-sizing:border-box;height:32px;padding:0 10px;border:1px solid #D8D8DC;border-radius:8px;background:#FFFFFF;font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-size:11.5px;color:#8A8A8E;animation:vpFade .5s 300ms ease both">
+        Nom et téléphone
+      </div>
+      <div style="display:flex;align-items:center;box-sizing:border-box;height:32px;padding:0 10px;border:1px solid #D8D8DC;border-radius:8px;background:#FFFFFF;font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-size:11.5px;color:#8A8A8E;animation:vpFade .5s 400ms ease both">
+        Votre commune
+      </div>
+      <div style="display:flex;align-items:center;box-sizing:border-box;height:32px;padding:0 10px;border:1px solid #0B2F6B;border-radius:8px;background:#FFFFFF;font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-size:11.5px;color:#0B0B0F;animation:vpFade .5s 500ms ease both">
+        Fuite sous évier — urgent
+      </div>
+    </div>
+    <div style="margin-top:11px;background:#F58220;color:#0F172A;text-align:center;border-radius:9px;padding:11px;font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-size:12.5px;font-weight:700;animation:vpRise 1s 650ms cubic-bezier(.16,1,.3,1) both">
+      Demander un devis
+    </div>
+    <div style="margin-top:11px;display:flex;align-items:center;gap:8px;padding:9px 11px;background:rgba(11,47,107,.09);border-radius:10px;animation:vpRise 1s 950ms cubic-bezier(.16,1,.3,1) both">
+      <i style="flex:none;display:block;width:7px;height:7px;border-radius:50%;background:#0B2F6B;animation:vpPulse 1.7s ease-in-out infinite"></i>
+      <i style="font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-style:normal;font-size:11px;font-weight:600;color:#0F172A">
+        Demande reçue — fiche créée dans Aplomb
+      </i>
+    </div>
+  </div>
+  <div style="margin:18px 8px 0;display:flex;align-items:center;gap:8px;background:#F2F2F7;border-radius:12px;padding:8px 10px">
+    <i style="flex:none;display:block;width:9px;height:9px;border:1.6px solid #8A8A8E;border-radius:2px"></i>
+    <i style="flex:1;min-width:0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-style:normal;font-size:10.5px;color:#5F6368;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+      dupont-plomberie.fr
+    </i>
+    <i style="flex:none;display:block;width:10px;height:10px;border:1.6px solid #8A8A8E;border-radius:2px"></i>
+  </div>
+</PhoneFrame>

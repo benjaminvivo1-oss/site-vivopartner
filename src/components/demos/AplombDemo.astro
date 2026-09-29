@@ -1,0 +1,570 @@
+---
+/**
+ * Démo Aplomb : application d'exemple dans un portable, 7 écrans.
+ * Utilisée sur l'accueil (onglet 01) et sur /aplomb/. États gérés par src/scripts/demos.ts
+ * (data-if = écran visible, data-pressed = entrée de menu active).
+ */
+import LaptopFrame from './LaptopFrame.astro';
+
+interface Props {
+  captionColor?: string;
+}
+const { captionColor = '#94A3B8' } = Astro.props;
+
+const menu = ['Tableau de bord', 'Chantiers', 'Clients', 'Devis & factures', 'Relances', 'Compta', 'Planning équipes'];
+---
+
+<div data-demo-aplomb>
+  <LaptopFrame maxWidth="820px">
+    <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;border-bottom:1px solid rgba(248,250,252,.1)">
+      <span style="display:block;width:6px;height:6px;border-radius:50%;background:#F58220;flex:none"></span>
+      <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:#CBD5E1">
+        Aplomb · Dupont Plomberie
+      </span>
+      <span style="margin-left:auto;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8">
+        Interface d’exemple
+      </span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap">
+      <div
+        role="group"
+        aria-label="Modules de l’application"
+        style="flex:0 0 148px;min-width:128px;box-sizing:border-box;border-right:1px solid rgba(248,250,252,.1);padding:12px 0;display:flex;flex-direction:column;gap:2px"
+      >
+        {menu.map((label, i) => (
+          <button
+            type="button"
+            class="btn-reset ap-tab"
+            data-action={`apGo${i}`}
+            data-pressed={`ap${i}`}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <div style="flex:1 1 220px;min-width:0;box-sizing:border-box;padding:16px;min-height:318px">
+        <div data-if="ap0" style="animation:vpFade .45s ease both">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div style="flex:1 1 86px;min-width:0;box-sizing:border-box;background:rgba(248,250,252,.03);border:1px solid rgba(248,250,252,.1);padding:11px 12px">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+                CA du mois
+              </div>
+              <div style="margin-top:8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:21px;color:#F8FAFC">
+                —
+              </div>
+            </div>
+            <div style="flex:1 1 86px;min-width:0;box-sizing:border-box;background:rgba(248,250,252,.03);border:1px solid rgba(248,250,252,.1);padding:11px 12px">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+                Marge moyenne
+              </div>
+              <div style="margin-top:8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:21px;color:#F8FAFC">
+                —
+              </div>
+            </div>
+            <div style="flex:1 1 86px;min-width:0;box-sizing:border-box;background:rgba(248,250,252,.03);border:1px solid rgba(248,250,252,.1);padding:11px 12px">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+                Encours
+              </div>
+              <div style="margin-top:8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:21px;color:#F8FAFC">
+                —
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:18px;display:flex;gap:20px;flex-wrap:wrap">
+            <div style="flex:1 1 200px;min-width:0">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8;margin-bottom:4px">
+                Chantiers en cours
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 200ms ease both">
+                <span style="flex:0 1 170px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                  Villa Sauzens
+                </span>
+                <span style="flex:0 0 100px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;white-space:nowrap">
+                  Terrassement
+                </span>
+                <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+                  En cours
+                </span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 290ms ease both">
+                <span style="flex:0 1 170px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                  Rue des Lices
+                </span>
+                <span style="flex:0 0 100px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;white-space:nowrap">
+                  Plomberie
+                </span>
+                <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+                  Devis envoyé
+                </span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 380ms ease both">
+                <span style="flex:0 1 170px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                  Zone Bezons
+                </span>
+                <span style="flex:0 0 100px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;white-space:nowrap">
+                  Peinture
+                </span>
+                <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;border:1px solid #94A3B855;padding:3px 7px">
+                  Terminé
+                </span>
+              </div>
+            </div>
+            <div style="flex:0 1 130px;min-width:105px">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8;margin-bottom:10px">
+                Facturation / mois
+              </div>
+              <div style="display:flex;align-items:flex-end;gap:4px;height:92px">
+                <span style="flex:1;min-width:4px;height:36%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 300ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:50%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 370ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:42%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 440ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:66%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 510ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:56%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 580ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:74%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 650ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:62%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 720ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:86%;background:rgba(245,130,32,.3);align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 790ms cubic-bezier(.16,1,.3,1) both"></span>
+                <span style="flex:1;min-width:4px;height:70%;background:#F58220;align-self:flex-end;transform-origin:bottom;animation:vpBar .7s 860ms cubic-bezier(.16,1,.3,1) both"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-if="ap1" hidden style="animation:vpFade .45s ease both">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px">
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+              Chantiers
+            </div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;color:#94A3B8">
+              4 actifs · 1 en attente
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 0ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Villa Sauzens
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Terrassement
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              En cours
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 90ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Rue des Lices
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Plomberie
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Devis envoyé
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 180ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Zone Bezons
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Rénovation
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;border:1px solid #94A3B855;padding:3px 7px">
+              Planifié
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 270ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              École Jean Jaurès
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Électricité
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              En cours
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 360ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Lotissement Grazailles
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              VRD
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;border:1px solid #94A3B855;padding:3px 7px">
+              En attente
+            </span>
+          </div>
+        </div>
+        <div data-if="ap2" hidden style="animation:vpFade .45s ease both">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px">
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+              Clients
+            </div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;color:#94A3B8">
+              4 sur 128
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 0ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              SCI Sauzens
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Carcassonne
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              3 chantiers
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 90ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Mairie de Trèbes
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Trèbes
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;border:1px solid #94A3B855;padding:3px 7px">
+              1 chantier
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 180ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Dupont &amp; Fils
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Limoux
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              2 chantiers
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 270ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Résidence Le Verger
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Narbonne
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Prospect
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 360ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Sud Bâtiment 11
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Castelnaudary
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;border:1px solid #94A3B855;padding:3px 7px">
+              1 chantier
+            </span>
+          </div>
+        </div>
+        <div data-if="ap3" hidden style="animation:vpFade .45s ease both">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px">
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+              Devis &amp; factures
+            </div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;color:#94A3B8">
+              5 documents récents
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 0ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              DV-1042 · Rue des Lices
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              4 180 €
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Envoyé
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 90ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              DV-1039 · Villa Sauzens
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              12 600 €
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Accepté
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 180ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              FA-2481 · Villa Sauzens
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              2 480 €
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Impayée
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 270ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              FA-2477 · Mairie de Trèbes
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              6 950 €
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Payée
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 360ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              DV-1036 · Zone Bezons
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              3 200 €
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;border:1px solid #94A3B855;padding:3px 7px">
+              Brouillon
+            </span>
+          </div>
+        </div>
+        <div data-if="ap4" hidden style="animation:vpFade .45s ease both">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px">
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+              Relance automatique · FA-2481
+            </div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;color:#94A3B8">
+              2 480 € · Villa Sauzens
+            </div>
+          </div>
+          <p style="margin:0 0 10px;font-size:12.5px;line-height:1.55;color:#94A3B8">
+            La facture dépasse son échéance : la séquence part seule, vous n’écrivez rien.
+          </p>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:10px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 0ms ease both">
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;color:#94A3B8;width:36px">
+              J+0
+            </span>
+            <span style="flex:1 1 140px;min-width:0;font-size:12.5px;color:#E2E8F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Facture FA-2481 · échéance dépassée
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              impayée
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:10px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 90ms ease both">
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;color:#94A3B8;width:36px">
+              J+1
+            </span>
+            <span style="flex:1 1 140px;min-width:0;font-size:12.5px;color:#E2E8F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Relance e-mail envoyée au client
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              envoyée
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:10px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 180ms ease both">
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;color:#94A3B8;width:36px">
+              J+7
+            </span>
+            <span style="flex:1 1 140px;min-width:0;font-size:12.5px;color:#E2E8F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              SMS de rappel + copie au dirigeant
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              envoyée
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:10px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 270ms ease both">
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;color:#94A3B8;width:36px">
+              J+14
+            </span>
+            <span style="flex:1 1 140px;min-width:0;font-size:12.5px;color:#E2E8F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Deuxième relance, ton ferme, pièce jointe
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              envoyée
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:10px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 360ms ease both">
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;color:#94A3B8;width:36px">
+              J+21
+            </span>
+            <span style="flex:1 1 140px;min-width:0;font-size:12.5px;color:#E2E8F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Paiement reçu, facture soldée
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              payée
+            </span>
+          </div>
+          <p style="margin:12px 0 0;font-size:12px;line-height:1.55;color:#94A3B8">
+            Délais, ton des messages et canaux sont paramétrables client par client.
+          </p>
+        </div>
+        <div data-if="ap5" hidden style="animation:vpFade .45s ease both">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px">
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+              Compta
+            </div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;color:#94A3B8">
+              Mois en cours
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+            <div style="flex:1 1 86px;min-width:0;box-sizing:border-box;background:rgba(248,250,252,.03);border:1px solid rgba(248,250,252,.1);padding:11px 12px">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+                Encaissé
+              </div>
+              <div style="margin-top:8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:21px;color:#F8FAFC">
+                —
+              </div>
+            </div>
+            <div style="flex:1 1 86px;min-width:0;box-sizing:border-box;background:rgba(248,250,252,.03);border:1px solid rgba(248,250,252,.1);padding:11px 12px">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+                Reste à encaisser
+              </div>
+              <div style="margin-top:8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:21px;color:#F8FAFC">
+                —
+              </div>
+            </div>
+            <div style="flex:1 1 86px;min-width:0;box-sizing:border-box;background:rgba(248,250,252,.03);border:1px solid rgba(248,250,252,.1);padding:11px 12px">
+              <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+                TVA à déclarer
+              </div>
+              <div style="margin-top:8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:21px;color:#F8FAFC">
+                —
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 0ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Encaissements du mois
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              12 opérations
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Rapproché
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 90ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Factures fournisseurs
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              7 en attente
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              À valider
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 180ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Export comptable
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Mensuel
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Automatique
+            </span>
+          </div>
+        </div>
+        <div data-if="ap6" hidden style="animation:vpFade .45s ease both">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px">
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+              Planning équipes
+            </div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;color:#94A3B8">
+              Semaine 12
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 0ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Équipe A · Villa Sauzens
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Lun → Mer
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Confirmé
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 90ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Équipe B · Rue des Lices
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Lun → Ven
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Confirmé
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 180ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Karim · École Jean Jaurès
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Mar
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              Intervention
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 270ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Équipe A · Zone Bezons
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Jeu → Ven
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F58220;border:1px solid #F5822055;padding:3px 7px">
+              À confirmer
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap;padding:11px 0;border-bottom:1px solid rgba(248,250,252,.08);animation:vpFade .5s 360ms ease both">
+            <span style="flex:1 1 140px;min-width:0;font-size:13px;color:#F8FAFC;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Congés · Thomas
+            </span>
+            <span style="flex:0 0 110px;min-width:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:#94A3B8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              Ven
+            </span>
+            <span style="flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#94A3B8;border:1px solid #94A3B855;padding:3px 7px">
+              Absent
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </LaptopFrame>
+  <p
+    style={`margin:18px 0 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:${captionColor}`}
+  >
+    Valeurs d’exemple — vos indicateurs après l’audit
+  </p>
+</div>
+
+<style>
+  .ap-tab {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: #94a3b8;
+    background: transparent;
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    transition:
+      color 0.25s ease,
+      background 0.25s ease;
+  }
+  .ap-tab:hover {
+    color: #f8fafc;
+    background: rgba(248, 250, 252, 0.04);
+  }
+  .ap-tab[aria-pressed='true'] {
+    color: #f8fafc;
+    background: rgba(245, 130, 32, 0.1);
+    border-left-color: #f58220;
+    transition: none;
+  }
+</style>
+
+<script>
+  import '../../scripts/demos';
+</script>

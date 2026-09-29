@@ -1,0 +1,61 @@
+---
+/**
+ * Accueil — le constat / pour qui ?
+ */
+import SectionSep from '../SectionSep.astro';
+
+const criteria = [
+  'Votre activité est établie ou en croissance',
+  'Vous recevez des demandes de devis régulièrement',
+  'Vous avez une équipe de plusieurs salariés',
+  'Vous perdez trop de temps dans l’administratif',
+  'Vous manquez des appels quand vous êtes sur chantier',
+  'Vous voulez développer votre activité',
+];
+---
+
+<section style="position:relative;background:#0A2A5E;color:#F8FAFC;padding:clamp(72px,9.5cqi,152px) clamp(18px,4cqi,64px);border-top:1px solid rgba(248,250,252,.12)">
+  <SectionSep />
+  <div style="display:flex;gap:clamp(28px,4.4cqi,88px);flex-wrap:wrap;align-items:center">
+    <div
+      data-vp-reveal="0"
+      style="flex:1 1 340px;min-width:0;border-left:2px solid #F58220;padding-left:clamp(18px,2.4cqi,34px)"
+    >
+      <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#94A3B8;margin-bottom:18px">
+        Le constat · Pour qui ?
+      </div>
+      <p style="margin:0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(21px,2.9cqi,38px);line-height:1.22;letter-spacing:-.02em;text-wrap:pretty">
+        Chaque devis oublié, chaque appel manqué sont de l’argent perdu, et chaque heure passée sur l’administratif est
+        une heure qui n’est pas sur le chantier.
+      </p>
+      <p style="margin:clamp(22px,2.6cqi,34px) 0 0;max-width:52ch;font-size:15.5px;line-height:1.7;color:#CBD5E1">
+        Les entreprises du BTP perdent plusieurs demandes de devis par mois faute de suivi, d’appels manqués, de temps
+        ou d’outils adaptés à leur métier. Pas par manque de compétence —{' '}
+        <span style="color:#F58220;font-weight:500">par manque de structure.</span>
+      </p>
+    </div>
+    <div data-vp-reveal="1" style="flex:0 1 330px;min-width:260px;margin:0 auto;padding:12px 0">
+      <div
+        class="hv-straighten-3"
+        style="position:relative;background:#FFFFFF;border-radius:3px;padding:30px 26px 24px;transform:rotate(1.8deg);box-shadow:0 20px 40px rgba(2,8,22,.35);transition:transform .35s cubic-bezier(.16,1,.3,1)"
+      >
+        <span style="position:absolute;top:-9px;left:50%;width:78px;height:18px;margin-left:-39px;background:rgba(245,130,32,.85);transform:rotate(-2deg)"></span>
+        <div style="font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:22px;letter-spacing:-.03em;color:#0B2F6B">
+          C’est pour vous si…
+        </div>
+        <ul style="list-style:none;margin:18px 0 0;padding:0;display:grid;gap:11px">
+          {criteria.map((c, i) => (
+            <li
+              style={`display:flex;gap:12px;align-items:baseline${i ? ';border-top:1px dashed #CBD5E1;padding-top:11px' : ''}`}
+            >
+              <span aria-hidden="true" style="flex:none;font-size:13px;color:#F58220">
+                ✓
+              </span>
+              <span style="font-size:14.5px;line-height:1.45;color:#0F172A">{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
