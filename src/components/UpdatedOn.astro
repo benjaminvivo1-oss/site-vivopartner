@@ -10,12 +10,10 @@ const { page, color = '#94A3B8' } = Astro.props;
 const iso = UPDATED[page];
 ---
 
-{
-  iso && (
-    <p
-      style={`margin:clamp(16px,2cqi,24px) 0 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${color}`}
-    >
-      Mis à jour le <time datetime={iso}>{formatDateFr(iso)}</time>
-    </p>
-  )
-}
+{iso && (
+  <p
+    style={`margin:clamp(16px,2cqi,24px) 0 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${color}`}
+  >
+    Mis à jour le <time datetime={iso}>{formatDateFr(iso)}</time>
+  </p>
+)}

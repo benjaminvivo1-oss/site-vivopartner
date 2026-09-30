@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionSep from '../components/SectionSep.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { ROUTES } from '../data/site';
+
+const path = [
+  { step: 'Formation', text: 'Bac + BTS électricité' },
+  { step: 'Réorientation', text: 'Licence en commerce' },
+  { step: 'Aujourd’hui', text: 'Fondateur de Vivo Partner' },
+];
+const mono = "font-family:'JetBrains Mono',ui-monospace,monospace";
+---
+
+<BaseLayout page="apropos">
+  <div data-screen-label="À propos" style="animation:vpRise 1s cubic-bezier(.16,1,.3,1) both">
+    <section style="position:relative;display:flex;flex-wrap:wrap;align-items:stretch;background:#0A2A5E;border-top:1px solid rgba(248,250,252,.12)">
+      <SectionSep />
+      <div style="flex:1 1 460px;min-width:0;padding:clamp(44px,6cqi,96px) clamp(18px,4cqi,64px)">
+        <div
+          style={`font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;${mono};color:#94A3B8`}
+        >
+          À propos — Carcassonne
+        </div>
+        <h1 style="margin:clamp(22px,3cqi,40px) 0 0;max-width:24ch;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(30px,4.6cqi,62px);line-height:1.05;letter-spacing:-.04em;text-wrap:pretty">
+          Vivo Partner, c’est moi — Benjamin, et une{' '}
+          <span style="font-family:'Playfair Display',Georgia,serif;font-weight:400;color:#F58220">
+            spécialisation totale sur le BTP.
+          </span>
+        </h1>
+        <p style="margin:clamp(20px,2.6cqi,32px) 0 0;max-width:58ch;font-size:clamp(15px,1.3cqi,17.5px);line-height:1.68;color:#E2E8F0">
+          Fondateur de Vivo Partner, basé à Carcassonne, j’accompagne le développement des entreprises du BTP à travers
+          trois leviers : le gain de temps, l’acquisition client et la visibilité.
+        </p>
+        <p style="margin:20px 0 0;max-width:58ch;font-size:15.5px;line-height:1.68;color:#CBD5E1">
+          Je m’occupe personnellement de chaque audit et de chaque relation client. Pour la partie technique et
+          développement, je collabore avec des experts diplômés dans leurs secteurs respectifs et spécialisés dans le
+          BTP, en plus de mon expertise personnelle.
+        </p>
+      </div>
+      <div style="flex:1 1 300px;min-width:0;display:flex;align-items:stretch;padding:clamp(18px,3cqi,48px);box-sizing:border-box">
+        <div
+          class="hv-straighten"
+          style="position:relative;flex:1;min-height:280px;display:flex;flex-direction:column;justify-content:space-between;gap:32px;padding:clamp(30px,3.4cqi,44px) clamp(24px,3cqi,40px) clamp(24px,3cqi,36px);box-sizing:border-box;background:#F8FAFC;color:#0F172A;border-radius:3px;box-shadow:0 22px 44px rgba(2,8,22,.38);transform:rotate(1.6deg);transition:transform .35s cubic-bezier(.16,1,.3,1)"
+        >
+          <span
+            aria-hidden="true"
+            style="position:absolute;top:-10px;left:50%;width:92px;height:20px;margin-left:-46px;background:rgba(245,130,32,.85);transform:rotate(-2deg);z-index:1"
+          ></span>
+          <div style="position:relative;display:flex;align-items:center;gap:18px">
+            <div
+              aria-hidden="true"
+              style="flex:none;width:72px;height:72px;display:flex;align-items:center;justify-content:center;background:#F58220;color:#0F172A;font-family:Satoshi,Inter,sans-serif;font-weight:900;font-size:28px;letter-spacing:-.03em"
+            >
+              BV
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-family:Satoshi,Inter,sans-serif;font-weight:700;font-size:21px;color:#0B2F6B">
+                Benjamin Vivo
+              </span>
+              <span style={`font-size:11px;text-transform:uppercase;letter-spacing:.12em;${mono};color:#F58220`}>
+                Fondateur · Carcassonne
+              </span>
+            </div>
+          </div>
+          <ol style="list-style:none;margin:0;padding:0;position:relative;display:flex;flex-direction:column">
+            {path.map((p, i) => (
+              <li style="display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-top:1px dashed #CBD5E1">
+                <span style={`flex:none;width:28px;${mono};font-size:12px;color:#F58220`}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <span style={`font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;${mono};color:#64748B`}>
+                    {p.step}
+                  </span>
+                  <span style="font-size:15px;font-weight:500;color:#0F172A">{p.text}</span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section style="position:relative;background:#0B2F6B;color:#F8FAFC;border-top:1px solid rgba(248,250,252,.12);padding:clamp(64px,8.6cqi,140px) clamp(18px,4cqi,64px)">
+      <SectionSep />
+      <div style="display:flex;gap:clamp(28px,5cqi,88px);flex-wrap:wrap">
+        <div style="flex:0 1 280px;min-width:0">
+          <h2
+            style={`margin:0;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;${mono};color:#F8FAFC`}
+          >
+            Pourquoi le BTP
+          </h2>
+          <div
+            aria-hidden="true"
+            style="height:12px;margin:18px 0 0;background:repeating-linear-gradient(90deg,rgba(248,250,252,.35) 0 1px,transparent 1px 11px);border-bottom:1px solid rgba(248,250,252,.16)"
+          ></div>
+        </div>
+        <div style="flex:1 1 420px;min-width:0;max-width:70ch">
+          <p style="margin:0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(19px,2.2cqi,28px);line-height:1.32;letter-spacing:-.015em">
+            Avant de fonder Vivo Partner, j’ai obtenu un bac et un BTS en électricité, puis je me suis réorienté vers
+            une licence en commerce.
+          </p>
+          <p style="margin:24px 0 0;font-size:16px;line-height:1.7;color:#CBD5E1">
+            Dans mon entourage, plusieurs proches dirigent des entreprises du BTP — et je les ai vus rencontrer, année
+            après année et de par mon expérience sur le terrain, les mêmes difficultés : trop de temps perdu sur
+            l’administratif, des demandes de devis qui filent, une visibilité en ligne quasi inexistante.
+          </p>
+          <p style="margin:20px 0 0;font-size:16px;line-height:1.7;color:#CBD5E1">
+            Passionné par l’intelligence artificielle et les solutions concrètes, j’ai commencé à développer des outils
+            pour répondre à leurs besoins réels —{' '}
+            <a href={ROUTES.aplomb} style="color:#F8FAFC;font-weight:500;cursor:pointer">
+              Aplomb
+            </a>
+            , des sites internet, et plus encore. En voyant le potentiel de ces solutions à plus grande échelle, j’ai
+            décidé d’en faire mon activité à part entière.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <CtaBand>Parlons de votre entreprise, 30 minutes en visio.</CtaBand>
+  </div>
+</BaseLayout>

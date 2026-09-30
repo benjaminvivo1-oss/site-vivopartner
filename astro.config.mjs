@@ -10,9 +10,9 @@ export default defineConfig({
     // CSS du site très léger : on l'insère dans chaque page pour éviter une requête bloquante.
     inlineStylesheets: 'always',
   },
-  // Compression sans perte : conserve les espaces significatifs entre éléments en ligne,
-  // comme dans la maquette HTML.
-  compressHTML: true,
+  // Règles d'espacement JSX (défaut d'Astro 7) : les retours à la ligne entre balises sont ignorés,
+  // les espaces significatifs sont écrits explicitement ({' '}), comme le fait Prettier.
+  compressHTML: 'jsx',
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'hover',

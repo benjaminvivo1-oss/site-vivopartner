@@ -1,0 +1,230 @@
+---
+/**
+ * Formulaire « Demande d'audit » (page Contact).
+ * - libellés visibles, erreur sous chaque champ reliée par aria-describedby, confirmation role="status" ;
+ * - case de consentement RGPD, champ piège invisible anti-spam, délai minimal entre deux envois ;
+ * - envoi vers PUBLIC_CONTACT_ENDPOINT (Formspree, fonction serverless Resend/Brevo…), voir README.
+ *   Sans point d'envoi configuré, la demande s'ouvre pré-remplie dans la messagerie du visiteur.
+ * Logique : src/scripts/contact.ts.
+ */
+import { ROUTES, SITE } from '../data/site';
+
+const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || '';
+
+const field =
+  'font-family:Inter,sans-serif;font-size:15px;color:#0F172A;background:#fff;border:1px solid #CBD5E1;border-radius:2px;padding:12px 13px';
+const group = 'display:flex;flex-direction:column;gap:7px;font-size:12.5px;font-weight:500;color:#64748B';
+const trades = [
+  'Plomberie / chauffage',
+  'Électricité',
+  'Maçonnerie / gros œuvre',
+  'Terrassement / VRD',
+  'Peinture',
+  'Menuiserie',
+  'Couverture / charpente',
+  'Climatisation',
+];
+---
+
+<form
+  data-contact-form
+  data-endpoint={endpoint}
+  data-email={SITE.email}
+  data-phone={SITE.phone.display}
+  action={endpoint || `mailto:${SITE.email}`}
+  method="post"
+  enctype={endpoint ? undefined : 'text/plain'}
+  aria-label="Demande d’audit gratuit"
+  style="color-scheme:light"
+>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px;margin-top:24px;max-width:640px">
+    <div style={group}>
+      <label for="f-nom">
+        Nom
+        <span style="color:#F58220" aria-hidden="true">
+          {' '}
+          *
+        </span>
+      </label>
+      <input
+        id="f-nom"
+        name="nom"
+        autocomplete="name"
+        required
+        aria-required="true"
+        aria-describedby="err-nom"
+        placeholder="Jean Dupont"
+        class="fc-orange vp-field"
+        style={field}
+      />
+      <p id="err-nom" class="vp-error" hidden>
+        Indiquez votre nom.
+      </p>
+    </div>
+    <div style={group}>
+      <label for="f-entreprise">Entreprise</label>
+      <input
+        id="f-entreprise"
+        name="entreprise"
+        autocomplete="organization"
+        placeholder="Dupont Plomberie"
+        class="fc-orange vp-field"
+        style={field}
+      />
+    </div>
+    <div style={group}>
+      <label for="f-secteur">Secteur d’activité</label>
+      <input
+        id="f-secteur"
+        name="secteur"
+        list="vp-metiers"
+        placeholder="Plomberie / climatisation"
+        class="fc-orange vp-field"
+        style={field}
+      />
+    </div>
+    <div style={group}>
+      <label for="f-tel">
+        Téléphone
+        <span style="color:#F58220" aria-hidden="true">
+          {' '}
+          *
+        </span>
+      </label>
+      <input
+        id="f-tel"
+        name="tel"
+        type="tel"
+        inputmode="tel"
+        autocomplete="tel"
+        required
+        aria-required="true"
+        aria-describedby="err-tel"
+        placeholder="06 00 00 00 00"
+        class="fc-orange vp-field"
+        style={field}
+      />
+      <p id="err-tel" class="vp-error" hidden>
+        Indiquez un numéro de téléphone valide pour être rappelé.
+      </p>
+    </div>
+    <div style={`${group};grid-column:1/-1`}>
+      <label for="f-email">Email</label>
+      <input
+        id="f-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        aria-describedby="err-email"
+        placeholder="contact@dupont-plomberie.fr"
+        class="fc-orange vp-field"
+        style={field}
+      />
+      <p id="err-email" class="vp-error" hidden>
+        L’adresse e-mail semble incomplète.
+      </p>
+    </div>
+    <div style={`${group};grid-column:1/-1`}>
+      <label for="f-message">Message</label>
+      <textarea
+        id="f-message"
+        name="message"
+        rows="4"
+        placeholder="Où perdez-vous du temps aujourd’hui ?"
+        class="fc-orange vp-field"
+        style={`${field};line-height:1.55;resize:vertical`}
+      ></textarea>
+    </div>
+    <div style="grid-column:1/-1">
+      <label style="display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.6;color:#64748B;cursor:pointer">
+        <input
+          type="checkbox"
+          name="consentement"
+          value="oui"
+          required
+          aria-required="true"
+          aria-describedby="err-consent"
+          style="flex:none;width:16px;height:16px;margin:2px 0 0;accent-color:#F58220;cursor:pointer"
+        />
+        <span>
+          J’accepte que Vivo Partner utilise ces informations pour me recontacter au sujet de ma demande d’audit.{' '}
+          <a href={ROUTES.rgpd} style="color:#F58220;border-bottom:1px solid rgba(245,130,32,.4)">
+            En savoir plus
+          </a>
+          <span style="color:#F58220" aria-hidden="true">
+            {' '}
+            *
+          </span>
+        </span>
+      </label>
+      <p id="err-consent" class="vp-error" hidden style="margin-top:6px">
+        Cochez cette case pour que votre demande puisse être traitée.
+      </p>
+    </div>
+  </div>
+
+  <!-- Champ piège anti-spam : invisible pour les visiteurs, rempli par les robots. -->
+  <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden">
+    <label for="f-site">Ne pas remplir</label>
+    <input id="f-site" name="site_web" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <button
+    type="submit"
+    class="btnlike hv-cta"
+    data-cta
+    style="margin-top:24px;width:100%;justify-content:center;display:inline-flex;align-items:center;gap:12px;background:#F58220;color:#0F172A;border:none;border-radius:999px;padding:12px 28px;min-height:60px;box-sizing:border-box;cursor:pointer;text-align:left;font-family:inherit;box-shadow:0 10px 24px rgba(245,130,32,.25);transition:background .28s ease,box-shadow .28s ease,transform .28s ease"
+  >
+    <span style="display:flex;align-items:center;gap:12px;min-width:0">
+      <span style="display:flex;flex-direction:column;gap:3px;line-height:1.15;min-width:0">
+        <span style="font-size:15px;font-weight:600;white-space:normal" data-submit-label>
+          Envoyer ma demande d’audit gratuit
+        </span>
+        <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#0F172A">
+          30 min · gratuit
+        </span>
+      </span>
+    </span>
+  </button>
+  <datalist id="vp-metiers">
+    {trades.map((t) => (
+      <option value={t} />
+    ))}
+  </datalist>
+
+  <p role="alert" data-form-error hidden style="margin:12px 0 0;font-size:13.5px;font-weight:600;color:#B45309"></p>
+  <div
+    role="status"
+    data-form-status
+    style="position:relative;margin-top:22px;background:#FFF7ED;border:1px solid rgba(245,130,32,.35);border-radius:3px;padding:18px 20px;transform:rotate(-.6deg);animation:vpRise .45s cubic-bezier(.16,1,.3,1) both"
+    hidden
+  >
+    <span
+      aria-hidden="true"
+      style="position:absolute;top:-7px;left:24px;width:54px;height:14px;background:rgba(245,130,32,.85);transform:rotate(2deg)"
+    ></span>
+    <div style="font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:18px;color:#0B2F6B" data-status-title>
+      Demande reçue, merci.
+    </div>
+    <div style="margin-top:6px;font-size:14px;line-height:1.6;color:#334155" data-status-text>
+      Benjamin vous rappelle sous 24h ouvrées pour caler le créneau de votre audit.
+    </div>
+  </div>
+</form>
+
+<style>
+  .vp-error {
+    margin: 0;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #b45309;
+  }
+  .vp-field[aria-invalid='true'] {
+    border-color: #b45309 !important;
+  }
+</style>
+
+<script>
+  import '../scripts/contact';
+</script>

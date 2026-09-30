@@ -11,6 +11,28 @@ type Json = Record<string, unknown>;
 
 const ORG_ID = `${SITE.url}/#org`;
 const SITE_ID = `${SITE.url}/#site`;
+const FOUNDER_ID = `${absoluteUrl(ROUTES.apropos)}#benjamin-vivo`;
+
+const SERVICES: Partial<Record<PageKey, { name: string; serviceType: string; description: string }>> = {
+  aplomb: {
+    name: 'Aplomb',
+    serviceType: 'Application de gestion sur mesure pour entreprise du BTP',
+    description:
+      'Application sur mesure pour les entreprises du BTP : devis, factures, relances, chantiers, planning, CRM et comptabilité, adaptée à la façon de travailler de l’entreprise.',
+  },
+  ia: {
+    name: 'Réceptionniste IA',
+    serviceType: 'Réceptionniste IA pour artisans et entreprises du BTP',
+    description:
+      'Répond aux appels, messages et e-mails 24h/24, qualifie la demande, pose le rendez-vous et la transmet, sans changer de numéro.',
+  },
+  visibilite: {
+    name: 'Visibilité locale',
+    serviceType: 'Création de site internet et référencement local pour le BTP',
+    description:
+      'Site internet, référencement local et dans les IA (SEO/GEO), optimisation de la fiche Google Business Profile et publicités Meta/Google pour générer des demandes de devis.',
+  },
+};
 
 export const organization = (): Json => ({
   '@type': 'ProfessionalService',
@@ -21,7 +43,7 @@ export const organization = (): Json => ({
   image: absoluteUrl('/og/home.png'),
   description:
     'Partenaire digital des entreprises du BTP : application sur mesure Aplomb, réceptionniste IA, site internet, référencement local et publicité. Basé à Carcassonne, intervient à distance en France et dans les pays francophones.',
-  founder: { '@type': 'Person', name: SITE.founder, jobTitle: SITE.founderRole },
+  founder: { '@type': 'Person', '@id': FOUNDER_ID, name: SITE.founder, jobTitle: SITE.founderRole },
   email: SITE.email,
   telephone: SITE.phone.e164,
   taxID: SITE.siretRaw,
@@ -77,6 +99,22 @@ export const organization = (): Json => ({
   },
 });
 
+/** Fondateur, décrit sur la page À propos (auteur et parcours, cf. consignes SEO IA). */
+export const founder = (): Json => ({
+  '@type': 'Person',
+  '@id': FOUNDER_ID,
+  name: SITE.founder,
+  jobTitle: SITE.founderRole,
+  worksFor: { '@id': ORG_ID },
+  url: absoluteUrl(ROUTES.apropos),
+  email: SITE.email,
+  telephone: SITE.phone.e164,
+  address: { '@type': 'PostalAddress', addressLocality: SITE.city, addressRegion: SITE.region, addressCountry: 'FR' },
+  description:
+    'Fondateur de Vivo Partner, basé à Carcassonne. Bac et BTS en électricité, puis licence en commerce. Accompagne le développement digital des entreprises du BTP.',
+  knowsAbout: ['BTP', 'Électricité', 'Intelligence artificielle', 'Logiciel sur mesure', 'Référencement local'],
+});
+
 export const website = (): Json => ({
   '@type': 'WebSite',
   '@id': SITE_ID,
@@ -106,6 +144,7 @@ export const webPage = (page: PageKey): Json => {
     about: { '@id': ORG_ID },
     ...(page !== 'home' ? { breadcrumb: { '@id': `${url}#breadcrumb` } } : {}),
     ...(updated ? { dateModified: updated } : {}),
+    ...(page === 'apropos' ? { mainEntity: { '@id': FOUNDER_ID } } : {}),
     ...(page === 'faq'
       ? {
           mainEntity: FAQ.map(({ question, answer }) => ({
@@ -128,27 +167,6 @@ export const breadcrumb = (page: PageKey): Json => {
       { '@type': 'ListItem', position: 2, name: SEO[page].label, item: url },
     ],
   };
-};
-
-const SERVICES: Partial<Record<PageKey, { name: string; serviceType: string; description: string }>> = {
-  aplomb: {
-    name: 'Aplomb',
-    serviceType: 'Application de gestion sur mesure pour entreprise du BTP',
-    description:
-      'Application sur mesure pour les entreprises du BTP : devis, factures, relances, chantiers, planning, CRM et comptabilité, adaptée à la façon de travailler de l’entreprise.',
-  },
-  ia: {
-    name: 'Réceptionniste IA',
-    serviceType: 'Réceptionniste IA pour artisans et entreprises du BTP',
-    description:
-      'Répond aux appels, messages et e-mails 24h/24, qualifie la demande, pose le rendez-vous et la transmet, sans changer de numéro.',
-  },
-  visibilite: {
-    name: 'Visibilité locale',
-    serviceType: 'Création de site internet et référencement local pour le BTP',
-    description:
-      'Site internet, référencement local et dans les IA (SEO/GEO), optimisation de la fiche Google Business Profile et publicités Meta/Google pour générer des demandes de devis.',
-  },
 };
 
 export const service = (page: PageKey): Json | null => {
@@ -176,6 +194,7 @@ export const service = (page: PageKey): Json | null => {
 export const graphFor = (page: PageKey): Json => {
   const nodes: Json[] = [organization(), website(), webPage(page)];
   if (page !== 'home') nodes.push(breadcrumb(page));
+  if (page === 'apropos') nodes.push(founder());
   const svc = service(page);
   if (svc) nodes.push(svc);
   return { '@context': 'https://schema.org', '@graph': nodes };
