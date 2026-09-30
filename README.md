@@ -191,10 +191,10 @@ Réalisées le 30 septembre 2026 :
 
 - [ ] **Domaine** : confirmer `vivopartner.com`. S'il change, modifier `site` dans `astro.config.mjs`, `SITE.url` dans `src/data/site.ts`, `public/robots.txt`, `public/llms.txt` et `scripts/og-images.mjs` (puis régénérer les images).
 - [ ] **Formulaire** : configurer Resend et les variables, puis tester de bout en bout (envoi, accusé de réception, erreurs).
-- [ ] **Mentions légales** : compléter l'hébergeur avec l'adresse et le téléphone de Vercel Inc. (obligatoires au titre de la LCEN). Citer aussi Resend parmi les prestataires de la page Confidentialité.
+- [ ] **Mentions légales** : compléter l'hébergeur avec l'adresse et le téléphone de Vercel Inc. (obligatoires au titre de la LCEN). Resend est déjà cité parmi les prestataires de la page Confidentialité.
 - [x] **Pays servis** dans le JSON-LD : Belgique, Suisse, Luxembourg, Canada, validés (`SITE.countries`).
 - [x] **Textes ajoutés** (blocs de réponse des pages de service, titres d'Aplomb et de la réceptionniste IA) : validés.
-- [ ] **Photos** : photo de fond du hero et autres visuels à fournir (droits libres, sans visage).
+- [x] **Photo du hero** : pas pour le lancement, l'accueil garde son fond marine. Pour en ajouter une plus tard : déposer le fichier dans `src/assets/hero/`.
 - [x] **Contraste** : orange foncé `#B45309` pour les petits éléments sur fond clair (accessibilité 100).
 - [ ] **Google Search Console** et **Bing Webmaster Tools** : vérifier le domaine, envoyer `https://vivopartner.com/sitemap.xml`.
 - [ ] **Test des résultats enrichis** de Google sur chaque page.
