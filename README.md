@@ -135,6 +135,12 @@ Plausible (sans cookies) s'active avec des variables d'environnement lues au bui
 
 Les URL canoniques se terminent par `/` (`trailingSlash: 'always'`).
 
+**Configuration en place** :
+
+- **Branche** : `main` est la branche de production. Chaque envoi sur `main` met vivopartner.com à jour automatiquement (1 à 2 min). Les autres branches donnent des aperçus sur une adresse `.vercel.app`.
+- **Domaine** : `vivopartner.com` est le domaine principal, `www.vivopartner.com` redirige vers lui (308).
+- **DNS** : ils se gèrent chez Squarespace Domains (ex-Google Domains). Ne pas toucher aux enregistrements MX et SPF de Google : ce sont eux qui font fonctionner les adresses e-mail @vivopartner.com.
+
 Sur un autre hébergeur statique, `dist/` fonctionne tel quel ; seule `api/contact.js` est propre à Vercel (utiliser alors `PUBLIC_CONTACT_ENDPOINT`).
 
 ## Écarts volontaires avec la maquette
@@ -189,7 +195,7 @@ Réalisées le 30 septembre 2026 :
 
 ## À faire avant la mise en ligne
 
-- [ ] **Domaine** : confirmer `vivopartner.com`. S'il change, modifier `site` dans `astro.config.mjs`, `SITE.url` dans `src/data/site.ts`, `public/robots.txt`, `public/llms.txt` et `scripts/og-images.mjs` (puis régénérer les images).
+- [x] **Domaine** : `vivopartner.com` est branché sur Vercel. Reste à mettre à jour les valeurs DNS recommandées par Vercel (voir Domains dans Vercel).
 - [ ] **Formulaire** : configurer Resend et les variables, puis tester de bout en bout (envoi, accusé de réception, erreurs).
 - [ ] **Mentions légales** : compléter l'hébergeur avec l'adresse et le téléphone de Vercel Inc. (obligatoires au titre de la LCEN). Resend est déjà cité parmi les prestataires de la page Confidentialité.
 - [x] **Pays servis** dans le JSON-LD : Belgique, Suisse, Luxembourg, Canada, validés (`SITE.countries`).
