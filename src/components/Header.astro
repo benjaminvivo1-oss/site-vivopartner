@@ -41,6 +41,7 @@ const ctaSmall =
 ---
 
 <header class="site-header" data-header>
+  <span class="vp-progress" aria-hidden="true"></span>
   <div class="hdr-mobile">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px 12px">
       <a href={ROUTES.home} style="display:flex;align-items:center;gap:9px;cursor:pointer">
@@ -223,12 +224,80 @@ const ctaSmall =
     border-bottom: 1px solid rgba(248, 250, 252, 0);
     box-shadow: none;
   }
+  /* Transitions entre pages : l'en-tête reste en place, seul le contenu change. */
+  .site-header {
+    view-transition-name: vp-header;
+  }
   .site-header.is-scrolled {
     background: rgba(15, 23, 42, 0.68);
     backdrop-filter: saturate(180%) blur(22px);
     -webkit-backdrop-filter: saturate(180%) blur(22px);
     border-bottom-color: rgba(248, 250, 252, 0.14);
     box-shadow: 0 12px 30px rgba(6, 20, 48, 0.28);
+  }
+  /* Filet de lecture : suit le défilement de la page (navigateurs compatibles, CSS seul). */
+  .vp-progress {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .vp-progress {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      z-index: 1;
+      height: 2px;
+      background: #f58220;
+      transform-origin: left center;
+      scale: 0 1;
+      pointer-events: none;
+      animation: vpProgress linear both;
+    }
+    /* Règle séparée : le minificateur fusionnerait sinon la frise dans le raccourci animation (invalide). */
+    .site-header .vp-progress {
+      animation-duration: auto;
+      animation-timeline: scroll(root block);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vp-progress {
+      display: none;
+    }
+  }
+  /* Survol des liens (ordinateur) : un filet orange se trace sous le lien. */
+  .hdr-desktop nav .hv-light::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: rgba(245, 130, 32, 0.6);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.35s var(--vp-ease);
+    pointer-events: none;
+  }
+  .hdr-desktop nav .hv-light:hover::after,
+  .hdr-desktop nav .hv-light:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  /* Burger → croix quand le menu est ouvert. */
+  [data-menu-toggle] > span {
+    transition:
+      transform var(--vp-t-state) var(--vp-ease),
+      opacity 0.2s ease;
+  }
+  [data-menu-toggle][aria-expanded='true'] > span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  [data-menu-toggle][aria-expanded='true'] > span:nth-child(2) {
+    opacity: 0;
+  }
+  [data-menu-toggle][aria-expanded='true'] > span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
   }
   @container (max-width: 899.98px) {
     .hdr-desktop {

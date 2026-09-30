@@ -58,11 +58,12 @@ const guarantees = [
 
 <section
   data-screen-label="Home — intégrations"
+  data-vp-inview
   style="position:relative;overflow:hidden;background:#0B2F6B;color:#F8FAFC;border-top:1px solid rgba(248,250,252,.12);padding:clamp(72px,9.5cqi,152px) clamp(18px,4cqi,64px)"
 >
   <SectionSep />
   <div style="position:relative;display:flex;gap:clamp(20px,4cqi,64px);flex-wrap:wrap;align-items:flex-end">
-    <div style="flex:1 1 420px;min-width:0">
+    <div data-vp-reveal="0" style="flex:1 1 420px;min-width:0">
       <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#CBD5E1">
         Stack &amp; intégrations
       </span>
@@ -70,7 +71,7 @@ const guarantees = [
         On se branche à vos outils, pas l’inverse
       </h2>
     </div>
-    <p style="margin:0;flex:0 1 320px;font-size:14.5px;line-height:1.6;color:#CBD5E1">
+    <p data-vp-reveal="1" style="margin:0;flex:0 1 320px;font-size:14.5px;line-height:1.6;color:#CBD5E1">
       Agenda, messagerie, CRM, compta, téléphonie : on se connecte à la quasi-totalité des outils du marché. Les
       exemples ci-dessous ne sont pas limitatifs.
     </p>
@@ -84,7 +85,11 @@ const guarantees = [
       ))}
   </ul>
 
-  <div aria-hidden="true" style="display:flex;flex-direction:column;gap:2px;margin-top:clamp(22px,3cqi,40px)">
+  <div
+    aria-hidden="true"
+    data-vp-reveal="2"
+    style="display:flex;flex-direction:column;gap:2px;margin-top:clamp(22px,3cqi,40px)"
+  >
     {rows.map((row) => (
       <div
         class="marquee"
@@ -127,7 +132,7 @@ const guarantees = [
 
   <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3cqi,44px);margin-top:clamp(28px,3.4cqi,48px);padding-top:clamp(24px,3cqi,36px);border-top:1px solid rgba(248,250,252,.16)">
     {guarantees.map((g) => (
-      <div style="flex:1 1 220px;min-width:0">
+      <div data-vp-reveal style="flex:1 1 220px;min-width:0">
         <h3 style="margin:0;font-weight:400;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#F58220">
           {g.title}
         </h3>

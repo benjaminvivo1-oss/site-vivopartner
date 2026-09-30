@@ -151,6 +151,31 @@ Le rendu reprend la maquette à l'identique (comparaison des captures à 1440 px
 
 La FAQ s'ouvre sur la première question, comme la maquette (son état `faqOpen: 1` compte à partir de 1, alors que le README du handoff parle de la 2e).
 
+## Animations
+
+Une couche de mouvement s'ajoute aux animations de la maquette. Au repos, chaque page est identique au pixel près à la version sans ces ajouts. Principes :
+
+- **Un seul vocabulaire** : montée de 12 à 14 px avec la courbe de la maquette (`--vp-ease`), jamais de rebond, une seule fois par élément. Durées dans `src/styles/global.css` (`--vp-t-fast`, `--vp-t-state`, `--vp-t-enter`).
+- **Un geste par écran** : l'en-tête d'une section, puis son contenu, avec un léger décalage entre éléments voisins.
+- **Sens** : chaque animation raconte quelque chose (une étape qui suit l'autre, une case cochée, un chiffre qui se construit).
+- **Accessibilité** : avec « réduire les animations », tout s'affiche directement ; la lecture automatique des démos est désactivée.
+
+Ce qui bouge :
+
+- **Ouverture de chaque page** : les éléments du premier écran arrivent l'un après l'autre (classe `vp-intro`).
+- **Accueil** : la carte « Diagnostic digital » se pose et se cale, son ruban se déroule, les 3 priorités s'écrivent, puis la pastille « 30 min » est tamponnée.
+- **Au défilement** (`data-vp-reveal`) : les sections apparaissent. Les cartes « papier » (`vp-paper`) se posent un peu plus inclinées puis se calent. Les critères « C'est pour vous si… » se cochent un à un. Le filet de la méthode se trace sous les 4 étapes. Les étapes du flux IA s'enchaînent.
+- **Chiffres clés** (≈5 h, +30 %, +50 %) : décompte à l'apparition (`data-vp-count`) ; la valeur finale reste écrite dans le HTML.
+- **Démos** : elles démarrent quand elles sont à l'écran. Sur l'accueil, l'onglet actif se remplit d'un filet orange pendant la lecture automatique ; le filet se fige au survol ou au focus.
+- **Interactions** :
+  - flèches « → » qui avancent au survol ;
+  - filet sous les liens du menu ;
+  - burger qui devient une croix ;
+  - boutons qui s'enfoncent à la pression ;
+  - réponses de la FAQ qui se déplient en douceur, avec l'icône + qui devient − ;
+  - messages d'erreur du formulaire qui apparaissent en fondu.
+- **Navigation** : fondu entre les pages, avec l'en-tête et la barre mobile qui restent en place (navigateurs compatibles). Filet de lecture orange sous l'en-tête, qui suit le défilement.
+
 ## Vérifications
 
 Réalisées le 30 septembre 2026 :
@@ -159,6 +184,7 @@ Réalisées le 30 septembre 2026 :
 - **axe-core** : aucune erreur, sauf le contraste de l'orange sur fond clair (voir la liste ci-dessous).
 - **`astro check`** : 0 erreur.
 - Démos, menus, FAQ et formulaire testés au clavier et à la souris ; `api/contact.js` testée (validation, champ piège, limite de débit, échec d'envoi).
+- **Animations** : rendu au repos identique à la version sans animations (captures comparées sur les 9 pages, à 1440 et 390 px) ; CLS 0 à 0,0003 ; Lighthouse mobile de l'accueil inchangé (98, blocage 0 à 10 ms).
 
 ## À faire avant la mise en ligne
 

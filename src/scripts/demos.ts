@@ -6,6 +6,9 @@
  * Le premier clic arrête la lecture automatique (comme la maquette). En plus, pour l'accessibilité :
  * pause au survol et au focus, bouton pause/lecture, pas de lecture automatique si l'utilisateur
  * a demandé à réduire les animations, arrêt quand l'onglet du navigateur est masqué.
+ * La lecture ne démarre que lorsque la démo est à l'écran. Sur l'accueil, l'onglet actif se remplit
+ * pendant la durée de l'étape (filet orange, en CSS) : la fin de ce remplissage fait passer à l'onglet suivant,
+ * et il se fige quand la lecture est suspendue.
  *
  * Balisage attendu dans un conteneur [data-demos] :
  * - [data-if="flag"]      élément affiché si le drapeau est vrai (hidden sinon) ;
@@ -45,13 +48,20 @@ function initDemos(root: HTMLElement) {
     paused: false, // bouton pause
     hover: false,
     focus: false,
+    visible: !('IntersectionObserver' in window), // démo à l'écran
   };
 
   // Lecture automatique effective (ce que l'utilisateur voit bouger).
   const playing = () =>
     !state.paused &&
     (((hasTabs || hasIa) && state.auto) || (hasAplomb && state.apAuto && (!hasTabs || state.tab === 0)));
-  const running = () => playing() && !state.hover && !state.focus && !document.hidden;
+  const running = () => playing() && state.visible && !state.hover && !state.focus && !document.hidden;
+
+  // État lu par le CSS : remplissage de l'onglet actif (data-autoplay) et gel du remplissage (data-hold).
+  function sync() {
+    root.dataset.autoplay = hasTabs && state.auto && !state.paused ? 'on' : 'off';
+    root.toggleAttribute('data-hold', !running());
+  }
 
   function flags(): Flags {
     const f: Flags = {};
@@ -87,6 +97,7 @@ function initDemos(root: HTMLElement) {
       if (p.hidden === show) p.hidden = !show;
     });
     const isPlaying = playing();
+    sync();
     pauseBtns.forEach((b) => {
       const label = isPlaying ? 'Mettre la démo en pause' : 'Relancer la démo';
       b.setAttribute('aria-label', label);
@@ -184,24 +195,46 @@ function initDemos(root: HTMLElement) {
   // Pause au survol (souris) et au focus clavier.
   root.addEventListener('pointerenter', (e) => {
     if (e.pointerType === 'mouse') state.hover = true;
+    sync();
   });
   root.addEventListener('pointerleave', () => {
     state.hover = false;
+    sync();
   });
   root.addEventListener('focusin', () => {
     state.focus = true;
+    sync();
   });
   root.addEventListener('focusout', (e) => {
     if (!root.contains(e.relatedTarget as Node | null)) state.focus = false;
+    sync();
   });
+  document.addEventListener('visibilitychange', sync);
 
-  if (hasTabs)
-    window.setInterval(() => {
+  // Lecture seulement quand la démo occupe la partie centrale de l'écran.
+  if (!state.visible)
+    new IntersectionObserver(
+      ([entry]) => {
+        state.visible = entry.isIntersecting;
+        sync();
+      },
+      { rootMargin: '-20% 0px -20% 0px' },
+    ).observe(root);
+
+  // Onglets de l'accueil : la fin du remplissage de l'onglet actif (durée TIMING.tab) passe au suivant.
+  if (hasTabs) {
+    // Durée posée sur les seuls filets (et non sur la démo entière, qui recalculerait tous ses styles).
+    root
+      .querySelectorAll<HTMLElement>('.demo-tab__progress')
+      .forEach((bar) => bar.style.setProperty('--vp-tab-ms', `${TIMING.tab}ms`));
+    root.addEventListener('animationend', (e) => {
+      if (!(e.target as Element).classList.contains('demo-tab__progress')) return;
       if (!state.auto || !running()) return;
       state.tab = (state.tab + 1) % 3;
       state.demo = 1;
       render();
-    }, TIMING.tab);
+    });
+  }
 
   if (hasIa)
     window.setInterval(() => {

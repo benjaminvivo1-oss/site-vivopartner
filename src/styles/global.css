@@ -186,6 +186,11 @@
   --vp-slate: #64748b;
   --vp-line: rgba(248, 250, 252, 0.12);
   --vp-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Mouvement : une courbe d'arrivée (--vp-ease), une courbe pour les tracés, trois durées selon l'usage. */
+  --vp-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --vp-t-fast: 0.28s; /* survol, pression */
+  --vp-t-state: 0.45s; /* ouverture, changement d'état */
+  --vp-t-enter: 1.2s; /* apparitions */
   --vp-gutter: clamp(18px, 4cqi, 64px);
   --vp-mono: 'JetBrains Mono', ui-monospace, monospace;
   --vp-display: Satoshi, Inter, sans-serif;
@@ -384,17 +389,183 @@ button {
   }
 }
 
-/* Apparition au défilement ([data-vp-reveal]) : masqué seulement si le JS tourne. */
+/* ---------- Mouvement ajouté ----------
+ * Même vocabulaire que la maquette : montée de 12 à 14 px, courbe --vp-ease, jamais de rebond, une seule fois
+ * par élément. Les variantes agissent sur translate / rotate / scale (propriétés indépendantes) : elles se
+ * composent avec les transform en ligne, et les cartes gardent donc leur inclinaison.
+ * Remplissage « backwards » et état final « none » : une fois arrivé, l'élément retrouve exactement son rendu
+ * d'origine (le texte garde son lissage fin).
+ */
+@keyframes vpRiseT {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+/* Papier posé un peu plus incliné, qui se cale sur son inclinaison. */
+@keyframes vpSettle {
+  from {
+    rotate: var(--vp-settle, -1.6deg);
+  }
+  to {
+    rotate: 0deg;
+  }
+}
+/* Pastille tamponnée. */
+@keyframes vpStamp {
+  from {
+    opacity: 0;
+    scale: 1.18;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+/* Ruban adhésif qui se déroule. */
+@keyframes vpStick {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes vpProgress {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes vpFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Apparition au défilement ([data-vp-reveal]) : masqué seulement si le JS tourne.
+ * Délai : valeur de l'attribut × 110 ms (maquette) ; attribut vide = décalage automatique entre voisins. */
 .js [data-vp-reveal] {
   opacity: 0;
-  transform: translateY(14px);
+  translate: 0 14px;
   transition:
-    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--vp-delay, 0ms),
-    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--vp-delay, 0ms);
+    opacity var(--vp-t-enter) var(--vp-ease) var(--vp-delay, 0ms),
+    translate var(--vp-t-enter) var(--vp-ease) var(--vp-delay, 0ms);
 }
 .js [data-vp-reveal].is-in {
   opacity: 1;
-  transform: none;
+  translate: none;
+}
+.js [data-vp-reveal='1'] {
+  --vp-delay: 110ms;
+}
+.js [data-vp-reveal='2'] {
+  --vp-delay: 220ms;
+}
+.js [data-vp-reveal='3'] {
+  --vp-delay: 330ms;
+}
+.js [data-vp-reveal='4'] {
+  --vp-delay: 440ms;
+}
+.js [data-vp-reveal='5'] {
+  --vp-delay: 550ms;
+}
+.js [data-vp-reveal='6'] {
+  --vp-delay: 660ms;
+}
+.js [data-vp-reveal='7'] {
+  --vp-delay: 770ms;
+}
+.js [data-vp-reveal='8'] {
+  --vp-delay: 880ms;
+}
+/* Cartes « papier » : posées avec l'inclinaison --vp-settle en plus, calée quand elles (ou un parent) apparaissent.
+ * Les transitions en ligne des cartes sont remplacées : on y remet celles du survol. */
+.js .vp-paper {
+  rotate: var(--vp-settle, -1.2deg);
+  transition:
+    opacity var(--vp-t-enter) var(--vp-ease) var(--vp-delay, 0ms),
+    translate var(--vp-t-enter) var(--vp-ease) var(--vp-delay, 0ms),
+    rotate 1.5s var(--vp-ease) var(--vp-delay, 0ms),
+    transform 0.35s var(--vp-ease),
+    box-shadow 0.35s ease !important;
+}
+.js .vp-paper.is-in,
+.js .is-in .vp-paper {
+  rotate: none;
+}
+/* Liste cochée : les lignes arrivent après la carte, l'une après l'autre (--i = rang de la ligne). */
+.js .vp-ticks > * {
+  opacity: 0;
+  translate: -8px 0;
+  transition:
+    opacity 0.6s var(--vp-ease),
+    translate 0.8s var(--vp-ease);
+  transition-delay: calc(var(--vp-delay, 0ms) + 420ms + var(--i, 0) * 90ms);
+}
+.js .is-in .vp-ticks > * {
+  opacity: 1;
+  translate: none;
+}
+/* Filet qui se trace de gauche à droite quand son groupe ([data-vp-inview]) arrive à l'écran. */
+.js .vp-draw {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.4s var(--vp-ease-inout) 0.15s;
+}
+.js .vp-draw.is-in,
+.js .is-in .vp-draw {
+  clip-path: inset(0 0 0 0);
+}
+/* Bloc placé plus bas dans la page : ses animations attendent qu'il soit visible. */
+.js [data-vp-inview]:not(.is-in) * {
+  animation-play-state: paused !important;
+}
+
+/* Ouverture de page : les éléments du premier écran arrivent l'un après l'autre (sans JS). */
+.vp-intro > :not(.vp-sep) {
+  animation: vpRiseT 0.9s var(--vp-ease) backwards;
+}
+.vp-intro > :nth-child(2 of :not(.vp-sep)) {
+  animation-delay: 0.1s;
+}
+.vp-intro > :nth-child(3 of :not(.vp-sep)) {
+  animation-delay: 0.2s;
+}
+.vp-intro > :nth-child(4 of :not(.vp-sep)) {
+  animation-delay: 0.3s;
+}
+.vp-intro > :nth-child(n + 5 of :not(.vp-sep)) {
+  animation-delay: 0.38s;
+}
+
+/* Flèche des liens « … → » : elle avance au survol. */
+.vp-arrow {
+  display: inline-block;
+  transition: translate var(--vp-t-fast) var(--vp-ease);
+}
+a:hover .vp-arrow,
+a:focus-visible .vp-arrow {
+  translate: 4px 0;
+}
+
+/* Transitions entre pages (navigateurs compatibles) : fondu court ; en-tête et barre mobile restent en place. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+::view-transition-old(root) {
+  animation: vpFadeOut 0.18s cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(root) {
+  animation: vpFade 0.42s var(--vp-ease) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -402,14 +573,22 @@ button {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
-  .js [data-vp-reveal] {
+  .js [data-vp-reveal],
+  .js .vp-ticks > * {
     opacity: 1;
-    transform: none;
+    translate: none;
+  }
+  .js .vp-paper {
+    rotate: none;
+  }
+  .js .vp-draw {
+    clip-path: none;
   }
 }
 
@@ -479,6 +658,16 @@ button {
 .hv-straighten-sm:hover {
   transform: rotate(0deg) translateY(-3px) !important;
   box-shadow: 0 20px 36px rgba(2, 8, 22, 0.4) !important;
+}
+/* Pression sur les boutons d'audit : léger enfoncement, plus rapide que le survol. */
+.hv-cta:active,
+.hv-cta-sm:active,
+.hv-cta-dark:active {
+  transform: translateY(0) scale(0.98) !important;
+  transition-duration: 0.1s !important;
+}
+.fc-orange {
+  transition: border-color var(--vp-t-fast) ease;
 }
 .fc-orange:focus {
   border-color: #f58220 !important;

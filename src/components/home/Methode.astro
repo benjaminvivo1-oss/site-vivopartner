@@ -1,6 +1,7 @@
 ---
 /**
  * Accueil — notre méthode (4 étapes).
+ * Le filet pointillé se trace de gauche à droite et les étapes se posent au fil du tracé.
  */
 import SectionSep from '../SectionSep.astro';
 import AuditCta from '../AuditCta.astro';
@@ -43,7 +44,7 @@ const steps = [
 >
   <SectionSep />
   <div style="display:flex;gap:24px clamp(40px,6cqi,104px);flex-wrap:wrap;align-items:flex-end;justify-content:space-between">
-    <div style="flex:1 1 380px;min-width:0">
+    <div data-vp-reveal="0" style="flex:1 1 380px;min-width:0">
       <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#F8FAFC">
         Notre méthode
       </div>
@@ -54,23 +55,27 @@ const steps = [
         Avant de vous proposer quoi que ce soit, on regarde comment vous travaillez réellement.
       </p>
     </div>
-    <div style="flex:0 1 420px;min-width:0">
+    <div data-vp-reveal="1" style="flex:0 1 420px;min-width:0">
       <AuditCta style="margin-top:20px" />
     </div>
   </div>
-  <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(clamp(calc(25% - 24px),(720px - 100%)*999,100%),1fr));gap:clamp(36px,4cqi,56px) 32px;margin-top:clamp(52px,6.4cqi,96px)">
+  <div
+    data-vp-inview
+    style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(clamp(calc(25% - 24px),(720px - 100%)*999,100%),1fr));gap:clamp(36px,4cqi,56px) 32px;margin-top:clamp(52px,6.4cqi,96px)"
+  >
     <span
       aria-hidden="true"
+      class="vp-draw"
       style="position:absolute;left:22px;top:20px;height:2px;width:clamp(0px,(100% - 720px)*999,calc(100% - 44px));background:repeating-linear-gradient(90deg,rgba(248,250,252,.35) 0 6px,transparent 6px 12px)"
     ></span>
     {steps.map((step, i) => (
-      <div data-vp-reveal={i} style="position:relative;display:flex;flex-direction:column;gap:22px">
+      <div data-vp-reveal={i * 2} style="position:relative;display:flex;flex-direction:column;gap:22px">
         <div style="position:relative;z-index:1;width:44px;height:44px;border-radius:50%;background:#F8FAFC;color:#0B2F6B;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;font-weight:600;box-shadow:0 0 0 6px #0B2F6B">
           {String(i + 1).padStart(2, '0')}
         </div>
         <div
-          class="hv-straighten"
-          style={`flex:1 1 auto;position:relative;background:#FFFFFF;border-radius:3px;padding:26px 22px 22px;transform:rotate(${step.tilt});box-shadow:0 16px 32px rgba(2,8,22,.35);transition:transform .35s cubic-bezier(.16,1,.3,1)`}
+          class="hv-straighten vp-paper"
+          style={`flex:1 1 auto;position:relative;background:#FFFFFF;border-radius:3px;padding:26px 22px 22px;transform:rotate(${step.tilt});box-shadow:0 16px 32px rgba(2,8,22,.35);transition:transform .35s cubic-bezier(.16,1,.3,1);--vp-settle:${step.tilt.startsWith('-') ? '-1.2deg' : '1.2deg'}`}
         >
           <span
             aria-hidden="true"

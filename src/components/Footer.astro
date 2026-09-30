@@ -88,7 +88,10 @@ const year = new Date().getFullYear();
 
 <nav class="mobile-bar" aria-label="Contact rapide">
   <div style="height:72px"></div>
-  <div style="position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(15,23,42,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(248,250,252,.07)">
+  <div
+    class="mobile-bar__inner"
+    style="position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(15,23,42,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(248,250,252,.07)"
+  >
     <a
       href={SITE.phone.href}
       class="btnlike"
@@ -115,5 +118,15 @@ const year = new Date().getFullYear();
     .mobile-bar {
       display: none;
     }
+  }
+  /* Reste en place pendant les transitions entre pages ; léger enfoncement à la pression. */
+  .mobile-bar__inner {
+    view-transition-name: vp-mobilebar;
+  }
+  .mobile-bar__inner a {
+    transition: scale 0.1s ease;
+  }
+  .mobile-bar__inner a:active {
+    scale: 0.97;
   }
 </style>

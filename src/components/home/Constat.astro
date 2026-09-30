@@ -1,6 +1,7 @@
 ---
 /**
  * Accueil — le constat / pour qui ?
+ * La carte « C'est pour vous si… » se pose, puis les critères se cochent l'un après l'autre.
  */
 import SectionSep from '../SectionSep.astro';
 
@@ -36,17 +37,17 @@ const criteria = [
     </div>
     <div data-vp-reveal="1" style="flex:0 1 330px;min-width:260px;margin:0 auto;padding:12px 0">
       <div
-        class="hv-straighten-3"
-        style="position:relative;background:#FFFFFF;border-radius:3px;padding:30px 26px 24px;transform:rotate(1.8deg);box-shadow:0 20px 40px rgba(2,8,22,.35);transition:transform .35s cubic-bezier(.16,1,.3,1)"
+        class="hv-straighten-3 vp-paper"
+        style="position:relative;background:#FFFFFF;border-radius:3px;padding:30px 26px 24px;transform:rotate(1.8deg);box-shadow:0 20px 40px rgba(2,8,22,.35);transition:transform .35s cubic-bezier(.16,1,.3,1);--vp-settle:1.4deg"
       >
         <span style="position:absolute;top:-9px;left:50%;width:78px;height:18px;margin-left:-39px;background:rgba(245,130,32,.85);transform:rotate(-2deg)"></span>
         <div style="font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:22px;letter-spacing:-.03em;color:#0B2F6B">
           C’est pour vous si…
         </div>
-        <ul style="list-style:none;margin:18px 0 0;padding:0;display:grid;gap:11px">
+        <ul class="vp-ticks" style="list-style:none;margin:18px 0 0;padding:0;display:grid;gap:11px">
           {criteria.map((c, i) => (
             <li
-              style={`display:flex;gap:12px;align-items:baseline${i ? ';border-top:1px dashed #CBD5E1;padding-top:11px' : ''}`}
+              style={`display:flex;gap:12px;align-items:baseline${i ? ';border-top:1px dashed #CBD5E1;padding-top:11px' : ''};--i:${i}`}
             >
               <span aria-hidden="true" style="flex:none;font-size:13px;color:#F58220">
                 ✓

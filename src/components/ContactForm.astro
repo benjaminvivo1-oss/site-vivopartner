@@ -224,6 +224,10 @@ const trades = [
   .vp-field[aria-invalid='true'] {
     border-color: #b45309 !important;
   }
+  .vp-error:not([hidden]),
+  [data-form-error]:not([hidden]) {
+    animation: vpFade 0.3s ease both;
+  }
 </style>
 
 <script>

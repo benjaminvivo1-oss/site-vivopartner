@@ -7,7 +7,7 @@ import AuditCta from '../AuditCta.astro';
 
 <section style="background:#F58220;color:#0F172A;padding:clamp(64px,8cqi,128px) clamp(18px,4cqi,64px)">
   <div style="display:flex;gap:clamp(24px,4cqi,64px);flex-wrap:wrap;align-items:flex-end">
-    <div style="flex:1 1 420px;min-width:0">
+    <div data-vp-reveal="0" style="flex:1 1 420px;min-width:0">
       <p style="margin:0;max-width:30ch;font-family:Satoshi,Inter,sans-serif;font-weight:700;font-size:clamp(24px,3.2cqi,44px);line-height:1.1;letter-spacing:-.025em;text-wrap:pretty">
         Un audit gratuit, sans engagement, pour savoir exactement où vous perdez du temps et des demandes de devis.
       </p>
@@ -16,6 +16,8 @@ import AuditCta from '../AuditCta.astro';
         non.
       </p>
     </div>
-    <AuditCta variant="dark" />
+    <div data-vp-reveal="1" style="flex:none;display:flex">
+      <AuditCta variant="dark" />
+    </div>
   </div>
 </section>

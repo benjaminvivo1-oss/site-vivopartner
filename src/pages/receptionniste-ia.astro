@@ -32,7 +32,7 @@ const orangeGrid =
         aria-hidden="true"
         style="position:absolute;inset:0;background:linear-gradient(rgba(245,130,32,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(245,130,32,.055) 1px,transparent 1px);background-size:64px 64px;pointer-events:none"
       ></div>
-      <div style="position:relative">
+      <div class="vp-intro" style="position:relative">
         <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#94A3B8">
           Levier 02 — Réceptionniste IA
         </div>
@@ -52,13 +52,14 @@ const orangeGrid =
     <section
       data-screen-label="IA — démo"
       data-demos
+      data-vp-inview
       style="position:relative;overflow:hidden;background:#0A2A5E;border-top:1px solid rgba(248,250,252,.12);padding:clamp(64px,8.6cqi,140px) clamp(18px,4cqi,64px)"
     >
       <SectionSep />
       <div aria-hidden="true" style={orangeGrid}></div>
       <div style="position:relative">
         <div style="display:flex;gap:clamp(20px,4cqi,64px);flex-wrap:wrap;align-items:flex-end">
-          <div style="flex:1 1 400px;min-width:0">
+          <div data-vp-reveal="0" style="flex:1 1 400px;min-width:0">
             <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
               La démo
             </span>
@@ -66,11 +67,11 @@ const orangeGrid =
               Un appel de chantier, étape par étape
             </h2>
           </div>
-          <p style="margin:0;flex:0 1 300px;font-size:14px;line-height:1.6;color:#94A3B8">
+          <p data-vp-reveal="1" style="margin:0;flex:0 1 300px;font-size:14px;line-height:1.6;color:#94A3B8">
             Avancez pas à pas : ce que le réceptionniste entend, ce qu’il extrait, ce qu’il déclenche.
           </p>
         </div>
-        <div style="margin-top:clamp(26px,3.4cqi,44px)">
+        <div data-vp-reveal="2" style="margin-top:clamp(26px,3.4cqi,44px)">
           <IaDemo statusColor="#CBD5E1" pause />
         </div>
       </div>
@@ -78,15 +79,22 @@ const orangeGrid =
 
     <section
       data-screen-label="IA — flux technique"
+      data-vp-inview
       style="position:relative;overflow:hidden;background:#0B2F6B;border-top:1px solid rgba(248,250,252,.12);padding:clamp(64px,8.6cqi,140px) clamp(18px,4cqi,64px)"
     >
       <SectionSep />
       <div aria-hidden="true" style={orangeGrid}></div>
       <div style="position:relative">
-        <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8">
+        <span
+          data-vp-reveal="0"
+          style="display:inline-block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#94A3B8"
+        >
           Le flux
         </span>
-        <h2 style="margin:14px 0 0;max-width:30ch;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(24px,3.2cqi,42px);line-height:1.08;letter-spacing:-.04em;text-wrap:pretty">
+        <h2
+          data-vp-reveal="1"
+          style="margin:14px 0 0;max-width:30ch;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(24px,3.2cqi,42px);line-height:1.08;letter-spacing:-.04em;text-wrap:pretty"
+        >
           De la sonnerie à la fiche client, sans intervention de votre part
         </h2>
         <ol style="list-style:none;margin:clamp(28px,3.4cqi,48px) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px">
@@ -95,6 +103,7 @@ const orangeGrid =
               {i > 0 && (
                 <li
                   aria-hidden="true"
+                  data-vp-reveal={i * 2 - 1}
                   style="flex:0 1 44px;min-width:24px;height:1px;background:rgba(248,250,252,.18);align-self:center;position:relative;overflow:hidden"
                 >
                   <div
@@ -102,7 +111,10 @@ const orangeGrid =
                   />
                 </li>
               )}
-              <li style="flex:1 1 200px;min-width:0;box-sizing:border-box;background:#0B1424;border:1px solid rgba(245,130,32,.22);padding:20px">
+              <li
+                data-vp-reveal={i * 2}
+                style="flex:1 1 200px;min-width:0;box-sizing:border-box;background:#0B1424;border:1px solid rgba(245,130,32,.22);padding:20px"
+              >
                 <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#F58220">
                   {String(i + 1).padStart(2, '0')}
                 </div>
@@ -119,7 +131,7 @@ const orangeGrid =
           existants et écrit dedans.
         </p>
         <div style="display:flex;gap:clamp(24px,4cqi,72px);flex-wrap:wrap;margin-top:clamp(48px,6cqi,96px);padding-top:clamp(40px,5cqi,72px);border-top:1px solid rgba(248,250,252,.16)">
-          <div style="flex:1 1 260px;min-width:0">
+          <div data-vp-reveal="0" style="flex:1 1 260px;min-width:0">
             <h2 style="margin:0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(24px,3cqi,40px);line-height:1.1;letter-spacing:-.04em">
               Ce qu’il fait
             </h2>
@@ -136,8 +148,9 @@ const orangeGrid =
           <ul style="list-style:none;margin:0;flex:1 1 420px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:26px 22px;padding:10px 0 0">
             {features.map((f, i) => (
               <li
-                class="hv-straighten"
-                style={`position:relative;box-sizing:border-box;background:#F8FAFC;color:#0F172A;border-radius:3px;padding:26px 20px 20px;box-shadow:0 16px 32px rgba(2,8,22,.35);transform:rotate(${f.tilt});transition:transform .35s cubic-bezier(.16,1,.3,1)`}
+                class="hv-straighten vp-paper"
+                data-vp-reveal
+                style={`position:relative;box-sizing:border-box;background:#F8FAFC;color:#0F172A;border-radius:3px;padding:26px 20px 20px;box-shadow:0 16px 32px rgba(2,8,22,.35);transform:rotate(${f.tilt});transition:transform .35s cubic-bezier(.16,1,.3,1);--vp-settle:${f.tilt.startsWith('-') ? '-1.2deg' : '1.2deg'}`}
               >
                 <span
                   aria-hidden="true"
@@ -158,8 +171,8 @@ const orangeGrid =
       <SectionSep />
       <div data-vp-reveal="0" style="display:flex;gap:clamp(24px,4cqi,64px);flex-wrap:wrap;align-items:center">
         <div
-          class="hv-straighten"
-          style="flex:0 1 auto;position:relative;box-sizing:border-box;background:#F8FAFC;color:#0F172A;border-radius:3px;padding:30px 30px 26px;box-shadow:0 16px 32px rgba(2,8,22,.35);transform:rotate(-.7deg);transition:transform .35s cubic-bezier(.16,1,.3,1)"
+          class="hv-straighten vp-paper"
+          style="flex:0 1 auto;position:relative;box-sizing:border-box;background:#F8FAFC;color:#0F172A;border-radius:3px;padding:30px 30px 26px;box-shadow:0 16px 32px rgba(2,8,22,.35);transform:rotate(-.7deg);transition:transform .35s cubic-bezier(.16,1,.3,1);--vp-settle:-1.4deg"
         >
           <span
             aria-hidden="true"
@@ -169,7 +182,7 @@ const orangeGrid =
             Résultats attendus
           </div>
           <div style="margin-top:12px;font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;font-size:clamp(38px,5.6cqi,76px);line-height:.9;letter-spacing:-.04em;color:#0B2F6B">
-            +30%
+            +<span data-vp-count="30">30</span>%
           </div>
         </div>
         <p style="margin:0;flex:1 1 280px;min-width:0;max-width:40ch;font-size:16px;line-height:1.65;color:#CBD5E1">

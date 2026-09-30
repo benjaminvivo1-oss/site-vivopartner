@@ -1,6 +1,7 @@
 ---
 /**
  * FAQ : accordéon natif <details name="faq"> (une question ouverte à la fois, fonctionne sans JavaScript).
+ * Les cartes se posent l'une après l'autre ; la réponse se déplie en douceur et l'icône + devient −.
  * Questions et réponses : src/data/faq.ts, source unique du texte affiché et du JSON-LD FAQPage.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -35,7 +36,7 @@ const icon =
         style="position:absolute;inset:0;background:linear-gradient(rgba(245,130,32,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(245,130,32,.055) 1px,transparent 1px);background-size:64px 64px;pointer-events:none"
       ></div>
       <div style="position:relative;display:flex;gap:clamp(24px,4cqi,64px);flex-wrap:wrap;align-items:flex-end">
-        <div style="flex:1 1 380px;min-width:0">
+        <div class="vp-intro" style="flex:1 1 380px;min-width:0">
           <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#94A3B8">
             FAQ
           </div>
@@ -44,7 +45,7 @@ const icon =
           </h1>
           <UpdatedOn page="faq" />
         </div>
-        <p style="margin:0;flex:0 1 300px;font-size:14.5px;line-height:1.65;color:#94A3B8">
+        <p style="margin:0;flex:0 1 300px;font-size:14.5px;line-height:1.65;color:#94A3B8;animation:vpRiseT .9s .3s cubic-bezier(.16,1,.3,1) backwards">
           Une question qui n’est pas là ?{' '}
           <a href={ROUTES.contact} style="color:#F58220;cursor:pointer">
             Posez-la directement.
@@ -60,8 +61,9 @@ const icon =
           <details
             name="faq"
             open={i === 0}
-            class="faq hv-straighten-sm"
-            style={`position:relative;background:#F8FAFC;color:#0F172A;border-radius:3px;box-shadow:0 14px 28px rgba(2,8,22,.32);transform:rotate(${looks[i].tilt});transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease`}
+            class="faq hv-straighten-sm vp-paper"
+            data-vp-reveal
+            style={`position:relative;background:#F8FAFC;color:#0F172A;border-radius:3px;box-shadow:0 14px 28px rgba(2,8,22,.32);transform:rotate(${looks[i].tilt});transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;--vp-settle:${looks[i].tilt.startsWith('-') ? '-1.2deg' : '1.2deg'}`}
           >
             <summary style="display:flex;gap:clamp(14px,2cqi,26px);align-items:center;padding:clamp(20px,2cqi,26px) clamp(20px,2.4cqi,32px);cursor:pointer">
               {/* Ruban dans le <summary> : un <details> fermé masque tout le reste de son contenu. */}
@@ -78,11 +80,13 @@ const icon =
               <h2 style="margin:0;flex:1;min-width:0;font-family:Satoshi,sans-serif;font-weight:500;font-size:clamp(17px,1.7cqi,21px);line-height:1.35;color:#0B2F6B;text-wrap:pretty">
                 {item.question}
               </h2>
-              <span aria-hidden="true" class="faq__plus" style={`${icon};border:1.5px solid #F58220;color:#F58220`}>
-                +
-              </span>
-              <span aria-hidden="true" class="faq__minus" style={`${icon};background:#F58220;color:#0F172A`}>
-                −
+              <span aria-hidden="true" class="faq__icon">
+                <span class="faq__plus" style={`${icon};border:1.5px solid #F58220;color:#F58220`}>
+                  +
+                </span>
+                <span class="faq__minus" style={`${icon};background:#F58220;color:#0F172A`}>
+                  −
+                </span>
               </span>
             </summary>
             <p style="animation:vpRise .45s cubic-bezier(.16,1,.3,1) both;margin:0 clamp(20px,2.4cqi,32px) 0 calc(clamp(20px,2.4cqi,32px) + 28px + clamp(14px,2cqi,26px));padding:0 0 clamp(22px,2.4cqi,28px);max-width:68ch;font-size:15.5px;line-height:1.7;color:#334155;border-top:1px dashed rgba(15,23,42,.14);padding-top:16px">
@@ -104,8 +108,49 @@ const icon =
   .faq summary::-webkit-details-marker {
     display: none;
   }
-  .faq[open] .faq__plus,
+  /* Icône + / − : les deux signes sont superposés, l'un pivote et s'efface pendant que l'autre arrive. */
+  .faq__icon {
+    position: relative;
+    flex: none;
+    display: grid;
+    place-items: center;
+  }
+  .faq__icon > * {
+    grid-area: 1 / 1;
+    transition:
+      opacity 0.3s var(--vp-ease),
+      rotate var(--vp-t-state) var(--vp-ease),
+      scale var(--vp-t-state) var(--vp-ease);
+  }
+  /* Le signe masqué sort du flux : la taille de l'icône reste celle du signe visible, comme la maquette. */
+  .faq[open] .faq__plus {
+    position: absolute;
+    opacity: 0;
+    rotate: 90deg;
+    scale: 0.6;
+  }
   .faq:not([open]) .faq__minus {
-    display: none !important;
+    position: absolute;
+    opacity: 0;
+    rotate: -90deg;
+    scale: 0.6;
+  }
+  /* Réponse qui se déplie en douceur (navigateurs compatibles ; ailleurs, ouverture immédiate). */
+  @supports (interpolate-size: allow-keywords) {
+    .faq {
+      interpolate-size: allow-keywords;
+    }
+    .faq::details-content {
+      block-size: 0;
+      overflow-y: clip;
+      transition:
+        block-size 0.3s var(--vp-ease-inout),
+        content-visibility 0.3s allow-discrete;
+    }
+    .faq[open]::details-content {
+      block-size: auto;
+      transition-duration: 0.5s;
+      transition-timing-function: var(--vp-ease);
+    }
   }
 </style>
