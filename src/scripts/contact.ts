@@ -44,9 +44,17 @@ function initForm(form: HTMLFormElement) {
     });
   });
 
-  const showAlert = (text: string) => {
+  // Message d'erreur, avec en option un lien de secours vers la messagerie (demande pré-remplie).
+  const showAlert = (text: string, mailto?: string) => {
     if (!alertBox) return;
     alertBox.textContent = text;
+    if (mailto) {
+      const link = document.createElement('a');
+      link.href = mailto;
+      link.textContent = 'Envoyer ma demande par e-mail';
+      link.style.cssText = 'color:inherit;text-decoration:underline';
+      alertBox.append(' ', link);
+    }
     alertBox.hidden = !text;
   };
 
@@ -103,18 +111,20 @@ function initForm(form: HTMLFormElement) {
 
     const subject = `Demande d’audit — ${data.nom}${data.entreprise ? ` (${data.entreprise})` : ''}`;
 
-    // Pas de point d'envoi configuré : la messagerie du visiteur s'ouvre avec la demande pré-remplie.
+    const lines = [
+      `Nom : ${data.nom}`,
+      `Entreprise : ${data.entreprise || '-'}`,
+      `Secteur : ${data.secteur || '-'}`,
+      `Téléphone : ${data.tel}`,
+      `E-mail : ${data.email || '-'}`,
+      '',
+      data.message || '',
+    ];
+    const mailto = `mailto:${inbox}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+
+    // Envoi désactivé (PUBLIC_CONTACT_ENDPOINT vide) : la messagerie du visiteur s'ouvre, demande pré-remplie.
     if (!endpoint) {
-      const lines = [
-        `Nom : ${data.nom}`,
-        `Entreprise : ${data.entreprise || '-'}`,
-        `Secteur : ${data.secteur || '-'}`,
-        `Téléphone : ${data.tel}`,
-        `E-mail : ${data.email || '-'}`,
-        '',
-        data.message || '',
-      ];
-      window.location.href = `mailto:${inbox}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+      window.location.href = mailto;
       showSuccess(
         firstName,
         `Votre messagerie s’ouvre avec votre demande pré-remplie : il ne reste qu’à l’envoyer. Sinon, écrivez directement à ${inbox}.`,
@@ -142,7 +152,10 @@ function initForm(form: HTMLFormElement) {
       showSuccess(firstName);
       track('form_submit', { page: window.location.pathname });
     } catch {
-      showAlert(`L’envoi n’a pas abouti. Réessayez dans un instant, ou écrivez à ${inbox} / appelez le ${phone}.`);
+      showAlert(
+        `L’envoi n’a pas abouti. Réessayez dans un instant, appelez le ${phone}, ou envoyez-la par e-mail :`,
+        mailto,
+      );
     } finally {
       submitBtn?.removeAttribute('disabled');
       submitBtn?.removeAttribute('aria-busy');

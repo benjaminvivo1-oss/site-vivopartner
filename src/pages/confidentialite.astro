@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionSep from '../components/SectionSep.astro';
+import { SITE } from '../data/site';
+
+const h2 = 'font-family:Satoshi,sans-serif;font-weight:500;font-size:clamp(17px,1.7cqi,21px);color:#F8FAFC';
+const para = 'margin:12px 0 0;font-size:15px;line-height:1.72;color:#CBD5E1';
+// Le paragraphe « Cookies » suit la configuration : il mentionne Plausible seulement s'il est activé.
+const analytics = Boolean(import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN);
+---
+
+<BaseLayout page="rgpd">
+  <div data-screen-label="Confidentialité" style="animation:vpRise 1s cubic-bezier(.16,1,.3,1) both">
+    <section style="position:relative;background:#0A2A5E;color:#F8FAFC;border-top:1px solid rgba(248,250,252,.12);padding:clamp(44px,6cqi,92px) clamp(18px,4cqi,64px) clamp(52px,7cqi,112px)">
+      <SectionSep />
+      <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#CBD5E1">
+        RGPD
+      </div>
+      <h1 style="margin:clamp(18px,2.4cqi,32px) 0 0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(28px,3.8cqi,50px);line-height:1.06;letter-spacing:-.04em">
+        Politique de confidentialité
+      </h1>
+      <p style="margin:16px 0 0;font-size:13px;font-family:'JetBrains Mono',ui-monospace,monospace;color:#CBD5E1">
+        Dernière mise à jour : <time datetime="2026-09-24">24 septembre 2026</time>
+      </p>
+      <div
+        aria-hidden="true"
+        style="height:12px;margin:clamp(26px,3cqi,42px) 0 0;background:repeating-linear-gradient(90deg,rgba(248,250,252,.35) 0 1px,transparent 1px 11px);border-bottom:1px solid rgba(248,250,252,.16)"
+      ></div>
+      <div style="display:flex;gap:clamp(24px,4cqi,72px);flex-wrap:wrap;margin-top:clamp(28px,3.4cqi,48px)">
+        <div style="flex:1 1 320px;min-width:0;max-width:58ch">
+          <h2 style={`margin:0;${h2}`}>Responsable du traitement</h2>
+          <p style={para}>
+            {SITE.founder}, entrepreneur individuel exerçant sous le nom commercial {SITE.name} — SIRET {SITE.siret} —{' '}
+            {SITE.city}, France. Contact : <a href={`mailto:${SITE.email}`}>{SITE.email}</a> ·{' '}
+            <a href={SITE.phone.href}>{SITE.phone.display}</a>.
+          </p>
+          <h2 style={`margin:34px 0 0;${h2}`}>Données collectées</h2>
+          <p style={para}>
+            Via le formulaire de contact : nom, entreprise, secteur d’activité, téléphone, e-mail et message. Aucune
+            autre donnée n’est demandée.
+          </p>
+          <h2 style={`margin:34px 0 0;${h2}`}>Finalités et base légale</h2>
+          <p style={para}>
+            Répondre à votre demande, organiser l’audit gratuit et assurer le suivi de la relation commerciale. Base
+            légale : mesures précontractuelles prises à votre demande (article 6.1.b du RGPD).
+          </p>
+          <h2 style={`margin:34px 0 0;${h2}`}>Destinataires</h2>
+          <p style={para}>
+            Vos données sont destinées uniquement à Vivo Partner. Elles ne sont ni vendues ni louées. Elles peuvent
+            transiter par les prestataires techniques nécessaires au fonctionnement du site, notamment l’hébergeur
+            Vercel Inc., dans le cadre des garanties prévues par le RGPD.
+          </p>
+        </div>
+        <div style="flex:1 1 320px;min-width:0;max-width:58ch;border-left:1px solid rgba(248,250,252,.16);padding-left:clamp(20px,3cqi,44px)">
+          <h2 style={`margin:0;${h2}`}>Durée de conservation</h2>
+          <p style={para}>
+            Les données d’un prospect sont conservées 3 ans maximum après le dernier contact, puis supprimées. Pour un
+            client, elles sont conservées pendant la relation contractuelle, puis archivées selon les durées légales (10
+            ans pour les pièces comptables).
+          </p>
+          <h2 style={`margin:34px 0 0;${h2}`}>Cookies</h2>
+          {analytics ? (
+            <p style={para}>
+              Ce site n’utilise pas de cookies publicitaires. La mesure d’audience est assurée par Plausible Analytics,
+              sans cookie et sans collecte de données personnelles ; elle ne requiert pas de consentement. Seuls des
+              éléments strictement nécessaires au fonctionnement du site peuvent être déposés.
+            </p>
+          ) : (
+            <p style={para}>
+              Ce site n’utilise pas de cookies publicitaires ni de mesure d’audience. Seuls des éléments strictement
+              nécessaires à son fonctionnement peuvent être déposés ; ils ne requièrent pas de consentement.
+            </p>
+          )}
+          <h2 style={`margin:34px 0 0;${h2}`}>Vos droits</h2>
+          <p style={para}>
+            Vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation, d’opposition et de
+            portabilité de vos données. Écrivez à <a href={`mailto:${SITE.email}`}>{SITE.email}</a> ; une réponse vous
+            est apportée sous un mois.
+          </p>
+          <p style={para}>
+            Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (
+            <a href="https://www.cnil.fr/" rel="noopener">
+              www.cnil.fr
+            </a>
+            ).
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

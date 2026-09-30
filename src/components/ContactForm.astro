@@ -3,13 +3,14 @@
  * Formulaire « Demande d'audit » (page Contact).
  * - libellés visibles, erreur sous chaque champ reliée par aria-describedby, confirmation role="status" ;
  * - case de consentement RGPD, champ piège invisible anti-spam, délai minimal entre deux envois ;
- * - envoi vers PUBLIC_CONTACT_ENDPOINT (Formspree, fonction serverless Resend/Brevo…), voir README.
- *   Sans point d'envoi configuré, la demande s'ouvre pré-remplie dans la messagerie du visiteur.
+ * - envoi en JSON vers api/contact.js (fonction Vercel + Resend) ou PUBLIC_CONTACT_ENDPOINT, voir README ;
+ *   en cas d'échec, lien de secours vers la messagerie avec la demande pré-remplie.
  * Logique : src/scripts/contact.ts.
  */
 import { ROUTES, SITE } from '../data/site';
 
-const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || '';
+// Par défaut : la fonction Vercel api/contact.js. Une chaîne vide désactive l'envoi (repli mailto).
+const endpoint: string = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '/api/contact';
 
 const field =
   'font-family:Inter,sans-serif;font-size:15px;color:#0F172A;background:#fff;border:1px solid #CBD5E1;border-radius:2px;padding:12px 13px';

@@ -6,14 +6,20 @@ import { SEO, ROUTES, SITE, absoluteUrl, type PageKey } from '../data/site';
 import { graphFor } from '../data/schema';
 
 interface Props {
-  page: PageKey;
+  /** Page du site (métadonnées, canonique, JSON-LD). Absente pour la page 404. */
+  page?: PageKey;
+  /** Titre et description des pages hors plan du site (404). */
+  title?: string;
+  description?: string;
 }
 
-const { page } = Astro.props;
-const seo = SEO[page];
-const canonical = absoluteUrl(ROUTES[page]);
-const ogImage = absoluteUrl(`/og/${page}.png`);
-const jsonLd = JSON.stringify(graphFor(page)).replace(/</g, '\\u003c');
+const { page, title, description } = Astro.props;
+const seo = page ? SEO[page] : { title: title ?? SITE.name, description: description ?? '' };
+const canonical = page ? absoluteUrl(ROUTES[page]) : undefined;
+const ogImage = absoluteUrl(`/og/${page ?? 'home'}.png`);
+const jsonLd = page ? JSON.stringify(graphFor(page)).replace(/</g, '\\u003c') : undefined;
+const ogTitle = ('ogTitle' in seo && seo.ogTitle) || seo.title;
+const ogDescription = ('ogDescription' in seo && seo.ogDescription) || seo.description;
 
 // Mesure d'audience sans cookies (Plausible), activée seulement si le domaine est configuré.
 const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
@@ -27,8 +33,8 @@ const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
-    <link rel="canonical" href={canonical} />
-    <meta name="robots" content="index,follow" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta name="robots" content={page ? 'index,follow' : 'noindex,follow'} />
     <meta name="author" content={SITE.founder} />
     <meta name="geo.region" content="FR-11" />
     <meta name="geo.placename" content={SITE.city} />
@@ -37,13 +43,13 @@ const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:title" content={seo.ogTitle ?? seo.title} />
-    <meta property="og:description" content={seo.ogDescription ?? seo.description} />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={seo.ogTitle ?? seo.title} />
+    <meta property="og:image:alt" content={ogTitle} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -57,7 +63,7 @@ const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
-    <script type="application/ld+json" set:html={jsonLd} />
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     {plausibleDomain && (
       <>
         <script is:inline defer data-domain={plausibleDomain} src={plausibleSrc} />
