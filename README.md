@@ -96,11 +96,11 @@ Le formulaire (`src/components/ContactForm.astro`, logique dans `src/scripts/con
 1. la demande à Vivo Partner, avec l'adresse du prospect en `Reply-To` ;
 2. un accusé de réception au prospect, s'il a indiqué son e-mail.
 
-| Variable d'environnement (Vercel) | Rôle                                                                                                  |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `BREVO_API_KEY`                   | clé API Brevo (obligatoire)                                                                           |
-| `CONTACT_FROM`                    | expéditeur, sur le domaine authentifié dans Brevo (par défaut `Vivo Partner <audit@vivopartner.com>`) |
-| `CONTACT_TO`                      | destinataire des demandes (par défaut `benjamin@vivopartner.com`)                                     |
+| Variable d'environnement (Vercel) | Rôle                                                                                                     |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `BREVO_API_KEY`                   | clé API Brevo (obligatoire)                                                                              |
+| `CONTACT_FROM`                    | expéditeur, sur le domaine authentifié dans Brevo (par défaut `Vivo Partner <benjamin@vivopartner.com>`) |
+| `CONTACT_TO`                      | destinataire des demandes (par défaut `benjamin@vivopartner.com`)                                        |
 
 Côté Brevo :
 

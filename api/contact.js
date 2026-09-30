@@ -10,12 +10,12 @@
  * Variables d'environnement (Vercel > Settings > Environment Variables) :
  *   BREVO_API_KEY  clé API Brevo (obligatoire)
  *   CONTACT_FROM   expéditeur, adresse d'un domaine authentifié dans Brevo
- *                  (défaut : « Vivo Partner <audit@vivopartner.com> »)
+ *                  (défaut : « Vivo Partner <benjamin@vivopartner.com> »)
  *   CONTACT_TO     destinataire des demandes (défaut : benjamin@vivopartner.com)
  */
 
 const BREVO_URL = 'https://api.brevo.com/v3/smtp/email';
-const FROM_DEFAULT = 'Vivo Partner <audit@vivopartner.com>';
+const FROM_DEFAULT = 'Vivo Partner <benjamin@vivopartner.com>';
 const TO_DEFAULT = 'benjamin@vivopartner.com';
 const PHONE = '06 40 20 22 46';
 const WINDOW_MS = 10 * 60 * 1000;
