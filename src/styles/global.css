@@ -242,6 +242,7 @@ button {
   color: #0f172a;
   padding: 10px 16px;
   border-radius: 2px;
+  font-family: Inter, system-ui, sans-serif;
   font-size: 14px;
   font-weight: 600;
   transition: top 0.2s ease;
