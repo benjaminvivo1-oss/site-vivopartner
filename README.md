@@ -147,6 +147,7 @@ Le rendu reprend la maquette à l'identique (comparaison des captures à 1440 px
 - **Démos** : bouton pause visible ; la lecture automatique s'arrête au survol, au focus et au premier clic, et ne démarre pas si le visiteur a demandé à réduire les animations.
 - **Formulaire** : case de consentement, message d'erreur sous chaque champ, champ piège invisible.
 - **Qonto** (bandeau des intégrations) : pastille « Q » à la place du favicon que la maquette chargeait depuis un service Google. Déposer le logo officiel dans `public/integrations/` si besoin.
+- **Orange sur fond clair** : les petits textes orange posés sur fond blanc (numéros des cartes, astérisques et liens du formulaire, contours outline) passent en orange foncé `#B45309` (jeton `--vp-orange-ink`, contraste 5 : 1). Même chose pour la case à cocher et le contour de focus clavier sur les surfaces claires (`.vp-light`). Sur fond marine, l'orange de la charte `#F58220` ne change pas.
 - Invisibles : vrais liens `<a href>` et boutons `<button>` à la place des `role="button"`, lien d'évitement « Aller au contenu », polices auto-hébergées, page 404.
 
 La FAQ s'ouvre sur la première question, comme la maquette (son état `faqOpen: 1` compte à partir de 1, alors que le README du handoff parle de la 2e).
@@ -180,8 +181,8 @@ Ce qui bouge :
 
 Réalisées le 30 septembre 2026 :
 
-- **Lighthouse mobile** (performance / accessibilité / bonnes pratiques / SEO) : accueil 98 / 97 / 100 / 100 ; Aplomb, réceptionniste IA, visibilité locale, À propos, Contact et FAQ 98–99 / 95–96 / 100 / 100 ; mentions légales et confidentialité 99 / 100 / 100 / 100. LCP 1,8 à 2,3 s, CLS 0.
-- **axe-core** : aucune erreur, sauf le contraste de l'orange sur fond clair (voir la liste ci-dessous).
+- **Lighthouse mobile** (performance / accessibilité / bonnes pratiques / SEO) : 98–99 / 100 / 100 / 100 sur toutes les pages. LCP 1,8 à 2,3 s, CLS 0.
+- **axe-core** (via Lighthouse) : aucune erreur.
 - **`astro check`** : 0 erreur.
 - Démos, menus, FAQ et formulaire testés au clavier et à la souris ; `api/contact.js` testée (validation, champ piège, limite de débit, échec d'envoi).
 - **Animations** : rendu au repos identique à la version sans animations (captures comparées sur les 9 pages, à 1440 et 390 px) ; CLS 0 à 0,0003 ; Lighthouse mobile de l'accueil inchangé (98, blocage 0 à 10 ms).
@@ -191,9 +192,10 @@ Réalisées le 30 septembre 2026 :
 - [ ] **Domaine** : confirmer `vivopartner.com`. S'il change, modifier `site` dans `astro.config.mjs`, `SITE.url` dans `src/data/site.ts`, `public/robots.txt`, `public/llms.txt` et `scripts/og-images.mjs` (puis régénérer les images).
 - [ ] **Formulaire** : configurer Resend et les variables, puis tester de bout en bout (envoi, accusé de réception, erreurs).
 - [ ] **Mentions légales** : compléter l'hébergeur avec l'adresse et le téléphone de Vercel Inc. (obligatoires au titre de la LCEN). Citer aussi Resend parmi les prestataires de la page Confidentialité.
-- [ ] **Pays servis** dans le JSON-LD (Belgique, Suisse, Luxembourg, Canada) : à valider (`SITE.countries`).
+- [x] **Pays servis** dans le JSON-LD : Belgique, Suisse, Luxembourg, Canada, validés (`SITE.countries`).
+- [x] **Textes ajoutés** (blocs de réponse des pages de service, titres d'Aplomb et de la réceptionniste IA) : validés.
 - [ ] **Photos** : photo de fond du hero et autres visuels à fournir (droits libres, sans visage).
-- [ ] **Contraste** : l'orange de marque `#F58220` sur fond clair (numéros des cartes, liens du formulaire) est à 2,5 : 1, sous le seuil AA pour les petits textes. Conservé pour rester fidèle à la charte ; pour un AA strict, utiliser `#B45309` (5 : 1) sur fond clair.
+- [x] **Contraste** : orange foncé `#B45309` pour les petits éléments sur fond clair (accessibilité 100).
 - [ ] **Google Search Console** et **Bing Webmaster Tools** : vérifier le domaine, envoyer `https://vivopartner.com/sitemap.xml`.
 - [ ] **Test des résultats enrichis** de Google sur chaque page.
 - [ ] **Fiche Google Business Profile** (zone de service, adresse masquée), Bing Places, Apple Business Connect, annuaires ; ajouter les profils dans `SITE.sameAs`.

@@ -179,6 +179,8 @@
   --vp-night: #0f172a;
   --vp-photo: #0a1322;
   --vp-orange: #f58220;
+  /* Orange des petits textes et contours posés sur fond clair : même teinte, assez foncée pour le contraste AA. */
+  --vp-orange-ink: #b45309;
   --vp-light: #f8fafc;
   --vp-text-2: #e2e8f0;
   --vp-text-3: #cbd5e1;
@@ -671,6 +673,13 @@ a:focus-visible .vp-arrow {
 }
 .fc-orange:focus {
   border-color: #f58220 !important;
+}
+/* Surfaces claires (.vp-light) : focus clavier et champ actif en orange foncé, lisibles sur blanc. */
+.vp-light :focus-visible {
+  outline-color: var(--vp-orange-ink);
+}
+.vp-light .fc-orange:focus {
+  border-color: var(--vp-orange-ink) !important;
 }
 
 main:focus {
