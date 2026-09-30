@@ -4,14 +4,18 @@
  * - valide les champs (mêmes règles que le formulaire) ;
  * - ignore les robots (champ piège « site_web ») ;
  * - limite le débit par adresse IP (au mieux : mémoire de l'instance) ;
- * - envoie un e-mail à Vivo Partner et un accusé de réception au prospect via l'API Resend.
+ * - envoie un e-mail à Vivo Partner et un accusé de réception au prospect via l'API de Brevo
+ *   (service français d'e-mails transactionnels, données hébergées en Europe).
  *
  * Variables d'environnement (Vercel > Settings > Environment Variables) :
- *   RESEND_API_KEY  clé API Resend (obligatoire)
- *   CONTACT_FROM    expéditeur vérifié dans Resend, ex. « Vivo Partner <audit@vivopartner.com> »
- *   CONTACT_TO      destinataire des demandes (défaut : benjamin@vivopartner.com)
+ *   BREVO_API_KEY  clé API Brevo (obligatoire)
+ *   CONTACT_FROM   expéditeur, adresse d'un domaine authentifié dans Brevo
+ *                  (défaut : « Vivo Partner <audit@vivopartner.com> »)
+ *   CONTACT_TO     destinataire des demandes (défaut : benjamin@vivopartner.com)
  */
 
+const BREVO_URL = 'https://api.brevo.com/v3/smtp/email';
+const FROM_DEFAULT = 'Vivo Partner <audit@vivopartner.com>';
 const TO_DEFAULT = 'benjamin@vivopartner.com';
 const PHONE = '06 40 20 22 46';
 const WINDOW_MS = 10 * 60 * 1000;
@@ -55,13 +59,26 @@ function rateLimited(ip, now = Date.now()) {
   return recent.length > MAX_PER_WINDOW;
 }
 
-async function sendMail(apiKey, payload) {
-  const res = await fetch('https://api.resend.com/emails', {
+// « Nom <adresse> » ou « adresse » -> { name, email } (format attendu par Brevo).
+export function parseAddress(value) {
+  const m = String(value).match(/^\s*(.*?)\s*<([^>]+)>\s*$/);
+  return m ? { ...(m[1] ? { name: m[1] } : {}), email: m[2].trim() } : { email: String(value).trim() };
+}
+
+async function sendMail(apiKey, { from, to, replyTo, subject, text, html }) {
+  const res = await fetch(BREVO_URL, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
+    headers: { 'api-key': apiKey, 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      sender: parseAddress(from),
+      to: [parseAddress(to)],
+      ...(replyTo ? { replyTo: parseAddress(replyTo) } : {}),
+      subject,
+      textContent: text,
+      ...(html ? { htmlContent: html } : {}),
+    }),
   });
-  if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
+  if (!res.ok) throw new Error(`Brevo ${res.status}: ${await res.text()}`);
 }
 
 function readBody(req) {
@@ -108,11 +125,11 @@ export default async function handler(req, res) {
     return reply(req, res, 400, { ok: false, errors }, Object.values(errors).map(escapeHtml).join('<br>'));
 
   const unavailable = `L’envoi n’a pas abouti. Appelez le ${PHONE} ou écrivez à ${TO_DEFAULT}.`;
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM;
+  const apiKey = process.env.BREVO_API_KEY;
+  const from = process.env.CONTACT_FROM || FROM_DEFAULT;
   const to = process.env.CONTACT_TO || TO_DEFAULT;
-  if (!apiKey || !from) {
-    console.error('Formulaire : RESEND_API_KEY ou CONTACT_FROM manquant.');
+  if (!apiKey) {
+    console.error('Formulaire : BREVO_API_KEY manquante.');
     return reply(req, res, 500, { ok: false, error: 'Envoi indisponible.' }, unavailable);
   }
 
@@ -130,13 +147,13 @@ export default async function handler(req, res) {
   const subject = `Demande d’audit — ${data.nom}${data.entreprise ? ` (${data.entreprise})` : ''}`;
 
   try {
-    await sendMail(apiKey, { from, to, subject, text, html, ...(data.email ? { reply_to: data.email } : {}) });
+    await sendMail(apiKey, { from, to, subject, text, html, ...(data.email ? { replyTo: data.email } : {}) });
     if (data.email) {
       const firstName = data.nom.split(/\s+/)[0];
       await sendMail(apiKey, {
         from,
         to: data.email,
-        reply_to: to,
+        replyTo: to,
         subject: 'Votre demande d’audit gratuit — Vivo Partner',
         text: `Bonjour ${firstName},\n\nMerci pour votre demande d’audit gratuit. Je vous rappelle sous 24h ouvrées pour caler un créneau de 30 minutes en visio.\n\nÀ très vite,\nBenjamin Vivo\nVivo Partner — ${PHONE}`,
       });

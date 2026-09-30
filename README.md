@@ -38,7 +38,7 @@ npm run format    # mise en forme (Prettier)
 ## Organisation
 
 ```
-api/contact.js              fonction Vercel : envoi des demandes d'audit (Resend)
+api/contact.js              fonction Vercel : envoi des demandes d'audit (Brevo)
 docs/                       consignes du handoff (SEO local et IA, charte, checklist)
 public/                     polices, logos des intégrations, icônes, images de partage (og/), robots.txt, llms.txt
 scripts/og-images.mjs       régénère les images de partage public/og/*.png
@@ -91,18 +91,22 @@ Le formulaire (`src/components/ContactForm.astro`, logique dans `src/scripts/con
 - envoi en JSON vers `/api/contact` ; sans JavaScript, envoi classique vers la même adresse, qui répond par une page simple ;
 - en cas d'échec : message avec le numéro de téléphone et un lien « Envoyer ma demande par e-mail » pré-rempli.
 
-`api/contact.js` (fonction Vercel) valide les champs, puis envoie avec [Resend](https://resend.com) :
+`api/contact.js` (fonction Vercel) valide les champs, puis envoie avec [Brevo](https://www.brevo.com/fr/), service français d'e-mails transactionnels (interface en français, données en Europe, gratuit jusqu'à 300 e-mails par jour) :
 
 1. la demande à Vivo Partner, avec l'adresse du prospect en `Reply-To` ;
 2. un accusé de réception au prospect, s'il a indiqué son e-mail.
 
-| Variable d'environnement (Vercel) | Rôle                                                                                                    |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `RESEND_API_KEY`                  | clé API Resend (obligatoire)                                                                            |
-| `CONTACT_FROM`                    | expéditeur sur un domaine vérifié dans Resend, ex. `Vivo Partner <audit@vivopartner.com>` (obligatoire) |
-| `CONTACT_TO`                      | destinataire des demandes (par défaut `benjamin@vivopartner.com`)                                       |
+| Variable d'environnement (Vercel) | Rôle                                                                                                  |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `BREVO_API_KEY`                   | clé API Brevo (obligatoire)                                                                           |
+| `CONTACT_FROM`                    | expéditeur, sur le domaine authentifié dans Brevo (par défaut `Vivo Partner <audit@vivopartner.com>`) |
+| `CONTACT_TO`                      | destinataire des demandes (par défaut `benjamin@vivopartner.com`)                                     |
 
-Côté Resend : ajouter le domaine, publier les enregistrements DNS demandés (SPF, DKIM), puis créer la clé API.
+Côté Brevo :
+
+1. Authentifier le domaine `vivopartner.com` (Expéditeurs, domaines et IP dédiées > Domaines) et publier chez Squarespace les enregistrements DNS demandés. S'il faut toucher au SPF, fusionner avec celui de Google : il ne doit exister qu'un seul enregistrement SPF.
+2. Créer une clé API (SMTP et API > Clés API) et la coller dans la variable `BREVO_API_KEY` de Vercel, puis redéployer.
+3. Désactiver le blocage des adresses IP inconnues (Sécurité > IP autorisées) : les fonctions Vercel n'ont pas d'adresse IP fixe.
 
 Autres possibilités, réglées au build :
 
@@ -196,8 +200,8 @@ Réalisées le 30 septembre 2026 :
 ## À faire avant la mise en ligne
 
 - [x] **Domaine** : `vivopartner.com` est branché sur Vercel. Reste à mettre à jour les valeurs DNS recommandées par Vercel (voir Domains dans Vercel).
-- [ ] **Formulaire** : configurer Resend et les variables, puis tester de bout en bout (envoi, accusé de réception, erreurs).
-- [ ] **Mentions légales** : compléter l'hébergeur avec l'adresse et le téléphone de Vercel Inc. (obligatoires au titre de la LCEN). Resend est déjà cité parmi les prestataires de la page Confidentialité.
+- [ ] **Formulaire** : configurer Brevo et la variable `BREVO_API_KEY`, puis tester de bout en bout (envoi, accusé de réception, erreurs).
+- [ ] **Mentions légales** : compléter l'hébergeur avec l'adresse et le téléphone de Vercel Inc. (obligatoires au titre de la LCEN). Brevo est déjà cité parmi les prestataires de la page Confidentialité.
 - [x] **Pays servis** dans le JSON-LD : Belgique, Suisse, Luxembourg, Canada, validés (`SITE.countries`).
 - [x] **Textes ajoutés** (blocs de réponse des pages de service, titres d'Aplomb et de la réceptionniste IA) : validés.
 - [x] **Photo du hero** : pas pour le lancement, l'accueil garde son fond marine. Pour en ajouter une plus tard : déposer le fichier dans `src/assets/hero/`.
