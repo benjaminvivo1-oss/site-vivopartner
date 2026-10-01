@@ -200,8 +200,8 @@ Réalisées le 30 septembre 2026 :
 ## À faire avant la mise en ligne
 
 - [x] **Domaine** : `vivopartner.com` est branché sur Vercel. Reste à mettre à jour les valeurs DNS recommandées par Vercel (voir Domains dans Vercel).
-- [ ] **Formulaire** : configurer Brevo et la variable `BREVO_API_KEY`, puis tester de bout en bout (envoi, accusé de réception, erreurs).
-- [ ] **Mentions légales** : compléter l'hébergeur avec l'adresse et le téléphone de Vercel Inc. (obligatoires au titre de la LCEN). Brevo est déjà cité parmi les prestataires de la page Confidentialité.
+- [x] **Formulaire** : Brevo configuré (domaine authentifié, clé `BREVO_API_KEY` dans Vercel), testé de bout en bout sur vivopartner.com : demande reçue sur benjamin@vivopartner.com et accusé de réception envoyé au prospect.
+- [x] **Mentions légales** : hébergeur complété (Vercel Inc., adresse et téléphone, obligatoires au titre de la LCEN). L'adresse est celle de la politique de confidentialité de Vercel ; le téléphone est celui publié habituellement pour Vercel, à recouper si Vercel en publie un autre. Brevo est déjà cité parmi les prestataires de la page Confidentialité.
 - [x] **Pays servis** dans le JSON-LD : Belgique, Suisse, Luxembourg, Canada, validés (`SITE.countries`).
 - [x] **Textes ajoutés** (blocs de réponse des pages de service, titres d'Aplomb et de la réceptionniste IA) : validés.
 - [x] **Photo du hero** : pas pour le lancement, l'accueil garde son fond marine. Pour en ajouter une plus tard : déposer le fichier dans `src/assets/hero/`.
