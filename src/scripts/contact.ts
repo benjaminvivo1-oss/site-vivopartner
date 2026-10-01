@@ -7,6 +7,8 @@ import { track } from './track';
 
 const COOLDOWN_MS = 30_000;
 const STORAGE_KEY = 'vp-audit-sent-at';
+// Même règle que api/contact.js : une seule « @ », pas d'espace ni de caractère de liste d'adresses.
+const EMAIL_RE = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:".]{2,}$/;
 
 const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
 if (form) initForm(form);
@@ -25,7 +27,7 @@ function initForm(form: HTMLFormElement) {
   const rules: { name: string; error: string; test: (v: string, input: HTMLInputElement) => boolean }[] = [
     { name: 'nom', error: 'err-nom', test: (v) => v.length > 0 },
     { name: 'tel', error: 'err-tel', test: (v) => v.replace(/[^0-9+]/g, '').length >= 9 },
-    { name: 'email', error: 'err-email', test: (v) => !v || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) },
+    { name: 'email', error: 'err-email', test: (v) => !v || EMAIL_RE.test(v) },
     { name: 'consentement', error: 'err-consent', test: (_v, input) => input.checked },
   ];
 
@@ -142,6 +144,19 @@ function initForm(form: HTMLFormElement) {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ ...data, _subject: subject, page: window.location.href }),
       });
+      if (res.status === 400) {
+        // Champ refusé par le serveur (filet de sécurité, mêmes règles) : erreur sous le champ concerné.
+        const body = await res.json().catch(() => ({}));
+        const refused = rules.filter(({ name }) => body?.errors?.[name]);
+        if (refused.length) {
+          refused.forEach(({ name, error }) => {
+            const input = el(name);
+            if (input) setError(input, error, true);
+          });
+          el(refused[0].name)?.focus();
+          return;
+        }
+      }
       if (!res.ok) throw new Error(String(res.status));
       try {
         sessionStorage.setItem(STORAGE_KEY, String(Date.now()));

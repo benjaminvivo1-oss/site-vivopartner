@@ -10,7 +10,7 @@ export const SITE = {
   founderRole: 'Fondateur',
   email: 'benjamin@vivopartner.com',
   phone: {
-    display: '06 40 20 22 46',
+    display: '06\u00a040\u00a020\u00a022\u00a046', // espaces insécables : le numéro ne se coupe jamais
     href: 'tel:+33640202246',
     e164: '+33640202246',
   },

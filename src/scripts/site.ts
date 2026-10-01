@@ -64,7 +64,8 @@ svcWrap?.addEventListener('focusout', (e) => {
 });
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  const openBtn = [...svcButtons, ...(menuBtn ? [menuBtn] : [])].find(
+  // Menu mobile ouvert : le focus revient au burger (le bouton Services du menu va être masqué).
+  const openBtn = [...(menuBtn ? [menuBtn] : []), ...svcButtons].find(
     (b) => b.getAttribute('aria-expanded') === 'true',
   );
   if (!openBtn) return;

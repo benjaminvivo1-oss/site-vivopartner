@@ -63,7 +63,7 @@ const ctaSmall =
         />
       </a>
       <div style="display:flex;align-items:center;gap:6px">
-        <a href={ROUTES.contact} class="btnlike hv-cta-sm" data-cta style={ctaSmall}>
+        <a href={ROUTES.contact} class="btnlike hv-cta-sm hdr-mobile__cta" data-cta style={ctaSmall}>
           <span>Audit gratuit</span>
         </a>
         <button
@@ -83,7 +83,7 @@ const ctaSmall =
     </div>
     <nav
       id="menu-mobile"
-      aria-label="Navigation principale"
+      aria-label="Menu principal"
       hidden
       data-menu
       style="border-top:1px solid rgba(248,250,252,.07);padding:6px 18px 14px;animation:vpRise .4s cubic-bezier(.16,1,.3,1) both"
@@ -307,6 +307,13 @@ const ctaSmall =
   @container (min-width: 900px) {
     .hdr-mobile {
       display: none;
+    }
+  }
+  /* Petits téléphones (moins de 375 px) : le logo, ce bouton et le menu ne tiennent pas sur une ligne.
+     « Audit gratuit » reste dans la barre collante du bas d'écran. */
+  @container (max-width: 374.98px) {
+    .hdr-mobile__cta {
+      display: none !important; /* l'emporte sur le style en ligne du bouton */
     }
   }
 </style>

@@ -26,9 +26,9 @@ const year = new Date().getFullYear();
       </a>
     </div>
     <div style="flex:1 1 auto;min-width:0;display:flex;gap:clamp(28px,4cqi,72px);flex-wrap:wrap;justify-content:flex-end">
-      <div style="flex:0 0 auto">
+      <div style="flex:0 1 auto;min-width:0">
         <div style={colTitle}>Contact</div>
-        <address style={`font-style:normal;${colList}`}>
+        <address style={`font-style:normal;overflow-wrap:anywhere;${colList}`}>
           <a href={`mailto:${SITE.email}`} class="hv-light">
             {SITE.email}
           </a>

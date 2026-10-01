@@ -49,6 +49,7 @@ const trades = [
       </label>
       <input
         id="f-nom"
+        type="text"
         name="nom"
         autocomplete="name"
         required
@@ -66,6 +67,7 @@ const trades = [
       <label for="f-entreprise">Entreprise</label>
       <input
         id="f-entreprise"
+        type="text"
         name="entreprise"
         autocomplete="organization"
         placeholder="Dupont Plomberie"
@@ -77,6 +79,7 @@ const trades = [
       <label for="f-secteur">Secteur d’activité</label>
       <input
         id="f-secteur"
+        type="text"
         name="secteur"
         list="vp-metiers"
         placeholder="Plomberie / climatisation"
@@ -223,6 +226,12 @@ const trades = [
   }
   .vp-field[aria-invalid='true'] {
     border-color: #b45309 !important;
+  }
+  /* Écrans tactiles : Safari sur iPhone zoome sur tout champ écrit en moins de 16 px quand on le touche. */
+  @media (pointer: coarse) {
+    .vp-field {
+      font-size: 16px !important;
+    }
   }
   .vp-error:not([hidden]),
   [data-form-error]:not([hidden]) {

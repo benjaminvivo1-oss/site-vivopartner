@@ -89,7 +89,14 @@ Le formulaire (`src/components/ContactForm.astro`, logique dans `src/scripts/con
 - case de consentement RGPD avec lien vers `/confidentialite/` ;
 - anti-spam invisible : champ piège, 30 s minimum entre deux envois dans le navigateur, 5 envois par IP et par tranche de 10 min côté serveur ;
 - envoi en JSON vers `/api/contact` ; sans JavaScript, envoi classique vers la même adresse, qui répond par une page simple ;
-- en cas d'échec : message avec le numéro de téléphone et un lien « Envoyer ma demande par e-mail » pré-rempli.
+- en cas d'échec : message avec le numéro de téléphone et un lien « Envoyer ma demande par e-mail » pré-rempli ; si le serveur refuse un champ, l'erreur s'affiche sous ce champ.
+
+Protections côté serveur (`api/contact.js`), pour que le formulaire ne serve ni à envoyer du spam ni un lien piégé depuis benjamin@vivopartner.com :
+
+- envoi refusé (403) s'il vient d'un autre site (en-tête `Origin` d'un autre domaine) ; sans en-tête `Origin` (curl), il passe ;
+- champs d'une ligne nettoyés (aucun retour à la ligne dans l'objet de l'e-mail), longueurs plafonnées, adresse e-mail vérifiée (une seule adresse, sans `< > , ; :`) ; corps de requête mal formé : erreur 400, pas de plantage ;
+- accusé de réception : seul le prénom est repris, et seulement s'il ne contient que des lettres ; aucun accusé si le nom ou l'entreprise contient un lien ; au plus 2 accusés par adresse et par 24 h ;
+- si seul l'accusé échoue, la demande compte comme envoyée (elle est déjà arrivée chez Vivo Partner) ; réponses en `Cache-Control: no-store`.
 
 `api/contact.js` (fonction Vercel) valide les champs, puis envoie avec [Brevo](https://www.brevo.com/fr/), service français d'e-mails transactionnels (interface en français, données en Europe, gratuit jusqu'à 300 e-mails par jour) :
 
@@ -113,6 +120,8 @@ Autres possibilités, réglées au build :
 - `PUBLIC_CONTACT_ENDPOINT=https://…` : envoi vers un autre service qui accepte du JSON (Formspree, CRM, webhook…) ;
 - `PUBLIC_CONTACT_ENDPOINT=` (vide) : pas d'envoi serveur, la messagerie du visiteur s'ouvre avec la demande pré-remplie.
 
+Avec un autre service, ajouter son adresse à `connect-src` et `form-action` de la CSP (`vercel.json`), sinon le navigateur bloque l'envoi.
+
 `npm run dev` ne lance pas la fonction : tester le formulaire sur un déploiement de prévisualisation Vercel ou avec `npx vercel dev`. Test rapide après déploiement :
 
 ```bash
@@ -130,12 +139,14 @@ Plausible (sans cookies) s'active avec des variables d'environnement lues au bui
 
 Événements envoyés : `audit_cta_click` (boutons d'audit), `tel_click` (liens téléphone), `form_submit` (demande envoyée). Les déclarer comme objectifs d'événement dans Plausible. Le paragraphe « Cookies » de la page Confidentialité s'adapte automatiquement.
 
+La CSP autorise déjà `https://plausible.io` et le petit script d'attente de Plausible. Avec une autre adresse (`PUBLIC_PLAUSIBLE_SRC`), l'ajouter à `script-src` et `connect-src` dans `vercel.json` : le build le signale.
+
 ## Déploiement (Vercel)
 
 1. Importer le dépôt dans Vercel : le préréglage **Astro** est détecté (build `npm run build`, sortie `dist/`) et le dossier `api/` devient une fonction serverless.
 2. Renseigner les variables d'environnement ci-dessus, puis redéployer.
 3. Ajouter `vivopartner.com` et `www.vivopartner.com` dans Domains, avec redirection de `www` vers le domaine principal. HTTPS est automatique.
-4. `vercel.json` gère la redirection `/visibilite` → `/visibilite-locale/`, les en-têtes de sécurité et le cache long des polices et des fichiers `/_astro/`.
+4. `vercel.json` gère la redirection `/visibilite` → `/visibilite-locale/`, les en-têtes de sécurité (voir Sécurité) et le cache long des polices et des fichiers `/_astro/`.
 
 Les URL canoniques se terminent par `/` (`trailingSlash: 'always'`).
 
@@ -148,6 +159,23 @@ Les URL canoniques se terminent par `/` (`trailingSlash: 'always'`).
 
 Sur un autre hébergeur statique, `dist/` fonctionne tel quel ; seule `api/contact.js` est propre à Vercel (utiliser alors `PUBLIC_CONTACT_ENDPOINT`).
 
+## Sécurité
+
+En-têtes envoyés avec chaque page (`vercel.json`) :
+
+| En-tête                                              | Effet                                                                                                                                                                                                                                                                |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Content-Security-Policy`                            | seuls les scripts, styles, images et polices du site sont chargés (plus Plausible s'il est activé) ; le seul script écrit dans les pages est autorisé par son empreinte sha256 ; le site ne s'affiche dans aucun cadre ; les formulaires ne partent que vers le site |
+| `Strict-Transport-Security: max-age=63072000`        | HTTPS obligatoire pendant 2 ans. Sans `includeSubDomains`, pour ne pas gêner les sous-domaines de marque de Brevo (`mail`, `r.mail`, `img.mail`)                                                                                                                     |
+| `X-Frame-Options: DENY`                              | même protection contre l'affichage dans un cadre, pour les anciens navigateurs                                                                                                                                                                                       |
+| `Cross-Origin-Opener-Policy: same-origin`            | isole la page des fenêtres ouvertes depuis d'autres sites                                                                                                                                                                                                            |
+| `Permissions-Policy`                                 | caméra, micro, géolocalisation, paiement, USB et Topics désactivés                                                                                                                                                                                                   |
+| `X-Content-Type-Options: nosniff`, `Referrer-Policy` | pas d'interprétation hasardeuse des fichiers ; les autres sites ne reçoivent que le nom de domaine d'origine                                                                                                                                                         |
+
+`npm run build` lance ensuite `scripts/check-csp.mjs` : si un script écrit dans une page change, ou si un script externe apparaît, sans que la CSP suive, le build échoue et Vercel garde la version en ligne. Le message donne l'empreinte ou l'adresse à ajouter dans `script-src`.
+
+Audit du 1er octobre 2026 : `npm audit` sans vulnérabilité ; aucun secret dans tout l'historique git (le dépôt est public) ; fonction de contact testée sur 50 cas, dont des tentatives d'abus (autre site, JSON mal formé, retours à la ligne injectés, adresses multiples, liens dans le nom, envois répétés).
+
 ## Écarts volontaires avec la maquette
 
 Le rendu reprend la maquette à l'identique (comparaison des captures à 1440 px et 390 px, textes comparés mot à mot), sauf :
@@ -155,7 +183,8 @@ Le rendu reprend la maquette à l'identique (comparaison des captures à 1440 px
 - **Accueil** : sous-titre visible « Carcassonne, Aude et partout en France » sous le H1, avec un repère orange (consignes SEO local, validé). Le H1 ne change pas.
 - **Pages de service** : bloc de réponse de 40 à 60 mots sous le H1 et mention « Mis à jour le … » (consignes SEO IA) ; « Mis à jour le … » aussi sur la FAQ.
 - **Titres `<title>`** d'Aplomb et de la réceptionniste IA : ajout du métier et de la zone (« … pour le BTP à Carcassonne »).
-- **Mobile** : bouton « Appeler » (`tel:`) dans la barre collante, à côté de « Audit gratuit ».
+- **Mobile** : bouton « Appeler » (`tel:`) dans la barre collante, à côté de « Audit gratuit ». Sous 375 px de large, le bouton « Audit gratuit » de l'en-tête est masqué (il reste dans la barre du bas) pour que le logo et le menu tiennent sur une ligne.
+- **Écrans tactiles** : champs du formulaire en 16 px au lieu de 15, sinon Safari zoome sur l'iPhone dès qu'on touche un champ.
 - **Démos** : bouton pause visible ; la lecture automatique s'arrête au survol, au focus et au premier clic, et ne démarre pas si le visiteur a demandé à réduire les animations.
 - **Formulaire** : case de consentement, message d'erreur sous chaque champ, champ piège invisible.
 - **Qonto** (bandeau des intégrations) : pastille « Q » à la place du favicon que la maquette chargeait depuis un service Google. Déposer le logo officiel dans `public/integrations/` si besoin.
