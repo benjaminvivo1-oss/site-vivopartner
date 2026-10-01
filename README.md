@@ -208,6 +208,6 @@ Réalisées le 30 septembre 2026 :
 - [x] **Contraste** : orange foncé `#B45309` pour les petits éléments sur fond clair (accessibilité 100).
 - [x] **Google Search Console** et **Bing Webmaster Tools** : domaine vérifié dans Search Console (propriété « Domaine », enregistrement TXT `google-site-verification` chez Squarespace), sitemap `https://vivopartner.com/sitemap.xml` envoyé ; site importé dans Bing depuis Search Console.
 - [x] **Données structurées** : JSON-LD valide sur les 9 pages (contrôle sur `dist/`). Seul le fil d'Ariane peut donner un résultat enrichi : Google réserve les FAQ enrichies aux sites officiels (santé, administration). Contrôle officiel facultatif avec le [test des résultats enrichis](https://search.google.com/test/rich-results).
-- [ ] **Fiche Google Business Profile** (zone de service, adresse masquée), Bing Places, Apple Business Connect, annuaires ; ajouter les profils dans `SITE.sameAs`.
+- [ ] **Fiche Google Business Profile** : créée (prestataire de services, adresse masquée, catégorie « Consultant en marketing », zones Carcassonne et Aude, services et description repris du site). Reste la validation par vidéo, puis Bing Places (import depuis Google), Apple Business Connect, annuaires ; ajouter le lien de chaque profil dans `SITE.sameAs`.
 - [ ] **Avis clients** : les afficher dès qu'il y en a 5 ou plus ; pas d'`aggregateRating` avant.
 - [ ] À valider (proposition des consignes) : sous-titre visible « Carcassonne, Aude et partout en France » sous le H1 de l'accueil.
