@@ -151,6 +151,7 @@ Sur un autre hébergeur statique, `dist/` fonctionne tel quel ; seule `api/conta
 
 Le rendu reprend la maquette à l'identique (comparaison des captures à 1440 px et 390 px, textes comparés mot à mot), sauf :
 
+- **Accueil** : sous-titre visible « Carcassonne, Aude et partout en France » sous le H1, avec un repère orange (consignes SEO local, validé). Le H1 ne change pas.
 - **Pages de service** : bloc de réponse de 40 à 60 mots sous le H1 et mention « Mis à jour le … » (consignes SEO IA) ; « Mis à jour le … » aussi sur la FAQ.
 - **Titres `<title>`** d'Aplomb et de la réceptionniste IA : ajout du métier et de la zone (« … pour le BTP à Carcassonne »).
 - **Mobile** : bouton « Appeler » (`tel:`) dans la barre collante, à côté de « Audit gratuit ».
@@ -210,4 +211,4 @@ Réalisées le 30 septembre 2026 :
 - [x] **Données structurées** : JSON-LD valide sur les 9 pages (contrôle sur `dist/`). Seul le fil d'Ariane peut donner un résultat enrichi : Google réserve les FAQ enrichies aux sites officiels (santé, administration). Contrôle officiel facultatif avec le [test des résultats enrichis](https://search.google.com/test/rich-results).
 - [ ] **Fiche Google Business Profile** : créée (prestataire de services, adresse masquée, catégorie « Consultant en marketing », zones Carcassonne et Aude, services et description repris du site). Reste la validation par vidéo, puis Bing Places (import depuis Google), Apple Business Connect, annuaires ; ajouter le lien de chaque profil dans `SITE.sameAs`.
 - [ ] **Avis clients** : les afficher dès qu'il y en a 5 ou plus ; pas d'`aggregateRating` avant.
-- [ ] À valider (proposition des consignes) : sous-titre visible « Carcassonne, Aude et partout en France » sous le H1 de l'accueil.
+- [x] **Sous-titre de l'accueil** « Carcassonne, Aude et partout en France » sous le H1 : validé et ajouté (Lighthouse mobile inchangé : 98 / 100 / 100 / 100, CLS 0).
