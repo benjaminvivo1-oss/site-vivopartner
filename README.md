@@ -166,6 +166,7 @@ En-têtes envoyés avec chaque page (`vercel.json`) :
 | En-tête                                              | Effet                                                                                                                                                                                                                                                                |
 | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Content-Security-Policy`                            | seuls les scripts, styles, images et polices du site sont chargés (plus Plausible s'il est activé) ; le seul script écrit dans les pages est autorisé par son empreinte sha256 ; le site ne s'affiche dans aucun cadre ; les formulaires ne partent que vers le site |
+| `require-trusted-types-for 'script'` (dans la CSP)   | les navigateurs compatibles refusent toute injection de HTML par un script (`innerHTML`…). Le site n'en fait aucune ; un ajout futur échouerait de façon visible au lieu d'ouvrir une faille                                                                         |
 | `Strict-Transport-Security: max-age=63072000`        | HTTPS obligatoire pendant 2 ans. Sans `includeSubDomains`, pour ne pas gêner les sous-domaines de marque de Brevo (`mail`, `r.mail`, `img.mail`)                                                                                                                     |
 | `X-Frame-Options: DENY`                              | même protection contre l'affichage dans un cadre, pour les anciens navigateurs                                                                                                                                                                                       |
 | `Cross-Origin-Opener-Policy: same-origin`            | isole la page des fenêtres ouvertes depuis d'autres sites                                                                                                                                                                                                            |
@@ -174,7 +175,7 @@ En-têtes envoyés avec chaque page (`vercel.json`) :
 
 `npm run build` lance ensuite `scripts/check-csp.mjs` : si un script écrit dans une page change, ou si un script externe apparaît, sans que la CSP suive, le build échoue et Vercel garde la version en ligne. Le message donne l'empreinte ou l'adresse à ajouter dans `script-src`.
 
-Audit du 1er octobre 2026 : `npm audit` sans vulnérabilité ; aucun secret dans tout l'historique git (le dépôt est public) ; fonction de contact testée sur 50 cas, dont des tentatives d'abus (autre site, JSON mal formé, retours à la ligne injectés, adresses multiples, liens dans le nom, envois répétés).
+Audit du 1er octobre 2026 : `npm audit` sans vulnérabilité ; aucun secret dans tout l'historique git (le dépôt est public) ; fonction de contact testée sur 53 cas, dont des tentatives d'abus (autre site, JSON mal formé, retours à la ligne injectés, adresses multiples, liens dans le nom, envois répétés).
 
 ## Écarts volontaires avec la maquette
 
@@ -220,12 +221,15 @@ Ce qui bouge :
 
 ## Vérifications
 
-Réalisées le 30 septembre 2026 :
+Audit complet du 1er octobre 2026, sur une copie locale qui reproduit Vercel (mêmes en-têtes, compression brotli, vraie fonction de contact avec Brevo simulé) :
 
-- **Lighthouse mobile** (performance / accessibilité / bonnes pratiques / SEO) : 98–99 / 100 / 100 / 100 sur toutes les pages. LCP 1,8 à 2,3 s, CLS 0.
-- **axe-core** (via Lighthouse) : aucune erreur.
-- **`astro check`** : 0 erreur.
-- Démos, menus, FAQ et formulaire testés au clavier et à la souris ; `api/contact.js` testée (validation, champ piège, limite de débit, échec d'envoi).
+- **Lighthouse** (performance / accessibilité / bonnes pratiques / SEO) : ordinateur 100 / 100 / 100 / 100 sur les 9 pages (LCP 0,4 à 0,5 s) ; mobile 98–99 / 100 / 100 / 100 (LCP 1,9 à 2,3 s). CLS 0 et temps de blocage 0 ms partout.
+- **Accessibilité** (axe-core, WCAG 2.2 AA et bonnes pratiques) : 0 violation sur les 10 pages, en mobile et sur ordinateur.
+- **Écrans** : 10 pages × 13 largeurs, de 280 à 2560 px : aucun défilement horizontal, aucun élément hors de l'écran, aucune erreur JavaScript, aucune violation de la CSP, aucune ressource en échec.
+- **Fonctions** : 43 tests de bout en bout (menu mobile et touche Échap, sous-menu Services, clavier et lien d'évitement, démos avec onglets, flèches, pause et lecture automatique, compteurs, apparitions, FAQ, formulaire avec erreurs, envoi, anti-doublon, panne d'envoi et envoi sans JavaScript, animations réduites, redirection, 404).
+- **Fonction de contact** : 53 cas, dont des tentatives d'abus (voir Sécurité).
+- **Code** : HTML sans erreur (html-validate, règles recommandées), `astro check` 0 erreur, aucun lien interne cassé, sitemap complet, JSON-LD valide, `npm audit` sans vulnérabilité.
+- **Navigateurs** : tests faits avec Chromium (moteur de Chrome, Edge, Samsung Internet). Safari et Firefox n'ont pas pu être lancés ; chaque effet récent (barre de progression au défilement, FAQ qui se déplie, transitions entre pages) a un repli prévu (`@supports`).
 - **Animations** : rendu au repos identique à la version sans animations (captures comparées sur les 9 pages, à 1440 et 390 px) ; CLS 0 à 0,0003 ; Lighthouse mobile de l'accueil inchangé (98, blocage 0 à 10 ms).
 
 ## À faire avant la mise en ligne
