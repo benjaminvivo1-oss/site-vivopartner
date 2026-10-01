@@ -143,6 +143,7 @@ Les URL canoniques se terminent par `/` (`trailingSlash: 'always'`).
 
 - **Branche** : `main` est la branche de production. Chaque envoi sur `main` met vivopartner.com à jour automatiquement (1 à 2 min). Les autres branches donnent des aperçus sur une adresse `.vercel.app`.
 - **Domaine** : `vivopartner.com` est le domaine principal, `www.vivopartner.com` redirige vers lui (308).
+- **Dépôt GitHub public**, volontairement : en formule gratuite (Hobby), Vercel bloque les déploiements d'un dépôt privé quand l'auteur du commit n'est pas le propriétaire du compte. Le dépôt ne contient aucun secret (la clé Brevo est dans les variables d'environnement de Vercel).
 - **DNS** : ils se gèrent chez Squarespace Domains (ex-Google Domains), dans DNS > Paramètres DNS > Enregistrements personnalisés. Ne pas toucher aux enregistrements MX et SPF de Google : ce sont eux qui font fonctionner les adresses e-mail @vivopartner.com. Les enregistrements Brevo (voir Formulaire de contact) sont à garder tant que le formulaire passe par Brevo, et le TXT `google-site-verification` tant que Search Console est utilisé.
 
 Sur un autre hébergeur statique, `dist/` fonctionne tel quel ; seule `api/contact.js` est propre à Vercel (utiliser alors `PUBLIC_CONTACT_ENDPOINT`).
