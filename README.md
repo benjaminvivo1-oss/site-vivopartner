@@ -86,8 +86,8 @@ node scripts/og-images.mjs
 Le formulaire (`src/components/ContactForm.astro`, logique dans `src/scripts/contact.ts`) :
 
 - libellés visibles, erreur sous chaque champ reliée par `aria-describedby`, confirmation annoncée (`role="status"`) ;
-- case de consentement RGPD avec lien vers `/confidentialite/` ;
-- anti-spam invisible : champ piège, 30 s minimum entre deux envois dans le navigateur, 5 envois par IP et par tranche de 10 min côté serveur ;
+- case de consentement RGPD avec lien vers `/confidentialite/` : tant qu'elle n'est pas cochée, le bouton d'envoi est grisé (`aria-disabled`) avec une phrase d'explication dessous, et un appui affiche l'erreur sous la case ;
+- anti-spam invisible : champ piège, 30 s minimum entre deux envois dans le navigateur, 5 envois par IP et par tranche de 10 min côté serveur. Le champ piège est masqué (`hidden`) : placé hors de l'écran, il était rempli par la saisie automatique des navigateurs, et la demande d'un vrai visiteur était alors ignorée comme celle d'un robot ;
 - envoi en JSON vers `/api/contact` ; sans JavaScript, envoi classique vers la même adresse, qui répond par une page simple ;
 - en cas d'échec : message avec le numéro de téléphone et un lien « Envoyer ma demande par e-mail » pré-rempli ; si le serveur refuse un champ, l'erreur s'affiche sous ce champ.
 

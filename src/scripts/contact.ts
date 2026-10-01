@@ -1,7 +1,8 @@
 /**
  * Formulaire de demande d'audit : validation accessible (erreur sous le champ, aria-invalid,
- * focus sur le premier champ en erreur), anti-spam (champ piège + délai entre deux envois),
- * envoi JSON vers PUBLIC_CONTACT_ENDPOINT, confirmation annoncée (role="status").
+ * focus sur le premier champ en erreur), bouton d'envoi bloqué tant que la case de consentement n'est
+ * pas cochée, anti-spam (champ piège + délai entre deux envois), envoi JSON vers PUBLIC_CONTACT_ENDPOINT,
+ * confirmation annoncée (role="status").
  */
 import { track } from './track';
 
@@ -45,6 +46,19 @@ function initForm(form: HTMLFormElement) {
       if (input.getAttribute('aria-invalid') === 'true') setError(input, error, !test(input.value.trim(), input));
     });
   });
+
+  // Bouton d'envoi signalé indisponible tant que la case de consentement n'est pas cochée (le CSS le grise).
+  // Un clic reste possible : il affiche l'erreur sous la case et place le focus dessus.
+  const consent = el('consentement');
+  const syncSubmit = () => {
+    const blocked = !consent?.checked;
+    submitBtn?.setAttribute('aria-disabled', String(blocked));
+    if (blocked) submitBtn?.setAttribute('aria-describedby', 'consent-hint');
+    else submitBtn?.removeAttribute('aria-describedby');
+  };
+  consent?.addEventListener('change', syncSubmit);
+  form.addEventListener('reset', () => setTimeout(syncSubmit)); // la case n'est décochée qu'après l'événement
+  syncSubmit();
 
   // Message d'erreur, avec en option un lien de secours vers la messagerie (demande pré-remplie).
   const showAlert = (text: string, mailto?: string) => {

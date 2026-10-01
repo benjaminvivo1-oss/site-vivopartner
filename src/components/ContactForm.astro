@@ -2,7 +2,8 @@
 /**
  * Formulaire « Demande d'audit » (page Contact).
  * - libellés visibles, erreur sous chaque champ reliée par aria-describedby, confirmation role="status" ;
- * - case de consentement RGPD, champ piège invisible anti-spam, délai minimal entre deux envois ;
+ * - case de consentement RGPD : tant qu'elle n'est pas cochée, le bouton d'envoi est grisé et bloqué ;
+ * - champ piège anti-spam masqué, délai minimal entre deux envois ;
  * - envoi en JSON vers api/contact.js (fonction Vercel + Brevo) ou PUBLIC_CONTACT_ENDPOINT, voir README ;
  *   en cas d'échec, lien de secours vers la messagerie avec la demande pré-remplie.
  * Logique : src/scripts/contact.ts.
@@ -167,8 +168,10 @@ const trades = [
     </div>
   </div>
 
-  <!-- Champ piège anti-spam : invisible pour les visiteurs, rempli par les robots. -->
-  <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden">
+  <!-- Champ piège anti-spam : rempli par les robots qui lisent le HTML. Masqué (hidden) et pas seulement
+       placé hors de l'écran : la saisie automatique des navigateurs ne remplit pas un champ masqué, alors
+       qu'elle remplissait celui-ci, et le formulaire prenait le visiteur pour un robot. -->
+  <div hidden>
     <label for="f-site">Ne pas remplir</label>
     <input id="f-site" name="site_web" type="text" tabindex="-1" autocomplete="off" />
   </div>
@@ -190,6 +193,9 @@ const trades = [
       </span>
     </span>
   </button>
+  <p id="consent-hint" class="vp-hint">
+    Cochez la case de consentement pour pouvoir envoyer votre demande.
+  </p>
   <datalist id="vp-metiers">
     {trades.map((t) => (
       <option value={t} />
@@ -236,6 +242,26 @@ const trades = [
   .vp-error:not([hidden]),
   [data-form-error]:not([hidden]) {
     animation: vpFade 0.3s ease both;
+  }
+  /* Case de consentement non cochée : bouton grisé et explication sous le bouton. Seulement avec JavaScript
+     (classe .js), qui bloque alors l'envoi ; sans JavaScript, le navigateur le bloque lui-même (required). */
+  .vp-hint {
+    display: none;
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #64748b;
+    text-align: center;
+  }
+  :global(.js) [data-contact-form]:not(:has([name='consentement']:checked)) button[type='submit'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: #f58220 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  :global(.js) [data-contact-form]:not(:has([name='consentement']:checked)) .vp-hint {
+    display: block;
   }
 </style>
 
