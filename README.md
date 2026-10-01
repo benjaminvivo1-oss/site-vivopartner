@@ -104,7 +104,7 @@ Le formulaire (`src/components/ContactForm.astro`, logique dans `src/scripts/con
 
 Côté Brevo :
 
-1. Authentifier le domaine `vivopartner.com` (Expéditeurs, domaines et IP dédiées > Domaines) et publier chez Squarespace les enregistrements DNS demandés. S'il faut toucher au SPF, fusionner avec celui de Google : il ne doit exister qu'un seul enregistrement SPF.
+1. Authentifier le domaine `vivopartner.com` (Expéditeurs, domaines et IP dédiées > Domaines) et publier chez Squarespace les enregistrements DNS demandés. S'il faut toucher au SPF, fusionner avec celui de Google : il ne doit exister qu'un seul enregistrement SPF. **Fait** : domaine authentifié, avec le sous-domaine de marque `mail.vivopartner.com` (liens et images des e-mails). Enregistrements publiés : TXT `@` (`brevo-code:…`), CNAME `brevo1._domainkey` et `brevo2._domainkey` (DKIM), TXT `_dmarc` (`v=DMARC1; p=none`, rapports envoyés à Brevo), CNAME `mail`, `r.mail` et `img.mail`. Le SPF de Google n'a pas changé.
 2. Créer une clé API (SMTP et API > Clés API) et la coller dans la variable `BREVO_API_KEY` de Vercel, puis redéployer.
 3. Désactiver le blocage des adresses IP inconnues (Sécurité > IP autorisées) : les fonctions Vercel n'ont pas d'adresse IP fixe.
 
@@ -143,7 +143,7 @@ Les URL canoniques se terminent par `/` (`trailingSlash: 'always'`).
 
 - **Branche** : `main` est la branche de production. Chaque envoi sur `main` met vivopartner.com à jour automatiquement (1 à 2 min). Les autres branches donnent des aperçus sur une adresse `.vercel.app`.
 - **Domaine** : `vivopartner.com` est le domaine principal, `www.vivopartner.com` redirige vers lui (308).
-- **DNS** : ils se gèrent chez Squarespace Domains (ex-Google Domains). Ne pas toucher aux enregistrements MX et SPF de Google : ce sont eux qui font fonctionner les adresses e-mail @vivopartner.com.
+- **DNS** : ils se gèrent chez Squarespace Domains (ex-Google Domains), dans DNS > Paramètres DNS > Enregistrements personnalisés. Ne pas toucher aux enregistrements MX et SPF de Google : ce sont eux qui font fonctionner les adresses e-mail @vivopartner.com. Les enregistrements Brevo (voir Formulaire de contact) sont à garder tant que le formulaire passe par Brevo.
 
 Sur un autre hébergeur statique, `dist/` fonctionne tel quel ; seule `api/contact.js` est propre à Vercel (utiliser alors `PUBLIC_CONTACT_ENDPOINT`).
 
