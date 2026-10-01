@@ -143,7 +143,7 @@ Les URL canoniques se terminent par `/` (`trailingSlash: 'always'`).
 
 - **Branche** : `main` est la branche de production. Chaque envoi sur `main` met vivopartner.com à jour automatiquement (1 à 2 min). Les autres branches donnent des aperçus sur une adresse `.vercel.app`.
 - **Domaine** : `vivopartner.com` est le domaine principal, `www.vivopartner.com` redirige vers lui (308).
-- **DNS** : ils se gèrent chez Squarespace Domains (ex-Google Domains), dans DNS > Paramètres DNS > Enregistrements personnalisés. Ne pas toucher aux enregistrements MX et SPF de Google : ce sont eux qui font fonctionner les adresses e-mail @vivopartner.com. Les enregistrements Brevo (voir Formulaire de contact) sont à garder tant que le formulaire passe par Brevo.
+- **DNS** : ils se gèrent chez Squarespace Domains (ex-Google Domains), dans DNS > Paramètres DNS > Enregistrements personnalisés. Ne pas toucher aux enregistrements MX et SPF de Google : ce sont eux qui font fonctionner les adresses e-mail @vivopartner.com. Les enregistrements Brevo (voir Formulaire de contact) sont à garder tant que le formulaire passe par Brevo, et le TXT `google-site-verification` tant que Search Console est utilisé.
 
 Sur un autre hébergeur statique, `dist/` fonctionne tel quel ; seule `api/contact.js` est propre à Vercel (utiliser alors `PUBLIC_CONTACT_ENDPOINT`).
 
@@ -206,8 +206,8 @@ Réalisées le 30 septembre 2026 :
 - [x] **Textes ajoutés** (blocs de réponse des pages de service, titres d'Aplomb et de la réceptionniste IA) : validés.
 - [x] **Photo du hero** : pas pour le lancement, l'accueil garde son fond marine. Pour en ajouter une plus tard : déposer le fichier dans `src/assets/hero/`.
 - [x] **Contraste** : orange foncé `#B45309` pour les petits éléments sur fond clair (accessibilité 100).
-- [ ] **Google Search Console** et **Bing Webmaster Tools** : vérifier le domaine, envoyer `https://vivopartner.com/sitemap.xml`.
-- [ ] **Test des résultats enrichis** de Google sur chaque page.
+- [x] **Google Search Console** et **Bing Webmaster Tools** : domaine vérifié dans Search Console (propriété « Domaine », enregistrement TXT `google-site-verification` chez Squarespace), sitemap `https://vivopartner.com/sitemap.xml` envoyé ; site importé dans Bing depuis Search Console.
+- [x] **Données structurées** : JSON-LD valide sur les 9 pages (contrôle sur `dist/`). Seul le fil d'Ariane peut donner un résultat enrichi : Google réserve les FAQ enrichies aux sites officiels (santé, administration). Contrôle officiel facultatif avec le [test des résultats enrichis](https://search.google.com/test/rich-results).
 - [ ] **Fiche Google Business Profile** (zone de service, adresse masquée), Bing Places, Apple Business Connect, annuaires ; ajouter les profils dans `SITE.sameAs`.
 - [ ] **Avis clients** : les afficher dès qu'il y en a 5 ou plus ; pas d'`aggregateRating` avant.
 - [ ] À valider (proposition des consignes) : sous-titre visible « Carcassonne, Aude et partout en France » sous le H1 de l'accueil.
