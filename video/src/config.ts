@@ -190,7 +190,7 @@ export const TEXTS = {
     taglineNavy: 'Automatise aujourd’hui.',
     taglineOrange: 'Accélère demain.',
     url: 'vivopartner.com',
-    button: 'Diagnostic gratuit · 15 min',
+    button: 'Diagnostic gratuit · 30 min',
   },
 } as const;
 
