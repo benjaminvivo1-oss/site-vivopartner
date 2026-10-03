@@ -12,10 +12,12 @@
     "typecheck": "tsc --noEmit",
     "audio:music": "python3 scripts/generate_music_sfx.py",
     "audio:voice": "python3 scripts/generate_voiceover.py",
-    "audio:durations": "python3 scripts/generate_voiceover.py --durations-only"
+    "audio:durations": "python3 scripts/generate_voiceover.py --durations-only",
+    "audio:dialogue": "python3 scripts/generate_dialogue.py"
   },
   "dependencies": {
     "@remotion/cli": "4.0.532",
+    "@remotion/media-utils": "^4.0.532",
     "@remotion/transitions": "4.0.532",
     "react": "19.1.0",
     "react-dom": "19.1.0",

@@ -80,16 +80,16 @@ export const SFX_CUES: Cue[] = [
     })),
     { sfx: 'rise', frame: T4.chantier, volume: 0.35 },
     { sfx: 'rise', frame: T4.chart, volume: 0.35, rate: 1.2 },
+    { sfx: 'pop', frame: T4.proof, volume: 0.5 },
+    { sfx: 'rise', frame: T4.proof + 4, volume: 0.3, rate: 1.4 },
   ]),
   ...scene('receptionniste', [
     { sfx: 'whoosh', frame: T5.call, volume: 0.4 },
-    ...T5.bubbles.flatMap((b) => [
-      { sfx: 'pop' as const, frame: b, volume: 0.45 },
-      { sfx: 'typing' as const, frame: b + 4, volume: 0.3 },
-    ]),
     { sfx: 'whoosh', frame: T5.calendar, volume: 0.35, rate: 1.2 },
     { sfx: 'paper', frame: T5.event + 4, volume: 0.6 },
     { sfx: 'success', frame: T5.toast, volume: 0.55 },
+    { sfx: 'pop', frame: T5.proof, volume: 0.5 },
+    { sfx: 'rise', frame: T5.proof + 4, volume: 0.3, rate: 1.4 },
   ]),
   ...scene('visibilite', [
     { sfx: 'drop', frame: T6.pin - 4, volume: 0.8 },
@@ -102,6 +102,7 @@ export const SFX_CUES: Cue[] = [
     })),
     { sfx: 'whoosh', frame: T6.phone, volume: 0.45 },
     { sfx: 'rise', frame: T6.line[0], volume: 0.4 },
+    { sfx: 'pop', frame: T6.proof, volume: 0.5 },
   ]),
   ...scene(
     'benefices',

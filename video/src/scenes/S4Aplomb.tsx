@@ -3,6 +3,7 @@ import { AbsoluteFill, useVideoConfig } from 'remotion';
 import { springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon, IconName } from '../components/Icon';
+import { ProofCard } from '../components/Proof';
 import { WordReveal } from '../components/WordReveal';
 import { Card, Chip, Eyebrow, Fit, LightBackground, Pop, Skeleton, shadow } from '../components/ui';
 
@@ -17,6 +18,8 @@ const DH_V = 1120;
 
 /** Timeline interne (images locales) */
 export const T = {
+  /** Preuve chiffrée (images d'animation) */
+  proof: 120,
   window: 14,
   quotes: [40, 58, 76],
   quoteSent: 22, // délai entre « Génération… » et « Envoyé »
@@ -493,6 +496,15 @@ export const S4Aplomb: React.FC = () => {
       >
         {text}
         {dash}
+      </AbsoluteFill>
+      <AbsoluteFill
+        style={{
+          justifyContent: 'flex-end',
+          alignItems: vertical ? 'center' : 'flex-start',
+          padding: vertical ? '0 0 120px' : `0 0 70px ${pad}px`,
+        }}
+      >
+        <ProofCard proof={TEXTS.proofs.aplomb} at={T.proof} width={vertical ? 860 : 560} size={vertical ? 104 : 76} />
       </AbsoluteFill>
     </LightBackground>
   );

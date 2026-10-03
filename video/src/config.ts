@@ -60,10 +60,10 @@ export const SCENE_SECONDS = {
   probleme: 5, //        3,5 → 8,5 s
   bascule: 3.2, //       8,5 → 11,7 s
   aplomb: 4.5, //       11,7 → 16,2 s
-  receptionniste: 4.5, // 16,2 → 20,7 s
-  visibilite: 4.6, //   20,7 → 25,3 s
-  benefices: 3.1, //    25,3 → 28,4 s
-  cta: 3.7, //          28,4 → 32,1 s
+  receptionniste: 8.4, // 16,2 → 24,6 s (dialogue client ↔ IA)
+  visibilite: 4.6, //   24,6 → 29,2 s
+  benefices: 3.1, //    29,2 → 32,3 s
+  cta: 3.7, //          32,3 → 36 s
 } as const;
 
 /** Vitesse des animations à l'intérieur des scènes (1 = rythme d'origine, 1,6 = 60 % plus rapide).
@@ -137,11 +137,9 @@ export const TEXTS = {
   receptionniste: {
     eyebrow: 'Pilier 2',
     lines: ['Un réceptionniste IA.', '*24h/24.*', 'Aucun appel perdu.'],
-    transcript: [
-      { who: 'client', text: 'Bonjour, j’ai une fuite sous l’évier. Vous pouvez passer ?' },
-      { who: 'ia', text: 'Bien sûr. Je vous propose jeudi à 9 h, ça vous convient ?' },
-      { who: 'client', text: 'Parfait, merci !' },
-    ],
+    // Le dialogue (texte, voix, timing) est dans src/audio/dialogue.json
+    speakingClient: 'Le client parle…',
+    speakingIa: 'L’assistant répond…',
     eventTitle: 'Intervention — fuite évier',
     eventTime: 'Jeu. 9:00',
     toast: 'RDV confirmé · SMS envoyé au client',
@@ -158,11 +156,41 @@ export const TEXTS = {
   benefices: {
     words: ['Plus de devis.', 'Plus de temps.', '*Zéro* *client* *perdu.*'],
   },
+  /** Preuves chiffrées, une par pilier (gros chiffre orange + source en petit) */
+  proofs: {
+    aplomb: {
+      kicker: 'Exemple',
+      before: '1 devis récupéré par mois',
+      value: 18000,
+      format: (n: number) =>
+        `+${Math.round(n)
+          .toLocaleString('fr-FR')
+          .replace(/\u202f|\u00a0/g, ' ')} €/an`,
+      after: '',
+      source: 'Exemple illustratif : 12 devis × 1 500 € de chiffre d’affaires moyen',
+    },
+    receptionniste: {
+      kicker: '',
+      before: '',
+      value: 5,
+      format: (n: number) => `1 client sur ${Math.max(1, Math.round(n))}`,
+      after: 'n’est jamais rappelé',
+      source: 'Source : Effy',
+    },
+    visibilite: {
+      kicker: '',
+      before: '',
+      value: 97,
+      format: (n: number) => `${Math.round(n)} %`,
+      after: 'des clients lisent les avis avant de choisir',
+      source: 'Source : BrightLocal 2026',
+    },
+  },
   cta: {
     taglineNavy: 'Automatise aujourd’hui.',
     taglineOrange: 'Accélère demain.',
     url: 'vivopartner.com',
-    button: 'Prendre rendez-vous',
+    button: 'Diagnostic gratuit · 15 min',
   },
 } as const;
 
@@ -180,6 +208,9 @@ export const AUDIO = {
   /** Musique abaissée à ce niveau (fraction de musicVolume) pendant la voix off */
   musicDuck: 0.4,
   voiceoverVolume: 1,
+  dialogueVolume: 1,
+  /** Musique pendant le dialogue du pilier 2 (fraction de musicVolume) */
+  musicDuckDialogue: 0.3,
   sfxVolume: 0.55,
   musicFadeInSeconds: 0.5,
   musicFadeOutSeconds: 1.5,

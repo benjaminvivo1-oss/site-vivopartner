@@ -4,6 +4,7 @@ import { EASE_IN_OUT, springAt, tween, useLayout, useSceneFrame } from '../anim'
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon, IconName } from '../components/Icon';
 import { Phone } from '../components/Phone';
+import { ProofCard } from '../components/Proof';
 import { WordReveal } from '../components/WordReveal';
 import { Card, Eyebrow, Fit, LightBackground, Pop, Skeleton, shadow } from '../components/ui';
 
@@ -17,6 +18,8 @@ const SW_V = 760;
 const SH_V = 1120;
 
 export const T = {
+  /** Preuve chiffrée (images d'animation) */
+  proof: 124,
   map: 6,
   pin: 18,
   listing: 44,
@@ -394,6 +397,20 @@ export const S6Visibilite: React.FC = () => {
         >
           <Stage frame={frame} fps={fps} vertical={vertical} />
         </Fit>
+      </AbsoluteFill>
+      <AbsoluteFill
+        style={{
+          justifyContent: 'flex-end',
+          alignItems: vertical ? 'center' : 'flex-start',
+          padding: vertical ? '0 0 120px' : `0 0 70px ${pad}px`,
+        }}
+      >
+        <ProofCard
+          proof={TEXTS.proofs.visibilite}
+          at={T.proof}
+          width={vertical ? 860 : 560}
+          size={vertical ? 104 : 76}
+        />
       </AbsoluteFill>
     </LightBackground>
   );

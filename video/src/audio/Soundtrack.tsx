@@ -2,6 +2,7 @@ import React from 'react';
 import { Audio, Sequence, staticFile, useVideoConfig } from 'remotion';
 import { tween } from '../anim';
 import { AUDIO, sec } from '../config';
+import { DIALOGUE_ABS, dialogueSrc } from './dialogue';
 import { SFX_CUES } from './sfx';
 import { VO_LINES } from './voiceover';
 
@@ -14,7 +15,16 @@ const duckAt = (f: number) => {
     if (f < a || f > b) continue;
     d = Math.max(d, Math.min(tween(f, [a, l.from], [0, 1]), tween(f, [l.from + l.duration, b], [1, 0])));
   }
-  return 1 - d * (1 - AUDIO.musicDuck);
+  let g = 1 - d * (1 - AUDIO.musicDuck);
+  // dialogue du pilier 2 : musique plus basse encore
+  for (const l of DIALOGUE_ABS) {
+    const a = l.from - 8;
+    const b = l.from + l.frames + 8;
+    if (f < a || f > b) continue;
+    const k = Math.min(tween(f, [a, l.from], [0, 1]), tween(f, [l.from + l.frames, b], [1, 0]));
+    g = Math.min(g, 1 - k * (1 - AUDIO.musicDuckDialogue));
+  }
+  return g;
 };
 
 /** Musique (atténuée sous la voix), voix off phrase par phrase et bruitages. */
@@ -39,6 +49,12 @@ export const Soundtrack: React.FC = () => {
             <Audio src={staticFile(`audio/vo/${l.id}.mp3`)} volume={AUDIO.voiceoverVolume} />
           </Sequence>
         ))}
+
+      {DIALOGUE_ABS.map((l) => (
+        <Sequence key={l.id} name={`Dialogue · ${l.speaker}`} from={l.from} durationInFrames={l.frames}>
+          <Audio src={staticFile(dialogueSrc(l.id))} volume={AUDIO.dialogueVolume} />
+        </Sequence>
+      ))}
 
       {AUDIO.sfx &&
         SFX_CUES.map((c, i) => (

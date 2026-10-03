@@ -1,11 +1,11 @@
 # VivoPartner — Trailer vidéo (Remotion)
 
-Trailer commercial animé de 32 s, 30 i/s, en deux formats :
+Trailer commercial animé de 36 s, 30 i/s, en deux formats :
 
 - `Trailer-16x9` — 1920 × 1080 (site, YouTube, LinkedIn)
 - `Trailer-9x16` — 1080 × 1920 (ads Reels / TikTok / Shorts)
 
-Motion design uniquement : interfaces animées, typographie cinétique, icônes. Aucun visage, aucun chiffre ni statistique inventé.
+Motion design uniquement : interfaces animées, typographie cinétique, icônes. Aucun visage. Les 3 preuves chiffrées (une par pilier) viennent du brief client : textes et sources dans `TEXTS.proofs` (`src/config.ts`).
 
 ## Commandes
 
@@ -43,10 +43,10 @@ video/
 │       ├── S2Probleme.tsx      3,5 → 8,5 s
 │       ├── S3Bascule.tsx      8,5 → 11,7 s
 │       ├── S4Aplomb.tsx      11,7 → 16,2 s
-│       ├── S5Receptionniste.tsx 16,2 → 20,7 s
-│       ├── S6Visibilite.tsx  20,7 → 25,3 s
-│       ├── S7Benefices.tsx   25,3 → 28,4 s
-│       ├── S8Cta.tsx         28,4 → 32,1 s
+│       ├── S5Receptionniste.tsx 16,2 → 24,6 s
+│       ├── S6Visibilite.tsx  24,6 → 29,2 s
+│       ├── S7Benefices.tsx   29,2 → 32,3 s
+│       ├── S8Cta.tsx         32,3 → 36 s
 │       └── index.ts             ← registre des scènes (type de transition d'entrée)
 ├── public/
 │   ├── brand/   ← logos VP (copiés depuis src/assets/brand du site)
@@ -71,6 +71,8 @@ video/
 | Couper / doser musique, voix, bruitages    | `AUDIO` dans `src/config.ts` (volumes, atténuation de la musique sous la voix) |
 | Changer une phrase de la voix off          | `src/audio/voiceover.json` puis `npm run audio:voice`                          |
 | Déplacer ou ajouter un bruitage            | `src/audio/sfx.ts`                                                             |
+| Changer une preuve chiffrée ou sa source   | `TEXTS.proofs` dans `src/config.ts`                                            |
+| Changer le dialogue du pilier 2            | `src/audio/dialogue.json` puis `npm run audio:dialogue`                        |
 | Recaler les 3 impacts de la scène 7        | `BENEFIT_HITS` dans `src/scenes/S7Benefices.tsx`                               |
 
 Le timing interne de chaque scène (apparition des cartes, des bulles, etc.) est regroupé dans une constante `T` / `BEAT` en tête de chaque fichier de scène.
@@ -81,6 +83,7 @@ Le trailer est livré avec sa bande-son, déjà calée :
 
 - **Voix off** : voix ElevenLabs (voix `jUHQdLfy668sllNiNTSW`, modèle multilingue), enregistrée d'une seule prise (`audio-sources/voix-off-elevenlabs.mp3`) puis découpée à ses pauses en 8 parties (`public/audio/vo/`), chacune placée dans sa scène (`src/audio/voiceover.json`). La musique s'abaisse automatiquement pendant la voix.
 - **Musique** : `public/audio/music.mp3`, composée par programme (`scripts/generate_music_sfx.py`) : tension sombre jusqu'à la bascule, éclaircie sur le logo, groove sur les 3 piliers, montée sur les bénéfices, accord final.
+- **Dialogue (pilier 2)** : client ↔ réceptionniste IA, sous-titré, musique baissée pendant l'échange (`src/audio/dialogue.json`). Voix provisoires tant que les prises ElevenLabs `audio-sources/dialogue-client.mp3` et `dialogue-ia.mp3` ne sont pas déposées.
 - **Bruitages** : vibreur, notifications, feuilles qui tombent, tampon, tic-tac, pops d'interface, validations, souffles, scintillement du logo, pin qui tombe, impacts. Ils sont accrochés aux animations (`src/audio/sfx.ts`).
 
 Régénérer :

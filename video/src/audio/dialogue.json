@@ -1,0 +1,24 @@
+{
+  "_doc": "Dialogue audio du pilier 2 (scène receptionniste). at = secondes depuis le début de la scène, calculé par scripts/generate_dialogue.py (la réponse de l'IA suit le client après « gap »). Fichiers : public/audio/dialogue/<id>.mp3. Pour utiliser des prises ElevenLabs : déposer audio-sources/dialogue-client.mp3 et audio-sources/dialogue-ia.mp3 puis relancer le script.",
+  "start": 0.25,
+  "gap": 0.2,
+  "lines": [
+    {
+      "id": "client",
+      "speaker": "Client",
+      "text": "Bonjour, j'ai une fuite sous l'évier, vous pouvez passer ?",
+      "source": "voix provisoire locale",
+      "duration": 2.638,
+      "at": 0.25
+    },
+    {
+      "id": "ia",
+      "speaker": "Assistant IA",
+      "text": "Bien sûr. Je vous propose jeudi à 9 h, ça vous convient ?",
+      "say": "Bien sûr. Je vous propose jeudi à neuf heures, ça vous convient ?",
+      "source": "voix provisoire locale",
+      "duration": 3.239,
+      "at": 3.088
+    }
+  ]
+}
