@@ -1,117 +1,93 @@
 {
-  "_doc": "Voix off phrase par phrase. scene + at (secondes depuis le début de la scène) placent chaque phrase ; say = texte envoyé à la synthèse vocale (orthographe phonétique si besoin) ; duration est rempli par scripts/generate_voiceover.py.",
-  "lines": [
+  "_doc": "Voix off en prises continues (« takes ») pour une intonation naturelle. Une prise peut être découpée à ses pauses en plusieurs parties, chacune placée dans sa scène (scene + at en secondes). say = texte envoyé à la synthèse ; duration est rempli par scripts/generate_voiceover.py.",
+  "voice": "ff_siwis",
+  "speed": 1.0,
+  "takes": [
     {
-      "id": "vo-01",
-      "scene": "hook",
-      "at": 0.2,
-      "text": "Pendant que vous êtes sur le chantier…",
-      "say": "Pendant que vous êtes sur le chantier,",
-      "duration": 1.411
+      "say": "Pendant que vous êtes sur le chantier, vos clients appellent ailleurs.",
+      "parts": [
+        {
+          "id": "vo-01",
+          "scene": "hook",
+          "at": 0.25,
+          "text": "Pendant que vous êtes sur le chantier, vos clients appellent ailleurs.",
+          "duration": 3.135
+        }
+      ]
     },
     {
-      "id": "vo-02",
-      "scene": "hook",
-      "at": 2.0,
-      "text": "…vos clients appellent ailleurs.",
-      "say": "vos clients appellent ailleurs.",
-      "duration": 1.28
+      "say": "Devis en retard, relances oubliées, soirées perdues dans l'admin.",
+      "parts": [
+        {
+          "id": "vo-02",
+          "scene": "probleme",
+          "at": 0.2,
+          "text": "Devis en retard, relances oubliées, soirées perdues dans l'admin.",
+          "duration": 3.422
+        }
+      ]
     },
     {
-      "id": "vo-03",
-      "scene": "probleme",
-      "at": 0.15,
-      "text": "Devis en retard.",
-      "say": "Devis en retard.",
-      "duration": 1.149
-    },
-    {
-      "id": "vo-04",
-      "scene": "probleme",
-      "at": 1.83,
-      "text": "Relances oubliées.",
-      "say": "Relances oubliées.",
-      "duration": 0.81
-    },
-    {
-      "id": "vo-05",
-      "scene": "probleme",
-      "at": 3.5,
-      "text": "Soirées perdues dans l'admin.",
-      "say": "Soirées perdues dans l'admin.",
-      "duration": 1.254
-    },
-    {
-      "id": "vo-06",
-      "scene": "bascule",
-      "at": 0.85,
-      "text": "Et si votre entreprise tournait toute seule ?",
       "say": "Et si votre entreprise tournait toute seule ?",
-      "duration": 2.116
+      "parts": [
+        {
+          "id": "vo-03",
+          "scene": "bascule",
+          "at": 0.7,
+          "text": "Et si votre entreprise tournait toute seule ?",
+          "duration": 1.985
+        }
+      ]
     },
     {
-      "id": "vo-07",
-      "scene": "aplomb",
-      "at": 0.2,
-      "text": "Avec VivoPartner, vous automatisez votre gestion.",
-      "say": "Avec Vivo Partneur, vous automatisez votre gestion.",
-      "duration": 2.795
+      "say": "Avec Vivo Partneur, vous automatisez votre gestion, vous ne ratez plus un seul appel, et vous devenez visible là où vos clients vous cherchent.",
+      "parts": [
+        {
+          "id": "vo-04",
+          "scene": "aplomb",
+          "at": 0.25,
+          "text": "Avec VivoPartner, vous automatisez votre gestion,",
+          "duration": 3.448
+        },
+        {
+          "id": "vo-05",
+          "scene": "receptionniste",
+          "at": 0.2,
+          "text": "vous ne ratez plus un seul appel,",
+          "duration": 2.09
+        },
+        {
+          "id": "vo-06",
+          "scene": "visibilite",
+          "at": 0.2,
+          "text": "et vous devenez visible là où vos clients vous cherchent.",
+          "duration": 2.612
+        }
+      ]
     },
     {
-      "id": "vo-08",
-      "scene": "receptionniste",
-      "at": 0.2,
-      "text": "Vous ne ratez plus un seul appel.",
-      "say": "Vous ne ratez plus un seul appel.",
-      "duration": 1.541
+      "say": "Plus de devis. Plus de temps. Zéro client perdu.",
+      "parts": [
+        {
+          "id": "vo-07",
+          "scene": "benefices",
+          "at": 0.1,
+          "text": "Plus de devis. Plus de temps. Zéro client perdu.",
+          "duration": 2.508
+        }
+      ]
     },
     {
-      "id": "vo-09",
-      "scene": "visibilite",
-      "at": 0.2,
-      "text": "Et vous devenez visible, là où vos clients vous cherchent.",
-      "say": "Et vous devenez visible, là où vos clients vous cherchent.",
-      "duration": 2.482
-    },
-    {
-      "id": "vo-10",
-      "scene": "benefices",
-      "at": 0.12,
-      "text": "Plus de devis.",
-      "say": "Plus de devis.",
-      "duration": 0.705
-    },
-    {
-      "id": "vo-11",
-      "scene": "benefices",
-      "at": 0.85,
-      "text": "Plus de temps.",
-      "say": "Plus de temps.",
-      "duration": 0.549
-    },
-    {
-      "id": "vo-12",
-      "scene": "benefices",
-      "at": 1.55,
-      "text": "Zéro client perdu.",
-      "say": "Zéro client perdu.",
-      "duration": 1.045
-    },
-    {
-      "id": "vo-13",
-      "scene": "cta",
-      "at": 0.15,
-      "text": "VivoPartner.",
-      "say": "Vivo Partneur.",
-      "duration": 0.967
-    },
-    {
-      "id": "vo-14",
-      "scene": "cta",
-      "at": 1.15,
-      "text": "Automatise aujourd'hui. Accélère demain.",
-      "say": "Automatise aujourd'hui. Accélère demain.",
-      "duration": 2.142
+      "say": "Vivo Partneur. Automatise aujourd'hui, accélère demain.",
+      "parts": [
+        {
+          "id": "vo-08",
+          "scene": "cta",
+          "at": 0.15,
+          "text": "VivoPartner. Automatise aujourd'hui, accélère demain.",
+          "duration": 3.082
+        }
+      ]
     }
   ]
 }

@@ -21,6 +21,6 @@ Durée totale : **32 s** à 30 i/s (960 images). Les timecodes ci-dessous corres
 
 ## Voix off fournie
 
-Une voix de synthèse française est déjà en place (14 phrases, `public/audio/vo/`), chacune calée sur l'apparition de son texte à l'écran. Le placement exact (scène + secondes) est dans `src/audio/voiceover.json`.
+Voix de synthèse Kokoro (française), en 6 prises dites d'une traite, découpées en 8 parties (`public/audio/vo/vo-01.mp3` … `vo-08.mp3`) ; placement dans `src/audio/voiceover.json`.
 
-Pour la remplacer par un enregistrement : une phrase par fichier, mêmes noms (`vo-01.mp3` … `vo-14.mp3`), puis `npm run audio:durations`.
+Pour la remplacer par un enregistrement : une partie par fichier, mêmes noms, puis `npm run audio:durations`.

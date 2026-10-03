@@ -10,7 +10,7 @@ import { Chip, DarkBackground, Fit, Pop, Skeleton } from '../components/ui';
    jusqu'à 22 h, e-mails non lus qui débordent. */
 
 /** Départ de chaque « temps » (images locales) */
-export const BEAT = [8, 88, 168];
+export const BEAT = [8, 55, 103];
 
 const PANEL_W = 450;
 const PANEL_H = 540;

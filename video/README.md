@@ -78,7 +78,7 @@ Le timing interne de chaque scène (apparition des cartes, des bulles, etc.) est
 
 Le trailer est livré avec sa bande-son, déjà calée :
 
-- **Voix off** : voix française de synthèse (Piper, voix « siwis »), une phrase par fichier dans `public/audio/vo/`, placée à son timecode par `src/audio/voiceover.json`. La musique s'abaisse automatiquement pendant chaque phrase.
+- **Voix off** : voix française de synthèse Kokoro (voix « ff_siwis »). Chaque phrase est dite d'une seule traite pour garder une intonation naturelle ; la longue phrase des 3 piliers est découpée à ses pauses et répartie sur ses scènes (`src/audio/voiceover.json`). La musique s'abaisse automatiquement pendant la voix.
 - **Musique** : `public/audio/music.mp3`, composée par programme (`scripts/generate_music_sfx.py`) : tension sombre jusqu'à la bascule, éclaircie sur le logo, groove sur les 3 piliers, montée sur les bénéfices, accord final.
 - **Bruitages** : vibreur, notifications, feuilles qui tombent, tampon, tic-tac, pops d'interface, validations, souffles, scintillement du logo, pin qui tombe, impacts. Ils sont accrochés aux animations (`src/audio/sfx.ts`).
 
@@ -87,14 +87,15 @@ Régénérer :
 ```bash
 pip install numpy scipy
 npm run audio:music                       # musique + bruitages (suit SCENE_SECONDS)
-PIPER_BIN=… PIPER_MODEL=…/fr-siwis-medium.onnx npm run audio:voice   # voix off (voir l'en-tête du script)
+pip install kokoro-onnx soundfile
+KOKORO_DIR=… npm run audio:voice          # voix off (modèle à télécharger, voir l'en-tête du script)
 ```
 
-**Remplacer par une vraie voix** (recommandé pour une diffusion payante) : enregistrer les 14 phrases de `src/audio/voiceover.json`, les déposer sous les mêmes noms dans `public/audio/vo/` (`vo-01.mp3` …), puis `npm run audio:durations` pour mettre à jour les durées. Une seule prise continue peut aussi être découpée.
+**Remplacer par une vraie voix** (recommandé pour une diffusion payante) : enregistrer le texte de `src/audio/voiceover.json` (8 parties, `vo-01` à `vo-08`), les déposer sous les mêmes noms dans `public/audio/vo/`, puis `npm run audio:durations` pour mettre à jour les durées. Une seule prise continue peut aussi être découpée.
 
 ## Crédits audio
 
-- Voix off : modèle Piper « fr_FR siwis medium », entraîné sur la base SIWIS French Speech Synthesis (University of Edinburgh), licence **CC-BY 4.0** : la mention « Voix : SIWIS (CC-BY 4.0) » doit figurer quelque part (description de la vidéo, par exemple) tant que cette voix est utilisée.
+- Voix off : modèle Kokoro v1.0 (licence Apache 2.0), voix « ff_siwis » issue de la base SIWIS French Speech Synthesis (University of Edinburgh, licence **CC-BY 4.0**) : par prudence, mentionner « Voix : Kokoro / SIWIS (CC-BY 4.0) » dans la description de la vidéo tant que cette voix est utilisée.
 - Musique et bruitages : synthétisés par `scripts/generate_music_sfx.py`, sans échantillon externe ; libres d'utilisation.
 
 ## Licence Remotion
