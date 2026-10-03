@@ -16,7 +16,7 @@ const SH = 760;
 const SW_V = 760;
 const SH_V = 1120;
 
-const T = {
+export const T = {
   map: 6,
   pin: 18,
   listing: 44,

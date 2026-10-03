@@ -10,7 +10,7 @@ import { Chip, DarkBackground, Fit, Pop, Skeleton } from '../components/ui';
    jusqu'à 22 h, e-mails non lus qui débordent. */
 
 /** Départ de chaque « temps » (images locales) */
-const BEAT = [8, 88, 168];
+export const BEAT = [8, 88, 168];
 
 const PANEL_W = 450;
 const PANEL_H = 540;
@@ -27,11 +27,17 @@ const panelStyle: React.CSSProperties = {
 };
 
 /* ── A. Pile de devis ─────────────────────────────────────────────────────── */
-const DROPS = [0, 9, 17, 24, 30, 35, 39, 43, 46];
+export const DROPS = [0, 9, 17, 24, 30, 35, 39, 43, 46];
+/** Tampon « En retard », relatif à BEAT[0] */
+export const STAMP_AT = 56;
+/** Horloge 17:00 → 22:00, relatif à BEAT[1] */
+export const CLOCK_RUN: [number, number] = [8, 150];
+/** Arrivée des e-mails, relatif à BEAT[2] */
+export const ROW_AT = TEXTS.probleme.inboxRows.map((_, i) => 6 + Math.round(i * 9 - i * i * 0.35));
 
 const QuotePile: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
   const f = frame - BEAT[0];
-  const stamp = springAt(f, fps, 56, SPRINGS.bouncy);
+  const stamp = springAt(f, fps, STAMP_AT, SPRINGS.bouncy);
   return (
     <div style={panelStyle}>
       {DROPS.map((at, i) => {
@@ -119,7 +125,7 @@ const QuotePile: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => 
 const ClockPanel: React.FC<{ frame: number }> = ({ frame }) => {
   const f = frame - BEAT[1];
   // minutes écoulées depuis 17:00 (0 → 300)
-  const minutes = tween(f, [8, 150], [0, 300], EASE_IN_OUT);
+  const minutes = tween(f, CLOCK_RUN, [0, 300], EASE_IN_OUT);
   const total = 17 * 60 + minutes;
   const h = Math.floor(total / 60);
   const m = Math.floor(total % 60);
@@ -221,7 +227,6 @@ function describeArc(r: number, startDeg: number, endDeg: number) {
 const InboxPanel: React.FC<{ frame: number; fps: number; width: number }> = ({ frame, fps, width }) => {
   const f = frame - BEAT[2];
   const rows = TEXTS.probleme.inboxRows;
-  const ROW_AT = rows.map((_, i) => 6 + Math.round(i * 9 - i * i * 0.35));
   const arrived = ROW_AT.filter((t) => f >= t).length;
   const pulse = springAt(f, fps, ROW_AT[Math.max(0, arrived - 1)], SPRINGS.bouncy);
   const ROW_H = 74;

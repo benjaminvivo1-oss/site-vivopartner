@@ -51,24 +51,50 @@ video/
 ├── public/
 │   ├── brand/   ← logos VP (copiés depuis src/assets/brand du site)
 │   ├── fonts/   ← Satoshi + Inter (copiés depuis public/fonts du site)
-│   └── audio/   ← à créer : musique et voix off
+│   └── audio/   ← music.mp3, vo/ (voix off), sfx/ (bruitages)
+├── scripts/     ← générateurs audio (voix off, musique, bruitages)
 └── VOIX-OFF.md  ← timecodes de la voix off scène par scène
 ```
 
 ## Modifier
 
-| Je veux…                            | Où                                                                          |
-| ----------------------------------- | --------------------------------------------------------------------------- |
-| Changer une couleur                 | `COLORS` dans `src/config.ts`                                               |
-| Changer un texte à l'écran          | `TEXTS` dans `src/config.ts` (un mot entre `*astérisques*` passe en orange) |
-| Rallonger / raccourcir une scène    | `SCENE_SECONDS` : les scènes suivantes se décalent automatiquement          |
-| Ralentir l'apparition mot par mot   | `WORD_STAGGER`                                                              |
-| Adoucir / dynamiser les animations  | `SPRINGS`                                                                   |
-| Durée des fondus entre scènes       | `CROSSFADE_FRAMES`                                                          |
-| Ajouter musique et voix off         | `AUDIO` + fichiers dans `public/audio/` (voir `VOIX-OFF.md`)                |
-| Recaler les 3 impacts de la scène 7 | `BENEFIT_HITS` dans `src/scenes/S7Benefices.tsx`                            |
+| Je veux…                                | Où                                                                             |
+| --------------------------------------- | ------------------------------------------------------------------------------ |
+| Changer une couleur                     | `COLORS` dans `src/config.ts`                                                  |
+| Changer un texte à l'écran              | `TEXTS` dans `src/config.ts` (un mot entre `*astérisques*` passe en orange)    |
+| Rallonger / raccourcir une scène        | `SCENE_SECONDS` : les scènes suivantes se décalent automatiquement             |
+| Ralentir l'apparition mot par mot       | `WORD_STAGGER`                                                                 |
+| Adoucir / dynamiser les animations      | `SPRINGS`                                                                      |
+| Durée des fondus entre scènes           | `CROSSFADE_FRAMES`                                                             |
+| Couper / doser musique, voix, bruitages | `AUDIO` dans `src/config.ts` (volumes, atténuation de la musique sous la voix) |
+| Changer une phrase de la voix off       | `src/audio/voiceover.json` puis `npm run audio:voice`                          |
+| Déplacer ou ajouter un bruitage         | `src/audio/sfx.ts`                                                             |
+| Recaler les 3 impacts de la scène 7     | `BENEFIT_HITS` dans `src/scenes/S7Benefices.tsx`                               |
 
 Le timing interne de chaque scène (apparition des cartes, des bulles, etc.) est regroupé dans une constante `T` / `BEAT` en tête de chaque fichier de scène.
+
+## Bande-son
+
+Le trailer est livré avec sa bande-son, déjà calée :
+
+- **Voix off** : voix française de synthèse (Piper, voix « siwis »), une phrase par fichier dans `public/audio/vo/`, placée à son timecode par `src/audio/voiceover.json`. La musique s'abaisse automatiquement pendant chaque phrase.
+- **Musique** : `public/audio/music.mp3`, composée par programme (`scripts/generate_music_sfx.py`) : tension sombre jusqu'à 16 s, bascule lumineuse sur le logo, groove sur les 3 piliers, montée sur les bénéfices, accord final.
+- **Bruitages** : vibreur, notifications, feuilles qui tombent, tampon, tic-tac, pops d'interface, validations, souffles, scintillement du logo, pin qui tombe, impacts. Ils sont accrochés aux animations (`src/audio/sfx.ts`).
+
+Régénérer :
+
+```bash
+pip install numpy scipy
+npm run audio:music                       # musique + bruitages
+PIPER_BIN=… PIPER_MODEL=…/fr-siwis-medium.onnx npm run audio:voice   # voix off (voir l'en-tête du script)
+```
+
+**Remplacer par une vraie voix** (recommandé pour une diffusion payante) : enregistrer les 14 phrases de `src/audio/voiceover.json`, les déposer sous les mêmes noms dans `public/audio/vo/` (`vo-01.mp3` …), puis `npm run audio:durations` pour mettre à jour les durées. Une seule prise continue peut aussi être découpée.
+
+## Crédits audio
+
+- Voix off : modèle Piper « fr_FR siwis medium », entraîné sur la base SIWIS French Speech Synthesis (University of Edinburgh), licence **CC-BY 4.0** : la mention « Voix : SIWIS (CC-BY 4.0) » doit figurer quelque part (description de la vidéo, par exemple) tant que cette voix est utilisée.
+- Musique et bruitages : synthétisés par `scripts/generate_music_sfx.py`, sans échantillon externe ; libres d'utilisation.
 
 ## Licence Remotion
 

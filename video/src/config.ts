@@ -162,15 +162,20 @@ export const TEXTS = {
 } as const;
 
 /* ── Audio ─────────────────────────────────────────────────────────────────────
- *  Déposez vos fichiers dans video/public/audio/ puis renseignez le nom ici
- *  (ex. 'audio/musique.mp3'). Laisser `null` tant que le fichier n'existe pas. */
+ *  Fichiers dans video/public/audio/ (régénérables, voir README) :
+ *  - music.mp3          musique synthétisée, calée sur les scènes
+ *  - vo/vo-XX.mp3       voix off phrase par phrase (texte et placement : src/audio/voiceover.json)
+ *  - sfx/*.mp3          bruitages (placement : src/audio/sfx.ts)
+ *  Mettre un élément à `null` / `false` pour le couper.                         */
 export const AUDIO = {
-  music: null as string | null,
-  voiceover: null as string | null,
-  musicVolume: 0.35, // volume de la musique sous la voix (0 → 1)
+  music: 'audio/music.mp3' as string | null,
+  voiceover: true,
+  sfx: true,
+  musicVolume: 0.5, // musique seule (0 → 1)
+  /** Musique abaissée à ce niveau (fraction de musicVolume) pendant la voix off */
+  musicDuck: 0.4,
   voiceoverVolume: 1,
-  /** Décalage de la voix off en secondes (si votre fichier commence par un blanc) */
-  voiceoverOffset: 0,
-  musicFadeInSeconds: 1,
-  musicFadeOutSeconds: 2,
+  sfxVolume: 0.55,
+  musicFadeInSeconds: 0.5,
+  musicFadeOutSeconds: 1.5,
 } as const;

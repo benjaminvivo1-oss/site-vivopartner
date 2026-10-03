@@ -9,6 +9,9 @@ import { DarkBackground, LightBackground } from '../components/ui';
 /* Scène 3 (16 → 21 s) — LA BASCULE : l'écran se nettoie (cercle blanc),
    révélation du logo VP puis du wordmark, et la question. */
 
+/** Ouverture du cercle, monogramme, wordmark, question (images locales) */
+export const T3 = { wipe: 0, mark: 10, wordmark: 30, question: 42 };
+
 export const S3Bascule: React.FC = () => {
   const frame = useCurrentFrame();
   const { vertical, width, height, pad } = useLayout();
@@ -33,10 +36,10 @@ export const S3Bascule: React.FC = () => {
               transform: `scale(${settle})`,
             }}
           >
-            <AnimatedLockup height={vertical ? 150 : 170} markAt={10} wordmarkAt={30} />
+            <AnimatedLockup height={vertical ? 150 : 170} markAt={T3.mark} wordmarkAt={T3.wordmark} />
             <WordReveal
               text={TEXTS.bascule.question}
-              start={42}
+              start={T3.question}
               fontSize={vertical ? 86 : 80}
               color={COLORS.navy}
               align="center"

@@ -9,7 +9,7 @@ import { LightBackground } from '../components/ui';
 
 /* Scène 8 (54 → 60 s) — CTA : logo, tagline bicolore, URL et bouton animé. */
 
-const T = { mark: 2, wordmark: 14, taglineNavy: 26, taglineOrange: 44, url: 62, button: 74 };
+export const T = { mark: 2, wordmark: 14, taglineNavy: 26, taglineOrange: 44, url: 62, button: 74 };
 
 export const S8Cta: React.FC = () => {
   const frame = useCurrentFrame();

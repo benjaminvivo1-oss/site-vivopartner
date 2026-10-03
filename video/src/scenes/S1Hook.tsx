@@ -10,9 +10,9 @@ import { DarkBackground, Fit } from '../components/ui';
 /* Scène 1 (0 → 6 s) — HOOK : un téléphone vibre, l'appel n'est pas décroché,
    les notifications « Appel manqué » se multiplient. */
 
-const CALL_END = 78; // l'appel bascule en « manqué »
+export const CALL_END = 78; // l'appel bascule en « manqué »
 /** Images d'apparition des notifications : de plus en plus rapprochées */
-const MISSED_AT = [86, 104, 118, 129, 138, 145, 151, 156];
+export const MISSED_AT = [86, 104, 118, 129, 138, 145, 151, 156];
 const NUMBERS = [
   '06 •• •• •• 47',
   '07 •• •• •• 12',
@@ -24,7 +24,12 @@ const NUMBERS = [
   '07 •• •• •• 38',
 ];
 
-const vibrating = (f: number) => (f > 8 && f < 30) || (f > 40 && f < 62);
+/** Salves de vibration [début, fin] en images */
+export const VIBRATE: [number, number][] = [
+  [8, 30],
+  [40, 62],
+];
+const vibrating = (f: number) => VIBRATE.some(([a, b]) => f > a && f < b);
 
 const IncomingCall: React.FC<{ frame: number }> = ({ frame }) => {
   const out = tween(frame, [CALL_END - 6, CALL_END + 6], [1, 0]);

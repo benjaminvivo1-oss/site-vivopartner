@@ -15,7 +15,7 @@ const SH = 760;
 const SW_V = 760;
 const SH_V = 1120;
 
-const T = {
+export const T = {
   call: 8,
   bubbles: [26, 78, 128],
   calendar: 150,

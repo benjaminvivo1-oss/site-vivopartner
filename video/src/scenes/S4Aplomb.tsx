@@ -16,7 +16,7 @@ const DW_V = 900;
 const DH_V = 1120;
 
 /** Timeline interne (images locales) */
-const T = {
+export const T = {
   window: 14,
   quotes: [40, 58, 76],
   quoteSent: 22, // délai entre « Génération… » et « Envoyé »

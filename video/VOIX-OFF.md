@@ -20,8 +20,8 @@ Durée totale : **60 s** à 30 i/s (1 800 images). Les timecodes ci-dessous corr
 - Scène 7 : les trois impacts sont réglables dans `BENEFIT_HITS` (`src/scenes/S7Benefices.tsx`) pour tomber pile sur « devis », « temps » et « perdu ».
 - Musique : un temps fort (drop / changement d'ambiance) à **16 s** pour la bascule, du sombre vers le lumineux.
 
-## Ajouter l'audio
+## Voix off fournie
 
-1. Déposer les fichiers dans `video/public/audio/` (ex. `musique.mp3`, `voix-off.mp3`).
-2. Dans `src/config.ts`, renseigner `AUDIO.music = 'audio/musique.mp3'` et `AUDIO.voiceover = 'audio/voix-off.mp3'`.
-3. Ajuster `musicVolume` (0,35 par défaut, sous la voix) et, si besoin, `voiceoverOffset`.
+Une voix de synthèse française est déjà en place (14 phrases, `public/audio/vo/`), chacune calée sur l'apparition de son texte à l'écran. Le placement exact (scène + secondes) est dans `src/audio/voiceover.json`.
+
+Pour la remplacer par un enregistrement : une phrase par fichier, mêmes noms (`vo-01.mp3` … `vo-14.mp3`), puis `npm run audio:durations`.
