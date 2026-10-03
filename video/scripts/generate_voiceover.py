@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 """
-Voix off de synthèse : Kokoro (modèle ouvert, licence Apache 2.0), voix française « ff_siwis ».
+Voix off du trailer, en prises continues (intonation naturelle) découpées à leurs pauses.
 
-Chaque prise (« take ») de src/audio/voiceover.json est dite d'un seul souffle, pour une intonation
-naturelle, puis, si elle a plusieurs parties, découpée à ses pauses les plus longues : chaque partie
-est placée dans sa scène. Résultat : public/audio/vo/<id>.mp3 + durées notées dans le JSON.
-Les instants des pauses de chaque prise sont affichés (utile pour caler BENEFIT_HITS, scène 7).
+Deux moteurs :
+- ElevenLabs (recommandé, voix humaine) : utilisé dès que ELEVENLABS_API_KEY est défini.
+  Sans ELEVENLABS_VOICE_ID, la voix est choisie automatiquement dans la bibliothèque ElevenLabs :
+  voix française native, professionnelle, faite pour la publicité, la plus utilisée par les
+  autres clients. Elle est ajoutée au compte et notée dans src/audio/voiceover.json.
+  --samples : génère aussi la première phrase avec les 3 meilleures voix (out/voice-samples/).
+- Kokoro (gratuit, hors ligne) : sinon. pip install kokoro-onnx soundfile, puis KOKORO_DIR=…
+  (modèle : https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0).
 
-Pré-requis : ffmpeg, puis
-    pip install kokoro-onnx soundfile
-    # modèle (≈ 330 Mo) : https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
-    KOKORO_DIR=/dossier/contenant/kokoro-v1.0.onnx+voices-v1.0.bin python3 scripts/generate_voiceover.py
-
-Pour une vraie voix enregistrée : déposer public/audio/vo/vo-01.mp3 … (même découpage que les
-« parts ») puis relancer avec --durations-only.
+Résultat : public/audio/vo/<id>.mp3 + durées dans le JSON. Si une partie dépasse sa scène,
+la prise est régénérée un peu plus vite (ElevenLabs).
+Pour une vraie voix enregistrée : déposer public/audio/vo/vo-01.mp3 … puis --durations-only.
 """
-import json, os, re, subprocess, sys, tempfile
+import json, os, re, subprocess, sys, tempfile, urllib.parse, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -48,34 +48,130 @@ def synth(text, voice, speed, wav: Path):
     sf.write(str(wav), samples, sr)
 
 
+# ───────────── ElevenLabs ─────────────
+EL_API = 'https://api.elevenlabs.io'
+EL_MODEL = 'eleven_multilingual_v2'
+
+
+def el_request(path, payload=None, raw=False):
+    req = urllib.request.Request(EL_API + path, method='POST' if payload is not None else 'GET',
+                                 data=json.dumps(payload).encode() if payload is not None else None,
+                                 headers={'xi-api-key': os.environ['ELEVENLABS_API_KEY'],
+                                          'Content-Type': 'application/json'})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        body = r.read()
+    return body if raw else json.loads(body)
+
+
+def el_best_voices(n=3):
+    """Voix françaises de la bibliothèque, classées par usage (publicité, puis narration)."""
+    found = []
+    for use_case in ('advertisement', 'narrative_story', 'informative_educational'):
+        q = urllib.parse.urlencode({'page_size': 50, 'language': 'fr', 'use_cases': use_case,
+                                    'sort': 'cloned_by_count'})
+        for v in el_request(f'/v1/shared-voices?{q}').get('voices', []):
+            accent = str(v.get('accent') or '').lower()
+            if any(x in accent for x in ('canad', 'qu', 'belg', 'swiss', 'suisse', 'afric')):
+                continue  # on garde l'accent de France
+            if v['voice_id'] not in [f['voice_id'] for f in found]:
+                found.append(v)
+        if len(found) >= n:
+            break
+    found.sort(key=lambda v: v.get('cloned_by_count', 0), reverse=True)
+    return found[:n]
+
+
+def el_add(v):
+    name = f"VP {v['name']}"[:30]
+    r = el_request(f"/v1/voices/add/{v['public_owner_id']}/{v['voice_id']}", {'new_name': name})
+    return r['voice_id']
+
+
+def el_synth(text, voice_id, speed, mp3: Path):
+    q = urllib.parse.urlencode({'output_format': 'mp3_44100_192'})
+    audio = el_request(f'/v1/text-to-speech/{voice_id}?{q}', {
+        'text': text, 'model_id': EL_MODEL,
+        'voice_settings': {'stability': 0.45, 'similarity_boost': 0.8, 'style': 0.3,
+                           'use_speaker_boost': True, 'speed': speed},
+    }, raw=True)
+    mp3.write_bytes(audio)
+
+
+def scene_budget():
+    src = (ROOT / 'src' / 'config.ts').read_text('utf-8')
+    block = re.search(r'SCENE_SECONDS = \{(.*?)\}', src, re.S).group(1)
+    return {k: float(v) for k, v in re.findall(r'(\w+):\s*([\d.]+)', block)}
+
+
+def render_take(take, data, engine, voice_id, speed, tmp: Path):
+    """Synthétise une prise, la nettoie, la découpe ; renvoie les durées des parties."""
+    parts = take['parts']
+    raw, clean = tmp / 'raw', tmp / 'clean.wav'
+    if engine == 'elevenlabs':
+        el_synth(' '.join(p['text'] for p in parts), voice_id, speed, raw.with_suffix('.mp3'))
+        src = raw.with_suffix('.mp3')
+    else:
+        synth(take['say'], data['voice'], data['speed'], raw.with_suffix('.wav'))
+        src = raw.with_suffix('.wav')
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(src), '-af',
+                    'silenceremove=start_periods=1:start_threshold=-45dB,areverse,'
+                    'silenceremove=start_periods=1:start_threshold=-45dB,areverse,' + POLISH,
+                    str(clean)], check=True)
+    total = duration(clean)
+    gaps = silences(clean)
+    print(f"« {take['say']} »  {total:.2f} s, pauses : " + ', '.join(f'{a:.2f}–{b:.2f}' for a, b in gaps))
+    cuts = sorted(sorted(gaps, key=lambda g: g[1] - g[0], reverse=True)[: len(parts) - 1])
+    bounds = [0.0] + [(a + b) / 2 for a, b in cuts] + [total]
+    if len(bounds) - 1 != len(parts):
+        sys.exit(f"Pas assez de pauses pour découper « {take['say']} » en {len(parts)} parties.")
+    for part, a, b in zip(parts, bounds, bounds[1:]):
+        fade = f'afade=t=in:d=0.03,afade=t=out:st={max(0, b - a - 0.06):.3f}:d=0.06'
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-ss', f'{a:.3f}', '-to', f'{b:.3f}',
+                        '-i', str(clean), '-af', fade, '-ac', '1', '-b:a', '160k',
+                        str(OUT / f"{part['id']}.mp3")], check=True)
+
+
 def main():
     data = json.loads(SCRIPT.read_text('utf-8'))
     OUT.mkdir(parents=True, exist_ok=True)
     only_durations = '--durations-only' in sys.argv
+    engine = 'elevenlabs' if os.environ.get('ELEVENLABS_API_KEY') else 'kokoro'
+    voice_id = None
+    if not only_durations and engine == 'elevenlabs':
+        voice_id = os.environ.get('ELEVENLABS_VOICE_ID')
+        if not voice_id:
+            best = el_best_voices(3)
+            if not best:
+                sys.exit('Aucune voix française trouvée dans la bibliothèque ElevenLabs.')
+            for i, v in enumerate(best):
+                print(f"  {'→' if i == 0 else ' '} {v['name']} ({v.get('gender')}, {v.get('age')}, {v.get('accent')}) "
+                      f"— utilisée {v.get('cloned_by_count', 0)} fois — {v.get('description', '')[:80]}")
+            if '--samples' in sys.argv:
+                sdir = ROOT / 'out' / 'voice-samples'
+                sdir.mkdir(parents=True, exist_ok=True)
+                for v in best:
+                    vid = el_add(v)
+                    el_synth(data['takes'][0]['parts'][0]['text'], vid, 1.0, sdir / f"{v['name']}.mp3")
+                print(f'Échantillons : {sdir}')
+            voice_id = el_add(best[0])
+            data['elevenlabs_voice'] = {'name': best[0]['name'], 'voice_id': voice_id,
+                                        'library_voice_id': best[0]['voice_id']}
+        print(f'Moteur : ElevenLabs ({EL_MODEL}), voix {voice_id}')
+    budget = scene_budget()
     for take in data['takes']:
-        parts = take['parts']
         if not only_durations:
-            with tempfile.TemporaryDirectory() as tmp:
-                raw, clean = Path(tmp) / 'raw.wav', Path(tmp) / 'clean.wav'
-                synth(take['say'], data['voice'], data['speed'], raw)
-                subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(raw), '-af',
-                                'silenceremove=start_periods=1:start_threshold=-45dB,areverse,'
-                                'silenceremove=start_periods=1:start_threshold=-45dB,areverse,' + POLISH,
-                                str(clean)], check=True)
-                total = duration(clean)
-                gaps = silences(clean)
-                print(f"« {take['say']} »  {total:.2f} s, pauses : " + ', '.join(f'{a:.2f}–{b:.2f}' for a, b in gaps))
-                # coupe au milieu des (n-1) pauses les plus longues, dans l'ordre chronologique
-                cuts = sorted(sorted(gaps, key=lambda g: g[1] - g[0], reverse=True)[: len(parts) - 1])
-                bounds = [0.0] + [(a + b) / 2 for a, b in cuts] + [total]
-                if len(bounds) - 1 != len(parts):
-                    sys.exit(f"Pas assez de pauses pour découper « {take['say']} » en {len(parts)} parties.")
-                for part, a, b in zip(parts, bounds, bounds[1:]):
-                    fade = f'afade=t=in:d=0.03,afade=t=out:st={max(0, b - a - 0.06):.3f}:d=0.06'
-                    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-ss', f'{a:.3f}', '-to', f'{b:.3f}',
-                                    '-i', str(clean), '-af', fade, '-ac', '1', '-b:a', '160k',
-                                    str(OUT / f"{part['id']}.mp3")], check=True)
-        for part in parts:
+            speed = float(os.environ.get('VO_SPEED', '1.05'))
+            while True:
+                with tempfile.TemporaryDirectory() as tmp:
+                    render_take(take, data, engine, voice_id, speed, Path(tmp))
+                over = [p for p in take['parts'] if p['at'] + duration(OUT / f"{p['id']}.mp3") > budget[p['scene']] + 0.05]
+                if not over or engine != 'elevenlabs' or speed >= 1.2:
+                    if over:
+                        print('  ⚠ déborde de sa scène : ' + ', '.join(p['id'] for p in over))
+                    break
+                speed = round(min(1.2, speed + 0.05), 2)
+                print(f'  trop long pour la scène : nouvel essai à la vitesse {speed}')
+        for part in take['parts']:
             part['duration'] = duration(OUT / f"{part['id']}.mp3")
             print(f"  {part['id']}  {part['duration']:5.2f} s  {part['text']}")
     SCRIPT.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', 'utf-8')

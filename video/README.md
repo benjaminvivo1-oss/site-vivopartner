@@ -87,8 +87,9 @@ Régénérer :
 ```bash
 pip install numpy scipy
 npm run audio:music                       # musique + bruitages (suit SCENE_SECONDS)
+ELEVENLABS_API_KEY=… npm run audio:voice  # voix off ElevenLabs : meilleure voix française choisie automatiquement
 pip install kokoro-onnx soundfile
-KOKORO_DIR=… npm run audio:voice          # voix off (modèle à télécharger, voir l'en-tête du script)
+KOKORO_DIR=… npm run audio:voice          # ou voix gratuite hors ligne (Kokoro)
 ```
 
 **Remplacer par une vraie voix** (recommandé pour une diffusion payante) : enregistrer le texte de `src/audio/voiceover.json` (8 parties, `vo-01` à `vo-08`), les déposer sous les mêmes noms dans `public/audio/vo/`, puis `npm run audio:durations` pour mettre à jour les durées. Une seule prise continue peut aussi être découpée.
