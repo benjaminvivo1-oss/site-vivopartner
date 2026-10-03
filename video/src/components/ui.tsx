@@ -1,6 +1,6 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { springAt, tween } from '../anim';
+import { AbsoluteFill, useVideoConfig } from 'remotion';
+import { springAt, tween, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS } from '../config';
 
 /* ── Fonds ─────────────────────────────────────────────────────────────────── */
@@ -88,7 +88,7 @@ export const Pop: React.FC<{
   style?: React.CSSProperties;
   children?: React.ReactNode;
 }> = ({ at, from = 'bottom', distance = 40, scaleFrom = 0.96, spring = SPRINGS.snappy, style, children }) => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const p = springAt(frame, fps, at, spring);
   const d = (1 - p) * distance;
@@ -122,7 +122,7 @@ export const Eyebrow: React.FC<{ text: string; at: number; dark?: boolean; size?
   dark = false,
   size = 22,
 }) => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const p = springAt(frame, fps, at);
   return (

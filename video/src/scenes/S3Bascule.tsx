@@ -1,19 +1,19 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
-import { EASE_IN_OUT, tween, useLayout } from '../anim';
+import { AbsoluteFill } from 'remotion';
+import { EASE_IN_OUT, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, TEXTS } from '../config';
 import { AnimatedLockup } from '../components/Logo';
 import { WordReveal } from '../components/WordReveal';
 import { DarkBackground, LightBackground } from '../components/ui';
 
-/* Scène 3 (16 → 21 s) — LA BASCULE : l'écran se nettoie (cercle blanc),
+/* Scène 3 — LA BASCULE : l'écran se nettoie (cercle blanc),
    révélation du logo VP puis du wordmark, et la question. */
 
 /** Ouverture du cercle, monogramme, wordmark, question (images locales) */
 export const T3 = { wipe: 0, mark: 10, wordmark: 30, question: 42 };
 
 export const S3Bascule: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { vertical, width, height, pad } = useLayout();
 
   const diag = Math.hypot(width, height);

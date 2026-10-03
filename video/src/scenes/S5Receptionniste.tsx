@@ -1,12 +1,12 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { springAt, tween, useLayout } from '../anim';
+import { AbsoluteFill, useVideoConfig } from 'remotion';
+import { springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon } from '../components/Icon';
 import { WordReveal } from '../components/WordReveal';
 import { Card, Chip, Eyebrow, Fit, NavyBackground, Pop, Skeleton, shadow } from '../components/ui';
 
-/* Scène 5 (31 → 40 s) — PILIER 2 : AGENT RÉCEPTIONNISTE IA.
+/* Scène 5 — PILIER 2 : AGENT RÉCEPTIONNISTE IA.
    Onde vocale, transcription en direct, puis un RDV ajouté à l'agenda. */
 
 const SW = 1180;
@@ -358,7 +358,7 @@ const Stage: React.FC<{ frame: number; fps: number; vertical: boolean }> = ({ fr
 };
 
 export const S5Receptionniste: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical, width, height, pad } = useLayout();
   const [l1, l2, l3] = TEXTS.receptionniste.lines;

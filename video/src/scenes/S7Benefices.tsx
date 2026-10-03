@@ -1,17 +1,17 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { parseAccent, springAt, tween, useLayout } from '../anim';
+import { AbsoluteFill, useVideoConfig } from 'remotion';
+import { parseAccent, springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon } from '../components/Icon';
 import { NavyBackground } from '../components/ui';
 
-/* Scène 7 (49 → 54 s) — BÉNÉFICES : trois phrases qui claquent en rythme. */
+/* Scène 7 — BÉNÉFICES : trois phrases qui claquent en rythme. */
 
 /** Image d'impact de chaque phrase — à recaler sur la voix off si besoin */
 export const BENEFIT_HITS = [6, 40, 74];
 
 export const S7Benefices: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical } = useLayout();
   const fs = vertical ? 104 : 116;

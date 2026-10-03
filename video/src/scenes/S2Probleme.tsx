@@ -1,12 +1,12 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { EASE_IN_OUT, springAt, tween, useLayout } from '../anim';
+import { AbsoluteFill, useVideoConfig } from 'remotion';
+import { EASE_IN_OUT, springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon } from '../components/Icon';
 import { WordReveal } from '../components/WordReveal';
 import { Chip, DarkBackground, Fit, Pop, Skeleton } from '../components/ui';
 
-/* Scène 2 (6 → 16 s) — LE PROBLÈME : devis qui s'empilent, horloge qui file
+/* Scène 2 — LE PROBLÈME : devis qui s'empilent, horloge qui file
    jusqu'à 22 h, e-mails non lus qui débordent. */
 
 /** Départ de chaque « temps » (images locales) */
@@ -324,7 +324,7 @@ const InboxPanel: React.FC<{ frame: number; fps: number; width: number }> = ({ f
 };
 
 export const S2Probleme: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical, width, height, pad } = useLayout();
 

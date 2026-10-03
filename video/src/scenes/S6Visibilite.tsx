@@ -1,13 +1,13 @@
 import React from 'react';
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
-import { EASE_IN_OUT, springAt, tween, useLayout } from '../anim';
+import { AbsoluteFill, interpolate, useVideoConfig } from 'remotion';
+import { EASE_IN_OUT, springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon, IconName } from '../components/Icon';
 import { Phone } from '../components/Phone';
 import { WordReveal } from '../components/WordReveal';
 import { Card, Eyebrow, Fit, LightBackground, Pop, Skeleton, shadow } from '../components/ui';
 
-/* Scène 6 (40 → 49 s) — PILIER 3 : VISIBILITÉ. Pin Google Maps qui tombe,
+/* Scène 6 — PILIER 3 : VISIBILITÉ. Pin Google Maps qui tombe,
    fiche avec étoiles, site mobile, courbe de visites qui monte. */
 
 const SW = 1180;
@@ -343,7 +343,7 @@ const Stage: React.FC<{ frame: number; fps: number; vertical: boolean }> = ({ fr
 );
 
 export const S6Visibilite: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical, width, height, pad } = useLayout();
   const [l1, l2] = TEXTS.visibilite.lines;

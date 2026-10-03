@@ -1,18 +1,18 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { springAt, tween, useLayout } from '../anim';
+import { AbsoluteFill, useVideoConfig } from 'remotion';
+import { springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon } from '../components/Icon';
 import { AnimatedLockup } from '../components/Logo';
 import { WordReveal } from '../components/WordReveal';
 import { LightBackground } from '../components/ui';
 
-/* Scène 8 (54 → 60 s) — CTA : logo, tagline bicolore, URL et bouton animé. */
+/* Scène 8 — CTA : logo, tagline bicolore, URL et bouton animé. */
 
 export const T = { mark: 2, wordmark: 14, taglineNavy: 26, taglineOrange: 44, url: 62, button: 74 };
 
 export const S8Cta: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical, pad } = useLayout();
 

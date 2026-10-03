@@ -1,6 +1,6 @@
 import React from 'react';
-import { useCurrentFrame, useVideoConfig } from 'remotion';
-import { parseAccent, springAt, tween } from '../anim';
+import { useVideoConfig } from 'remotion';
+import { parseAccent, springAt, tween, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, WORD_STAGGER } from '../config';
 
 /**
@@ -38,7 +38,7 @@ export const WordReveal: React.FC<{
   align = 'left',
   style,
 }) => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const words = parseAccent(text);
   const out = exit === undefined ? 0 : tween(frame, [exit, exit + 12], [0, 1]);

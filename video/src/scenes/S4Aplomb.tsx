@@ -1,12 +1,12 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { springAt, tween, useLayout } from '../anim';
+import { AbsoluteFill, useVideoConfig } from 'remotion';
+import { springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon, IconName } from '../components/Icon';
 import { WordReveal } from '../components/WordReveal';
 import { Card, Chip, Eyebrow, Fit, LightBackground, Pop, Skeleton, shadow } from '../components/ui';
 
-/* Scène 4 (21 → 31 s) — PILIER 1 : APLOMB. Tableau de bord SaaS animé :
+/* Scène 4 — PILIER 1 : APLOMB. Tableau de bord SaaS animé :
    devis générés, relances automatiques, avis Google, suivi de chantier. */
 
 const DW = 1240;
@@ -419,7 +419,7 @@ const Dashboard: React.FC<{ frame: number; fps: number; vertical: boolean }> = (
 };
 
 export const S4Aplomb: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical, width, height, pad } = useLayout();
 

@@ -1,6 +1,6 @@
 /**
  * ─────────────────────────────────────────────────────────────────────────────
- *  VivoPartner — Trailer 60 s : TOUTES les constantes modifiables sont ici.
+ *  VivoPartner — Trailer 32 s : TOUTES les constantes modifiables sont ici.
  *  Couleurs, polices, durées des scènes, textes à l'écran, pistes audio.
  * ─────────────────────────────────────────────────────────────────────────────
  */
@@ -15,7 +15,7 @@ export const FORMATS = {
 
 /** Durée du fondu enchaîné entre deux scènes (en images). La scène suivante
  *  démarre pile à son timecode et se fond par-dessus la précédente. */
-export const CROSSFADE_FRAMES = 12;
+export const CROSSFADE_FRAMES = 8;
 
 /* ── Couleurs ──────────────────────────────────────────────────────────────── */
 export const COLORS = {
@@ -56,15 +56,20 @@ export const WORD_STAGGER = 4;
  *  Calé sur la voix off (voir VOIX-OFF.md). Modifier une durée décale
  *  automatiquement toutes les scènes suivantes.                                */
 export const SCENE_SECONDS = {
-  hook: 6, //            0 → 6 s
-  probleme: 10, //       6 → 16 s
-  bascule: 5, //        16 → 21 s
-  aplomb: 10, //        21 → 31 s
-  receptionniste: 9, // 31 → 40 s
-  visibilite: 9, //     40 → 49 s
-  benefices: 5, //      49 → 54 s
-  cta: 6, //            54 → 60 s
+  hook: 3.5, //            0 → 3,5 s
+  probleme: 5, //        3,5 → 8,5 s
+  bascule: 3.2, //       8,5 → 11,7 s
+  aplomb: 4.5, //       11,7 → 16,2 s
+  receptionniste: 4.5, // 16,2 → 20,7 s
+  visibilite: 4.6, //   20,7 → 25,3 s
+  benefices: 2.8, //    25,3 → 28,1 s
+  cta: 3.9, //          28,1 → 32 s
 } as const;
+
+/** Vitesse des animations à l'intérieur des scènes (1 = rythme d'origine, 1,6 = 60 % plus rapide).
+ *  Les timings écrits dans les scènes (constantes T, BEAT…) sont en « images d'animation » :
+ *  ils sont divisés par SPEED à l'écran, et les bruitages suivent. */
+export const SPEED = 1.6;
 
 export type SceneKey = keyof typeof SCENE_SECONDS;
 

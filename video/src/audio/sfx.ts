@@ -2,7 +2,7 @@
  * Bruitages : chaque repère pointe vers un son de public/audio/sfx/ et une image (locale à sa scène).
  * Les timings viennent des constantes exportées par les scènes : si une animation bouge, son bruit suit.
  */
-import { TIMELINE, type SceneKey } from '../config';
+import { SPEED, TIMELINE, type SceneKey } from '../config';
 import { CALL_END, MISSED_AT, VIBRATE } from '../scenes/S1Hook';
 import { BEAT, CLOCK_RUN, DROPS, ROW_AT, STAMP_AT } from '../scenes/S2Probleme';
 import { T3 } from '../scenes/S3Bascule';
@@ -32,7 +32,9 @@ export type Cue = { sfx: SfxName; frame: number; volume?: number; rate?: number 
 
 const start = (key: SceneKey) => TIMELINE.items.find((s) => s.key === key)?.from ?? 0;
 
-const scene = (key: SceneKey, cues: Cue[]): Cue[] => cues.map((c) => ({ ...c, frame: c.frame + start(key) }));
+// Repères écrits en images d'animation (comme les scènes) : convertis en images réelles (÷ SPEED).
+const scene = (key: SceneKey, cues: Cue[]): Cue[] =>
+  cues.map((c) => ({ ...c, frame: Math.round(c.frame / SPEED) + start(key) }));
 
 const range = (from: number, to: number, step: number) =>
   Array.from({ length: Math.floor((to - from) / step) + 1 }, (_, i) => from + i * step);

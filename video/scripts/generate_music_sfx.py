@@ -5,14 +5,13 @@ Musique et bruitages du trailer, entièrement synthétisés (aucun échantillon 
     pip install numpy scipy && python3 scripts/generate_music_sfx.py
 
 Écrit public/audio/music.mp3 (60 s, calée sur les scènes) et public/audio/sfx/*.mp3.
-La structure suit le découpage du trailer (SCENE_SECONDS dans src/config.ts) :
-  0–16 s   tension : nappe grave, battement de cœur, tic-tac qui accélère, montée puis coupure
-  16 s     bascule : impact doux, l'harmonie s'éclaire (do majeur)
-  16–21 s  nappe + arpège, sans batterie (révélation du logo)
-  21–49 s  groove : kick, clap, charleston, basse pompée par le kick (les 3 piliers)
-  49–54 s  montée : kick à chaque temps, roulement de caisse claire
-  54–60 s  final : accord tenu, arpège, fondu
-Si vous changez les durées des scènes, ajustez SECTIONS ci-dessous puis relancez.
+La structure suit le découpage du trailer, lu directement dans SCENE_SECONDS (src/config.ts) :
+  hook + problème   tension : nappe grave, battement de cœur, tic-tac qui accélère, montée puis coupure
+  bascule           impact doux, l'harmonie s'éclaire (do majeur), nappe + arpège sans batterie
+  3 piliers         groove : kick, clap, charleston, basse pompée par le kick, relance à chaque pilier
+  bénéfices         kick à chaque temps, roulement de caisse claire
+  CTA               accord tenu, arpège, fondu
+Après un changement de durée des scènes : relancer ce script.
 """
 import subprocess
 from pathlib import Path
@@ -25,9 +24,33 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'public' / 'audio'
 rng = np.random.default_rng(7)
 
-BPM = 120
-BEAT = 60 / BPM  # 0,5 s
-SECTIONS = dict(tension_end=16.0, reveal_end=21.0, groove_end=49.0, build_end=54.0, end=60.0)
+import re
+
+BPM = 128
+BEAT = 60 / BPM
+
+
+def read_scenes():
+    """Début de chaque scène (secondes), d'après SCENE_SECONDS dans src/config.ts."""
+    src = (ROOT / 'src' / 'config.ts').read_text('utf-8')
+    block = re.search(r'SCENE_SECONDS = \{(.*?)\}', src, re.S).group(1)
+    starts, t = {}, 0.0
+    for key, val in re.findall(r'(\w+):\s*([\d.]+)', block):
+        starts[key] = t
+        t += float(val)
+    starts['end'] = t
+    return starts
+
+
+SC = read_scenes()
+SECTIONS = dict(
+    tension_end=SC['bascule'],
+    reveal_end=SC['aplomb'],
+    groove_end=SC['benefices'],
+    build_end=SC['cta'],
+    end=SC['end'],
+)
+PILLARS = [SC['aplomb'], SC['receptionniste'], SC['visibilite'], SC['benefices']]
 TOTAL = SECTIONS['end']
 
 
@@ -212,7 +235,7 @@ def build_music():
     s = SECTIONS
     A1, E2, A2 = note('A1'), note('E2'), note('A2')
 
-    # 1) Tension 0–16 s : nappe grave qui s'ouvre, battement de cœur, tic-tac, cordes dissonantes, montée.
+    # 1) Tension (hook + problème) : nappe grave qui s'ouvre, battement de cœur, tic-tac, cordes dissonantes, montée.
     drone_len = s['tension_end']
     drone = saw(A1, drone_len, 0.003) + saw(E2, drone_len, -0.003) * 0.7 + saw(A2, drone_len) * 0.4
     n = len(drone)
@@ -228,17 +251,19 @@ def build_music():
         T.add(lp(kick(0.5, 0.2), 180), bar + 0.26, 0.38)
 
     tick = hp(rng.standard_normal(int(0.02 * SR)), 2500) * exp_decay(int(0.02 * SR), 0.003)
-    tt = 6.0
-    while tt < s['tension_end'] - 0.3:  # tic-tac du chantier à l'horloge, qui accélère
+    tt = SC['probleme']
+    accel = SC['probleme'] + (s['tension_end'] - SC['probleme']) * 0.5
+    while tt < s['tension_end'] - 0.2:  # tic-tac du chantier à l'horloge, qui accélère
         T.add(tick, tt, 0.22, p=0.3 if int(tt / BEAT) % 2 else -0.3)
-        tt += BEAT if tt < 11.5 else BEAT / 2
+        tt += BEAT if tt < accel else BEAT / 2
 
-    strings = pad([note('A4'), note('A#4'), note('E5')], 6.5, cutoff=1800, a=3.5, r=0.2)
-    T.add(strings, 9.5, 0.22)
-    rz = riser(3.0)
-    T.add(rz, s['tension_end'] - 3.0, 0.5)
+    str_len = min(6.5, s['tension_end'] - 1.0)
+    strings = pad([note('A4'), note('A#4'), note('E5')], str_len, cutoff=1800, a=str_len * 0.5, r=0.2)
+    T.add(strings, s['tension_end'] - str_len, 0.22)
+    rz_len = min(3.0, s['tension_end'] * 0.35)
+    T.add(riser(rz_len), s['tension_end'] - rz_len, 0.5)
 
-    # 2) Bascule à 16 s : impact doux + cymbale, l'harmonie s'éclaire.
+    # 2) Bascule : impact doux + cymbale, l'harmonie s'éclaire.
     T.add(lp(kick(1.2, 0.4), 300), s['tension_end'], 0.9)
     T.add(crash(3.0), s['tension_end'], 0.8)
 
@@ -250,54 +275,52 @@ def build_music():
         (['C4', 'F4', 'A4', 'G4'], 'F1', ['F4', 'A4', 'C5', 'G5']),
     ]
     bar_len = 4 * BEAT
-    start = s['tension_end']
     kicks = []
-    t0 = start
-    bar = 0
-    while t0 < s['end'] - 0.01:
+
+    # Harmonie : un accord par mesure depuis la bascule, accord final tenu sur le CTA.
+    t0, bar = s['tension_end'], 0
+    while t0 < s['build_end'] - 0.01:
         voicing, root, arp = chords[bar % 4]
-        in_groove = s['reveal_end'] <= t0 < s['groove_end']
-        in_build = s['groove_end'] <= t0 < s['build_end']
-        final = t0 >= s['build_end']
-        length = min(bar_len, s['end'] - t0)
-        if final:
-            # accord final tenu jusqu'à la fin
-            voicing, root, arp = chords[0]
-            length = s['end'] - t0
-        T.add(pad([note(v) for v in voicing], length + 0.6, cutoff=2600 if not final else 3200, a=0.25, r=0.6), t0, 0.32)
-        # arpège en doubles croches, ping-pong
-        for k in range(int(length / (BEAT / 2))):
-            f = note(arp[k % 4])
-            T.add(pluck(f), t0 + k * BEAT / 2, 0.16 if not final else 0.12, p=-0.45 if k % 2 else 0.45)
-        if in_groove or in_build:
-            for k in range(4):  # basse en croches, pompée par le kick
-                for half in (0, 0.5):
-                    T.add(bass(note(root) * 2, BEAT / 2 * 0.9), t0 + (k + half) * BEAT, 0.42)
-        if in_groove:
-            for k in range(4):
-                kicks.append(t0 + k * BEAT)
-                T.add(kick(), t0 + k * BEAT, 0.85)
-                if k in (1, 3):
-                    T.add(clap(), t0 + k * BEAT, 0.5, p=0.05)
-                for e in range(4):
-                    T.add(hat(open_=(e == 2)), t0 + k * BEAT + e * BEAT / 4, 0.22 if e % 2 else 0.32, p=0.25)
-        if in_build:
-            for k in range(4):
-                kicks.append(t0 + k * BEAT)
-                T.add(kick(), t0 + k * BEAT, 0.8)
+        length = min(bar_len, s['build_end'] - t0)
+        T.add(pad([note(v) for v in voicing], length + 0.5, cutoff=2600, a=0.2, r=0.5), t0, 0.32)
+        for k in range(int(np.ceil(length / (BEAT / 2)))):  # arpège en croches, ping-pong
+            T.add(pluck(note(arp[k % 4])), t0 + k * BEAT / 2, 0.16, p=-0.45 if k % 2 else 0.45)
         t0 += bar_len
         bar += 1
+    voicing, root, arp = chords[0]
+    final_len = s['end'] - s['build_end']
+    T.add(pad([note(v) for v in voicing], final_len + 0.6, cutoff=3200, a=0.1, r=1.0), s['build_end'], 0.34)
+    for k in range(int(final_len / (BEAT / 2))):
+        T.add(pluck(note(arp[k % 4])), s['build_end'] + k * BEAT / 2, 0.12, p=-0.45 if k % 2 else 0.45)
 
-    # Relances de section : roulement + cymbale au début de chaque pilier (21, 31, 40 s) et au final (54 s).
-    for at in (21.0, 31.0, 40.0, 49.0):
-        for k in range(8):
-            T.add(snare(), at - BEAT * 2 + k * BEAT / 4, 0.15 + 0.05 * k)
+    # Batterie et basse, temps par temps.
+    b = s['reveal_end']
+    while b < s['build_end'] - 0.01:
+        root = chords[int((b - s['tension_end']) / bar_len) % 4][1]
+        for half in (0, 0.5):  # basse en croches, pompée par le kick
+            T.add(bass(note(root) * 2, BEAT / 2 * 0.9), b + half * BEAT, 0.42)
+        kicks.append(b)
+        k = int(round((b - s['reveal_end']) / BEAT))
+        if b < s['groove_end']:
+            T.add(kick(), b, 0.85)
+            if k % 2 == 1:
+                T.add(clap(), b, 0.5, p=0.05)
+            for e in range(4):
+                T.add(hat(open_=(e == 2)), b + e * BEAT / 4, 0.22 if e % 2 else 0.32, p=0.25)
+        else:
+            T.add(kick(), b, 0.8)
+        b += BEAT
+
+    # Relances : petit roulement + cymbale au début de chaque pilier et des bénéfices.
+    for at in PILLARS:
+        for k in range(4):
+            T.add(snare(), at - BEAT + k * BEAT / 4, 0.15 + 0.08 * k)
         T.add(crash(), at, 0.55)
-    roll_start = s['build_end'] - 2.0
-    for k in range(16):  # roulement montant avant le final
-        T.add(snare(), roll_start + k * BEAT / 4, 0.12 + 0.04 * k)
-    T.add(riser(2.0), roll_start, 0.35)
-    T.add(crash(4.0), s['build_end'], 0.8)
+    roll = min(1.5, s['build_end'] - s['groove_end'])
+    for k in range(int(roll / (BEAT / 4))):  # roulement montant avant le final
+        T.add(snare(), s['build_end'] - roll + k * BEAT / 4, 0.12 + 0.05 * k)
+    T.add(riser(roll), s['build_end'] - roll, 0.35)
+    T.add(crash(3.0), s['build_end'], 0.8)
     T.add(lp(kick(1.4, 0.5), 260), s['build_end'], 0.9)
 
     mix = T.buf[:, : int(TOTAL * SR)]
@@ -305,7 +328,7 @@ def build_music():
     mix *= sidechain(mix.shape[1], kicks, depth=0.35)[None, :]
     mix = reverb(mix, 0.18)
     # fondu de fin
-    fade = int(3.0 * SR)
+    fade = int(2.0 * SR)
     mix[:, -fade:] *= np.linspace(1, 0, fade) ** 1.5
     return master(mix)
 

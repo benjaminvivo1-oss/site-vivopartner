@@ -4,114 +4,114 @@
     {
       "id": "vo-01",
       "scene": "hook",
-      "at": 0.35,
+      "at": 0.2,
       "text": "Pendant que vous êtes sur le chantier…",
       "say": "Pendant que vous êtes sur le chantier,",
-      "duration": 1.62
+      "duration": 1.411
     },
     {
       "id": "vo-02",
       "scene": "hook",
-      "at": 3.25,
+      "at": 2.0,
       "text": "…vos clients appellent ailleurs.",
       "say": "vos clients appellent ailleurs.",
-      "duration": 1.384
+      "duration": 1.28
     },
     {
       "id": "vo-03",
       "scene": "probleme",
-      "at": 0.3,
+      "at": 0.15,
       "text": "Devis en retard.",
       "say": "Devis en retard.",
-      "duration": 1.071
+      "duration": 1.149
     },
     {
       "id": "vo-04",
       "scene": "probleme",
-      "at": 2.95,
+      "at": 1.83,
       "text": "Relances oubliées.",
       "say": "Relances oubliées.",
-      "duration": 0.888
+      "duration": 0.81
     },
     {
       "id": "vo-05",
       "scene": "probleme",
-      "at": 5.6,
+      "at": 3.5,
       "text": "Soirées perdues dans l'admin.",
       "say": "Soirées perdues dans l'admin.",
-      "duration": 1.332
+      "duration": 1.254
     },
     {
       "id": "vo-06",
       "scene": "bascule",
-      "at": 1.4,
+      "at": 0.85,
       "text": "Et si votre entreprise tournait toute seule ?",
       "say": "Et si votre entreprise tournait toute seule ?",
-      "duration": 2.22
+      "duration": 2.116
     },
     {
       "id": "vo-07",
       "scene": "aplomb",
-      "at": 0.4,
+      "at": 0.2,
       "text": "Avec VivoPartner, vous automatisez votre gestion.",
       "say": "Avec Vivo Partneur, vous automatisez votre gestion.",
-      "duration": 3.03
+      "duration": 2.795
     },
     {
       "id": "vo-08",
       "scene": "receptionniste",
-      "at": 0.3,
+      "at": 0.2,
       "text": "Vous ne ratez plus un seul appel.",
       "say": "Vous ne ratez plus un seul appel.",
-      "duration": 1.646
+      "duration": 1.541
     },
     {
       "id": "vo-09",
       "scene": "visibilite",
-      "at": 0.3,
+      "at": 0.2,
       "text": "Et vous devenez visible, là où vos clients vous cherchent.",
       "say": "Et vous devenez visible, là où vos clients vous cherchent.",
-      "duration": 2.638
+      "duration": 2.482
     },
     {
       "id": "vo-10",
       "scene": "benefices",
-      "at": 0.2,
+      "at": 0.12,
       "text": "Plus de devis.",
       "say": "Plus de devis.",
-      "duration": 0.653
+      "duration": 0.705
     },
     {
       "id": "vo-11",
       "scene": "benefices",
-      "at": 1.33,
+      "at": 0.85,
       "text": "Plus de temps.",
       "say": "Plus de temps.",
-      "duration": 0.601
+      "duration": 0.549
     },
     {
       "id": "vo-12",
       "scene": "benefices",
-      "at": 2.47,
+      "at": 1.55,
       "text": "Zéro client perdu.",
       "say": "Zéro client perdu.",
-      "duration": 1.097
+      "duration": 1.045
     },
     {
       "id": "vo-13",
       "scene": "cta",
-      "at": 0.25,
+      "at": 0.15,
       "text": "VivoPartner.",
       "say": "Vivo Partneur.",
-      "duration": 1.045
+      "duration": 0.967
     },
     {
       "id": "vo-14",
       "scene": "cta",
-      "at": 1.4,
+      "at": 1.15,
       "text": "Automatise aujourd'hui. Accélère demain.",
       "say": "Automatise aujourd'hui. Accélère demain.",
-      "duration": 2.403
+      "duration": 2.142
     }
   ]
 }

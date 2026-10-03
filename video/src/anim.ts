@@ -1,5 +1,8 @@
-import { Easing, interpolate, spring, useVideoConfig } from 'remotion';
-import { SPRINGS } from './config';
+import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
+import { SPEED, SPRINGS } from './config';
+
+/** Image courante en « temps d'animation » : useCurrentFrame() accéléré par SPEED (voir config.ts). */
+export const useSceneFrame = () => useCurrentFrame() * SPEED;
 
 export const EASE_OUT = Easing.bezier(0.16, 1, 0.3, 1);
 export const EASE_IN_OUT = Easing.bezier(0.65, 0, 0.35, 1);

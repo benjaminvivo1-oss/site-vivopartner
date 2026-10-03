@@ -1,13 +1,13 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { springAt, tween, useLayout } from '../anim';
+import { AbsoluteFill, useVideoConfig } from 'remotion';
+import { springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { Icon } from '../components/Icon';
 import { Phone, PHONE_H, PHONE_W } from '../components/Phone';
 import { WordReveal } from '../components/WordReveal';
 import { DarkBackground, Fit } from '../components/ui';
 
-/* Scène 1 (0 → 6 s) — HOOK : un téléphone vibre, l'appel n'est pas décroché,
+/* Scène 1 — HOOK : un téléphone vibre, l'appel n'est pas décroché,
    les notifications « Appel manqué » se multiplient. */
 
 export const CALL_END = 78; // l'appel bascule en « manqué »
@@ -210,7 +210,7 @@ const LockScreen: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) =>
 };
 
 export const S1Hook: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical, width, height, pad } = useLayout();
 

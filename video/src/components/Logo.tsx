@@ -1,6 +1,6 @@
 import React from 'react';
-import { Img, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
-import { springAt } from '../anim';
+import { Img, staticFile, useVideoConfig } from 'remotion';
+import { springAt, useSceneFrame } from '../anim';
 import { SPRINGS } from '../config';
 
 /* Proportions des fichiers PNG de la marque (public/brand) */
@@ -18,7 +18,7 @@ export const AnimatedLockup: React.FC<{
   wordmarkAt: number;
   variant?: 'navy' | 'light';
 }> = ({ height, markAt, wordmarkAt, variant = 'navy' }) => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
 
   const markW = height * MARK_RATIO;

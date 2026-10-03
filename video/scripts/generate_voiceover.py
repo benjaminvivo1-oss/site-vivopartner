@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / 'src' / 'audio' / 'voiceover.json'
 OUT = ROOT / 'public' / 'audio' / 'vo'
-LENGTH_SCALE = os.environ.get('VO_LENGTH_SCALE', '0.95')  # < 1 : débit un peu plus soutenu
+LENGTH_SCALE = os.environ.get('VO_LENGTH_SCALE', '0.86')  # < 1 : débit un peu plus soutenu
 
 # Chaîne de traitement : coupe le grave, présence, compression douce, niveau -16 LUFS.
 FILTERS = ','.join([
