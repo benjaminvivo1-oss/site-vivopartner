@@ -10,7 +10,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'sha256-sa2BD07tH4oO53uT1B5vNSLM2+gcrREM4WTXttKp6oU=' 'sha256-mm4TfSIW/5oPR90M1BsHQDjqEBE+1WWE/KEs0QN8i1k=' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://plausible.io; manifest-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; require-trusted-types-for 'script'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' 'sha256-Q5qz3sViNBO/fS4VtPtdyXTKzrlmafDpCtT3G+oK0QY=' 'sha256-Z1o+YbDuEmsBWkX9SZLNHaWzmotI+9BngrQ8PIkQndI=' 'sha256-kQy3eOLVl6QcSs0cQJM5u4io2LHsSHA1SzH7r6X7a9Q=' 'sha256-mm4TfSIW/5oPR90M1BsHQDjqEBE+1WWE/KEs0QN8i1k=' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://plausible.io; manifest-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; require-trusted-types-for 'script'; upgrade-insecure-requests"
         },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },

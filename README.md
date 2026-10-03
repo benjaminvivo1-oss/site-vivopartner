@@ -218,6 +218,18 @@ Ce qui bouge :
   - réponses de la FAQ qui se déplient en douceur, avec l'icône + qui devient − ;
   - messages d'erreur du formulaire qui apparaissent en fondu.
 - **Navigation** : fondu entre les pages, avec l'en-tête et la barre mobile qui restent en place (navigateurs compatibles). Filet de lecture orange sous l'en-tête, qui suit le défilement.
+- **Couche dynamique** (`src/scripts/motion.ts`, fin de `src/styles/global.css`) :
+  - titres de section (h2) qui apparaissent mot par mot en se défloutant (ceux déjà visibles au chargement restent tels quels) ;
+  - hero de l'accueil : trame qui dérive lentement, carte « Diagnostic » qui s'incline vers la souris, halo orange qui suit le pointeur ; en défilant, le texte remonte et s'estompe et la carte part plus vite (profondeur, CSS `animation-timeline`, sans JS) ;
+  - boutons d'audit « magnétiques » (ils glissent vers la souris) et reflet qui les balaie au survol ; le bouton principal du hero reçoit ce reflet toutes les 7 s ;
+  - nouvelle page qui monte légèrement pendant le fondu de navigation.
+    Effets de souris réservés aux ordinateurs (pointeur fin) ; tout est coupé avec « réduire les animations ».
+
+## Navigation instantanée
+
+Chrome et Edge préparent la page visée en arrière-plan (Speculation Rules, règle `moderate`) dès que le pointeur s'attarde sur un lien ou au toucher : le clic affiche la page immédiatement. Les autres navigateurs gardent le préchargement au survol d'Astro. Les animations d'une page préparée attendent qu'elle soit réellement affichée (classe `vp-pre` posée dans `<head>`, `whenActivated()` dans `motion.ts`).
+
+Si la mesure d'audience Plausible est activée, la règle passe en simple téléchargement (`prefetch`) : une page préparée mais jamais ouverte ne doit pas compter comme une visite. Les deux variantes de la règle ont leur hachage dans la CSP de `vercel.json` (vérifié par `npm run build`).
 
 ## Vérifications
 

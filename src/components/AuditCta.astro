@@ -13,6 +13,8 @@ interface Props {
   href?: string;
   as?: 'a' | 'button';
   style?: string;
+  /** Reflet qui balaie le bouton à intervalle régulier (bouton principal du hero). */
+  shine?: boolean;
 }
 
 const {
@@ -22,13 +24,14 @@ const {
   href = ROUTES.contact,
   as = 'a',
   style = '',
+  shine = false,
 } = Astro.props;
 
 const base =
   variant === 'orange'
     ? 'display:inline-flex;align-items:center;gap:12px;background:#F58220;color:#0F172A;border:none;border-radius:999px;padding:12px 28px;min-height:60px;box-sizing:border-box;cursor:pointer;text-align:left;font-family:inherit;box-shadow:0 10px 24px rgba(245,130,32,.25);transition:background .28s ease,box-shadow .28s ease,transform .28s ease'
     : 'display:inline-flex;align-items:center;gap:12px;background:#0F172A;color:#F8FAFC;border:none;border-radius:999px;padding:12px 28px;min-height:60px;box-sizing:border-box;cursor:pointer;text-align:left;font-family:inherit;box-shadow:0 12px 26px rgba(2,8,22,.28);transition:background .28s ease,box-shadow .28s ease,transform .28s ease';
-const hover = variant === 'orange' ? 'hv-cta' : 'hv-cta-dark';
+const hover = `${variant === 'orange' ? 'hv-cta' : 'hv-cta-dark'}${shine ? ' vp-shine' : ''}`;
 const subColor = variant === 'orange' ? '#0F172A' : '#CBD5E1';
 const css = `flex:none;${base}${style ? `;${style}` : ''}`;
 ---

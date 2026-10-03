@@ -557,6 +557,125 @@ a:focus-visible .vp-arrow {
   translate: 4px 0;
 }
 
+/* ---------- Couche « dynamique » (src/scripts/motion.ts) ---------- */
+
+/* Titres de section mot par mot : chaque mot monte et se défloute, 45 ms après le précédent. */
+.js .vp-split .vp-w {
+  display: inline-block;
+  opacity: 0;
+  translate: 0 0.4em;
+  filter: blur(6px);
+  transition:
+    opacity 0.7s var(--vp-ease),
+    translate 0.9s var(--vp-ease),
+    filter 0.7s var(--vp-ease);
+  transition-delay: calc(var(--vp-delay, 0ms) + 80ms + var(--wi, 0) * 45ms);
+}
+.js .vp-split.is-in .vp-w {
+  opacity: 1;
+  translate: none;
+  filter: none;
+}
+
+/* Hero de l'accueil : trame qui dérive lentement, halo orange qui suit le pointeur. */
+@keyframes vpDrift {
+  to {
+    translate: 64px 64px;
+  }
+}
+.vp-grid-drift {
+  animation: vpDrift 28s linear infinite;
+}
+.vp-spot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background: radial-gradient(560px circle at var(--mx, 50%) var(--my, 50%), rgba(245, 130, 32, 0.16), transparent 62%);
+}
+.is-pointer > .vp-spot {
+  opacity: 1;
+}
+[data-vp-tilt] {
+  will-change: transform;
+}
+
+/* Hero : en défilant, le texte remonte et s'estompe, la carte part un peu plus vite (profondeur). */
+@keyframes vpHeroCopy {
+  to {
+    translate: 0 -56px;
+    opacity: 0.25;
+  }
+}
+@keyframes vpHeroArt {
+  to {
+    translate: 0 -110px;
+    scale: 0.95;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .vp-hero-copy,
+    .vp-hero-art {
+      animation: vpHeroCopy linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 85vh;
+    }
+    .vp-hero-art {
+      animation-name: vpHeroArt;
+    }
+  }
+}
+
+/* Boutons d'audit : reflet qui balaie le bouton au survol (et toutes les 7 s pour le bouton principal du hero). */
+.hv-cta,
+.hv-cta-dark,
+.hv-cta-sm {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hv-cta::after,
+.hv-cta-dark::after,
+.hv-cta-sm::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+  translate: -110% 0;
+}
+.hv-cta-dark::after {
+  background: linear-gradient(105deg, transparent 30%, rgba(248, 250, 252, 0.18) 50%, transparent 70%);
+}
+.hv-cta:hover::after,
+.hv-cta-dark:hover::after,
+.hv-cta-sm:hover::after {
+  translate: 110% 0;
+  transition: translate 0.8s var(--vp-ease);
+}
+@keyframes vpShine {
+  0% {
+    translate: -110% 0;
+  }
+  16%,
+  100% {
+    translate: 110% 0;
+  }
+}
+.vp-shine::after {
+  animation: vpShine 7s var(--vp-ease-inout) 2.4s infinite;
+}
+
+/* Page préchargée en arrière-plan : les animations attendent que la page soit affichée (classe posée dans <head>). */
+.vp-pre *,
+.vp-pre *::before,
+.vp-pre *::after {
+  animation-play-state: paused !important;
+}
+
 /* Transitions entre pages (navigateurs compatibles) : fondu court ; en-tête et barre mobile restent en place. */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
@@ -567,7 +686,14 @@ a:focus-visible .vp-arrow {
   animation: vpFadeOut 0.18s cubic-bezier(0.4, 0, 1, 1) both;
 }
 ::view-transition-new(root) {
-  animation: vpFade 0.42s var(--vp-ease) both;
+  animation:
+    vpFade 0.42s var(--vp-ease) both,
+    vpPageIn 0.6s var(--vp-ease) both;
+}
+@keyframes vpPageIn {
+  from {
+    translate: 0 18px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -591,6 +717,14 @@ a:focus-visible .vp-arrow {
   }
   .js .vp-draw {
     clip-path: none;
+  }
+  .js .vp-split .vp-w {
+    opacity: 1;
+    translate: none;
+    filter: none;
+  }
+  .vp-shine::after {
+    animation: none;
   }
 }
 

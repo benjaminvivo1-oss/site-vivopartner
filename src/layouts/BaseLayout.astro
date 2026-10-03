@@ -24,6 +24,19 @@ const ogDescription = ('ogDescription' in seo && seo.ogDescription) || seo.descr
 // Mesure d'audience sans cookies (Plausible), activée seulement si le domaine est configuré.
 const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
 const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.io/js/script.js';
+
+// Navigation instantanée (Chrome, Edge) : la page visée est préparée en arrière-plan dès que le pointeur
+// s'attarde sur un lien (ou au toucher). Avec la mesure d'audience active, on se contente de télécharger
+// la page (prefetch) : une page préparée mais jamais ouverte ne doit pas compter comme une visite.
+// Les autres navigateurs gardent le préchargement d'Astro (astro.config.mjs). Hachages : vercel.json (CSP).
+const speculationRules = JSON.stringify({
+  [plausibleDomain ? 'prefetch' : 'prerender']: [
+    {
+      where: { and: [{ href_matches: '/*' }, { not: { href_matches: '/api/*' } }] },
+      eagerness: 'moderate',
+    },
+  ],
+});
 ---
 
 <!doctype html>
@@ -61,8 +74,17 @@ const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.
     <link rel="preload" href="/fonts/Satoshi-Medium.woff2" as="font" type="font/woff2" crossorigin />
 
     <script is:inline>
-      document.documentElement.classList.add('js');
+      (function (d, c) {
+        c.add('js');
+        if (d.prerendering) {
+          c.add('vp-pre');
+          d.addEventListener('prerenderingchange', function () {
+            c.remove('vp-pre');
+          });
+        }
+      })(document, document.documentElement.classList);
     </script>
+    <script is:inline type="speculationrules" set:html={speculationRules} />
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     {plausibleDomain && (
       <>
