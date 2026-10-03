@@ -62,8 +62,8 @@ export const SCENE_SECONDS = {
   aplomb: 4.5, //       11,7 → 16,2 s
   receptionniste: 4.5, // 16,2 → 20,7 s
   visibilite: 4.6, //   20,7 → 25,3 s
-  benefices: 2.8, //    25,3 → 28,1 s
-  cta: 3.9, //          28,1 → 32 s
+  benefices: 3.1, //    25,3 → 28,4 s
+  cta: 3.7, //          28,4 → 32,1 s
 } as const;
 
 /** Vitesse des animations à l'intérieur des scènes (1 = rythme d'origine, 1,6 = 60 % plus rapide).

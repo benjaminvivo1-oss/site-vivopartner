@@ -45,13 +45,14 @@ video/
 │       ├── S4Aplomb.tsx      11,7 → 16,2 s
 │       ├── S5Receptionniste.tsx 16,2 → 20,7 s
 │       ├── S6Visibilite.tsx  20,7 → 25,3 s
-│       ├── S7Benefices.tsx   25,3 → 28,1 s
-│       ├── S8Cta.tsx         28,1 → 32 s
+│       ├── S7Benefices.tsx   25,3 → 28,4 s
+│       ├── S8Cta.tsx         28,4 → 32,1 s
 │       └── index.ts             ← registre des scènes (type de transition d'entrée)
 ├── public/
 │   ├── brand/   ← logos VP (copiés depuis src/assets/brand du site)
 │   ├── fonts/   ← Satoshi + Inter (copiés depuis public/fonts du site)
 │   └── audio/   ← music.mp3, vo/ (voix off), sfx/ (bruitages)
+├── audio-sources/ ← prise originale de la voix off (ElevenLabs)
 ├── scripts/     ← générateurs audio (voix off, musique, bruitages)
 └── VOIX-OFF.md  ← timecodes de la voix off scène par scène
 ```
@@ -78,7 +79,7 @@ Le timing interne de chaque scène (apparition des cartes, des bulles, etc.) est
 
 Le trailer est livré avec sa bande-son, déjà calée :
 
-- **Voix off** : voix française de synthèse Kokoro (voix « ff_siwis »). Chaque phrase est dite d'une seule traite pour garder une intonation naturelle ; la longue phrase des 3 piliers est découpée à ses pauses et répartie sur ses scènes (`src/audio/voiceover.json`). La musique s'abaisse automatiquement pendant la voix.
+- **Voix off** : voix ElevenLabs (voix `jUHQdLfy668sllNiNTSW`, modèle multilingue), enregistrée d'une seule prise (`audio-sources/voix-off-elevenlabs.mp3`) puis découpée à ses pauses en 8 parties (`public/audio/vo/`), chacune placée dans sa scène (`src/audio/voiceover.json`). La musique s'abaisse automatiquement pendant la voix.
 - **Musique** : `public/audio/music.mp3`, composée par programme (`scripts/generate_music_sfx.py`) : tension sombre jusqu'à la bascule, éclaircie sur le logo, groove sur les 3 piliers, montée sur les bénéfices, accord final.
 - **Bruitages** : vibreur, notifications, feuilles qui tombent, tampon, tic-tac, pops d'interface, validations, souffles, scintillement du logo, pin qui tombe, impacts. Ils sont accrochés aux animations (`src/audio/sfx.ts`).
 
@@ -96,7 +97,7 @@ KOKORO_DIR=… npm run audio:voice          # ou voix gratuite hors ligne (Kokor
 
 ## Crédits audio
 
-- Voix off : modèle Kokoro v1.0 (licence Apache 2.0), voix « ff_siwis » issue de la base SIWIS French Speech Synthesis (University of Edinburgh, licence **CC-BY 4.0**) : par prudence, mentionner « Voix : Kokoro / SIWIS (CC-BY 4.0) » dans la description de la vidéo tant que cette voix est utilisée.
+- Voix off : générée avec ElevenLabs. Pour une diffusion commerciale (publicité), l'abonnement ElevenLabs utilisé pour la générer doit être payant (la formule gratuite n'autorise pas l'usage commercial).
 - Musique et bruitages : synthétisés par `scripts/generate_music_sfx.py`, sans échantillon externe ; libres d'utilisation.
 
 ## Licence Remotion

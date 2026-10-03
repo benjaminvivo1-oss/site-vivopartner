@@ -10,8 +10,8 @@ Durée totale : **32 s** à 30 i/s (960 images). Les timecodes ci-dessous corres
 | 4. Aplomb            | 11,7 → 16,2  | Tableau de bord : devis, relances, avis, chantiers, graphique | « Avec VivoPartner, vous automatisez votre gestion. »                      |
 | 5. Réceptionniste IA | 16,2 → 20,7  | Onde vocale, transcription, RDV ajouté à l'agenda             | « Vous ne ratez plus un seul appel. »                                      |
 | 6. Visibilité        | 20,7 → 25,3  | Pin Maps, fiche avec étoiles, site mobile, courbe de visites  | « Et vous devenez visible, là où vos clients vous cherchent. »             |
-| 7. Bénéfices         | 25,3 → 28,1  | Trois impacts, un par phrase                                  | « Plus de devis. Plus de temps. Zéro client perdu. »                       |
-| 8. CTA               | 28,1 → 32    | Logo, tagline, vivopartner.com, bouton                        | « VivoPartner. Automatise aujourd'hui, accélère demain. »                  |
+| 7. Bénéfices         | 25,3 → 28,4  | Trois impacts, un par phrase                                  | « Plus de devis. Plus de temps. Zéro client perdu. »                       |
+| 8. CTA               | 28,4 → 32,1  | Logo, tagline, vivopartner.com, bouton                        | « VivoPartner. Automatise aujourd'hui, accélère demain. »                  |
 
 ## Conseils d'enregistrement
 
@@ -21,6 +21,6 @@ Durée totale : **32 s** à 30 i/s (960 images). Les timecodes ci-dessous corres
 
 ## Voix off fournie
 
-Voix de synthèse Kokoro (française), en 6 prises dites d'une traite, découpées en 8 parties (`public/audio/vo/vo-01.mp3` … `vo-08.mp3`) ; placement dans `src/audio/voiceover.json`.
+Voix ElevenLabs (voix `jUHQdLfy668sllNiNTSW`), une seule prise de 24,7 s (`audio-sources/voix-off-elevenlabs.mp3`) découpée à ses pauses en 8 parties (`public/audio/vo/vo-01.mp3` … `vo-08.mp3`). Les points de coupe sont notés dans `src/audio/voiceover.json` (champ `source`).
 
-Pour la remplacer par un enregistrement : une partie par fichier, mêmes noms, puis `npm run audio:durations`.
+Pour une nouvelle prise : même texte, même ordre ; je redécoupe et je recale.

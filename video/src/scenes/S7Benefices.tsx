@@ -8,7 +8,7 @@ import { NavyBackground } from '../components/ui';
 /* Scène 7 — BÉNÉFICES : trois phrases qui claquent en rythme. */
 
 /** Image d'impact de chaque phrase — à recaler sur la voix off si besoin */
-export const BENEFIT_HITS = [5, 41, 74];
+export const BENEFIT_HITS = [4, 50, 89];
 
 export const S7Benefices: React.FC = () => {
   const frame = useSceneFrame();
