@@ -4,7 +4,7 @@ Voix off du trailer, en prises continues (intonation naturelle) découpées à l
 
 Deux moteurs :
 - ElevenLabs (recommandé, voix humaine) : utilisé dès que ELEVENLABS_API_KEY est défini.
-  Sans ELEVENLABS_VOICE_ID, la voix est choisie automatiquement dans la bibliothèque ElevenLabs :
+  Voix : ELEVENLABS_VOICE_ID, sinon « elevenlabs_voice_id » de voiceover.json ; à défaut, la voix est choisie automatiquement dans la bibliothèque ElevenLabs :
   voix française native, professionnelle, faite pour la publicité, la plus utilisée par les
   autres clients. Elle est ajoutée au compte et notée dans src/audio/voiceover.json.
   --samples : génère aussi la première phrase avec les 3 meilleures voix (out/voice-samples/).
@@ -138,7 +138,7 @@ def main():
     engine = 'elevenlabs' if os.environ.get('ELEVENLABS_API_KEY') else 'kokoro'
     voice_id = None
     if not only_durations and engine == 'elevenlabs':
-        voice_id = os.environ.get('ELEVENLABS_VOICE_ID')
+        voice_id = os.environ.get('ELEVENLABS_VOICE_ID') or data.get('elevenlabs_voice_id')
         if not voice_id:
             best = el_best_voices(3)
             if not best:
