@@ -39,7 +39,7 @@ const range = (from: number, to: number, step: number) =>
 
 export const SFX_CUES: Cue[] = [
   ...scene('hook', [
-    ...VIBRATE.map(([a]) => ({ sfx: 'vibrate' as const, frame: a, volume: 0.9 })),
+    ...VIBRATE.map(([a]) => ({ sfx: 'vibrate' as const, frame: a, volume: 0.45 })),
     { sfx: 'whoosh', frame: CALL_END - 4, volume: 0.25 },
     ...MISSED_AT.map((f, i) => ({
       sfx: 'notif' as const,
