@@ -11,6 +11,8 @@ import { Chip, DarkBackground, Fit, Pop, Skeleton } from '../components/ui';
 
 /** Départ de chaque « temps » (images locales) */
 export const BEAT = [8, 62, 143];
+/** Apparition de chaque phrase du texte (une de plus que les panneaux : « Appels oubliés. ») */
+export const TEXT_BEAT = [8, 62, 104, 143];
 
 const PANEL_W = 450;
 const PANEL_H = 540;
@@ -412,7 +414,7 @@ export const S2Probleme: React.FC = () => {
           }}
         >
           {beats.map((b, i) => (
-            <WordReveal key={i} text={b} start={BEAT[i]} fontSize={fontSize} color={COLORS.white} align="center" />
+            <WordReveal key={i} text={b} start={TEXT_BEAT[i]} fontSize={fontSize} color={COLORS.white} align="center" />
           ))}
         </div>
       </AbsoluteFill>

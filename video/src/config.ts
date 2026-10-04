@@ -105,13 +105,13 @@ export const TOTAL_FRAMES = TIMELINE.cursor;
 export const TEXTS = {
   hook: {
     line1: 'Pendant que vous êtes sur le chantier…',
-    line2: '…vos clients *appellent* *ailleurs.*',
+    line2: '…combien de clients *perdez-vous* ?',
     incomingCaller: 'Nouveau client',
     incomingNumber: '06 •• •• •• 47',
     missedCall: 'Appel manqué',
   },
   probleme: {
-    beats: ['Devis en retard.', 'Relances oubliées.', '*Soirées* *perdues* dans l’admin.'],
+    beats: ['Devis en retard.', 'Relances oubliées.', 'Appels oubliés.', '*Soirées* *perdues* dans l’admin.'],
     quoteLabel: 'DEVIS',
     lateTag: 'En retard',
     inboxTitle: 'Boîte de réception',
@@ -154,7 +154,7 @@ export const TEXTS = {
     chartLabel: 'Visites du site',
   },
   benefices: {
-    words: ['Plus de devis.', 'Plus de temps.', '*Zéro* *client* *perdu.*'],
+    words: ['+ de devis.', '+ de temps.', '*Zéro* *client* *perdu.*'],
   },
   /** Preuves chiffrées, une par pilier (gros chiffre orange + source en petit) */
   proofs: {
