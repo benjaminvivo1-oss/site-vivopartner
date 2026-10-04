@@ -6,6 +6,21 @@ import { DIALOGUE_ABS, dialogueSrc } from './dialogue';
 import { SFX_CUES } from './sfx';
 import { VO_LINES } from './voiceover';
 
+/** Présence d'une voix (voix off ou dialogue) à l'image f : 0 → 1, rampes de 6 images */
+const voiceAt = (f: number) => {
+  let v = 0;
+  for (const [from, len] of [
+    ...VO_LINES.map((l) => [l.from, l.duration]),
+    ...DIALOGUE_ABS.map((l) => [l.from, l.frames]),
+  ]) {
+    const a = from - 6;
+    const b = from + len + 6;
+    if (f < a || f > b) continue;
+    v = Math.max(v, Math.min(tween(f, [a, from], [0, 1]), tween(f, [from + len, b], [1, 0])));
+  }
+  return v;
+};
+
 /** Atténuation de la musique sous la voix off (rampes de 6 images) */
 const duckAt = (f: number) => {
   let d = 0;
@@ -61,7 +76,7 @@ export const Soundtrack: React.FC = () => {
           <Sequence key={i} name={`Bruitage · ${c.sfx}`} from={c.frame} durationInFrames={sec(2)}>
             <Audio
               src={staticFile(`audio/sfx/${c.sfx}.mp3`)}
-              volume={AUDIO.sfxVolume * (c.volume ?? 1)}
+              volume={(f) => AUDIO.sfxVolume * (c.volume ?? 1) * (1 - voiceAt(c.frame + f) * (1 - AUDIO.sfxDuck))}
               playbackRate={c.rate ?? 1}
             />
           </Sequence>

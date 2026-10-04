@@ -211,7 +211,9 @@ export const AUDIO = {
   dialogueVolume: 1,
   /** Musique pendant le dialogue du pilier 2 (fraction de musicVolume) */
   musicDuckDialogue: 0.3,
-  sfxVolume: 0.55,
+  sfxVolume: 0.35,
+  /** Bruitages pendant la voix off et le dialogue (fraction de sfxVolume) */
+  sfxDuck: 0.5,
   musicFadeInSeconds: 0.5,
   musicFadeOutSeconds: 1.5,
 } as const;
