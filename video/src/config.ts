@@ -115,6 +115,15 @@ export const TEXTS = {
     quoteLabel: 'DEVIS',
     lateTag: 'En retard',
     inboxTitle: 'Boîte de réception',
+    callsTitle: 'Appels manqués',
+    callTodo: 'À rappeler',
+    callNever: 'Jamais rappelé',
+    calls: [
+      { label: 'Demande de devis', time: '08:14' },
+      { label: 'Fuite urgente', time: '10:52' },
+      { label: 'Nouveau client', time: '13:37' },
+      { label: 'Rénovation cuisine', time: '16:05' },
+    ],
     inboxRows: [
       'Relance — devis salle de bain',
       'Re : demande de devis toiture',

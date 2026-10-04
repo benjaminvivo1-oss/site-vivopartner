@@ -5,7 +5,7 @@ Durée totale : **33,6 s** à 30 i/s (1 008 images). Les timecodes ci-dessous co
 | Scène                | Timecode     | À l'écran                                                                  | Voix off                                                          |
 | -------------------- | ------------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | 1. Hook              | 00:00 → 03,5 | Téléphone qui sonne dès la 1re image, « Appel manqué » qui se multiplient | « Pendant que vous êtes sur le chantier… combien d'appels manquez-vous ? » |
-| 2. Le problème       | 03,5 → 08,6  | Devis qui s'empilent, horloge 17:00 → 22:00, e-mails non lus               | « Devis en retard, relances oubliées, appels oubliés, soirées perdues dans l'admin. » |
+| 2. Le problème       | 03,5 → 08,6  | Une illustration par phrase : devis en retard, e-mails non lus, appels jamais rappelés, horloge 17:00 → 22:00             | « Devis en retard, relances oubliées, appels oubliés, soirées perdues dans l'admin. » |
 | 3. La bascule        | 08,6 → 11,2  | Écran blanc, logo VP, wordmark, question                                   | « Et si votre entreprise tournait toute seule ? »                 |
 | 4. Aplomb            | 11,2 → 14,9  | Tableau de bord : devis, relances, avis, chantiers, graphique              | « Avec VivoPartner, vous automatisez votre gestion. »             |
 | 5. Réceptionniste IA | 14,9 → 23,4  | Dialogue audio client ↔ IA (onde + sous-titres), RDV, preuve               | Dialogue, puis « Vous ne ratez plus un seul appel. »              |

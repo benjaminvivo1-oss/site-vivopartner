@@ -6,13 +6,13 @@ import { Icon } from '../components/Icon';
 import { WordReveal } from '../components/WordReveal';
 import { Chip, DarkBackground, Fit, Pop, Skeleton } from '../components/ui';
 
-/* Scène 2 — LE PROBLÈME : devis qui s'empilent, horloge qui file
-   jusqu'à 22 h, e-mails non lus qui débordent. */
+/* Scène 2 — LE PROBLÈME : une illustration par phrase.
+   Devis qui s'empilent · e-mails non lus · appels jamais rappelés · horloge jusqu'à 22 h. */
 
-/** Départ de chaque « temps » (images locales) */
-export const BEAT = [6, 58, 168];
-/** Apparition de chaque phrase du texte (une de plus que les panneaux : « Appels oubliés. ») */
-export const TEXT_BEAT = [6, 58, 112, 168];
+/** Départ de chaque panneau (images locales), calé sur la phrase correspondante de la voix off */
+export const BEAT = [6, 58, 112, 168];
+/** Apparition de chaque phrase du texte (même rythme que les panneaux) */
+export const TEXT_BEAT = BEAT;
 
 const PANEL_W = 450;
 const PANEL_H = 540;
@@ -32,10 +32,13 @@ const panelStyle: React.CSSProperties = {
 export const DROPS = [0, 9, 17, 24, 30, 35, 39, 43, 46];
 /** Tampon « En retard », relatif à BEAT[0] */
 export const STAMP_AT = 56;
-/** Horloge 17:00 → 22:00, relatif à BEAT[1] */
-export const CLOCK_RUN: [number, number] = [8, 150];
-/** Arrivée des e-mails, relatif à BEAT[2] */
+/** Arrivée des e-mails, relatif à BEAT[1] */
 export const ROW_AT = TEXTS.probleme.inboxRows.map((_, i) => 6 + Math.round(i * 9 - i * i * 0.35));
+/** Appels manqués : arrivée de chaque ligne, puis passage à « Jamais rappelé » (relatif à BEAT[2]) */
+export const CALL_ROW_AT = TEXTS.probleme.calls.map((_, i) => 2 + i * 6);
+export const CALL_NEVER_AT = TEXTS.probleme.calls.map((_, i) => 28 + i * 5);
+/** Horloge 17:00 → 22:00, relatif à BEAT[3] */
+export const CLOCK_RUN: [number, number] = [6, 72];
 
 const QuotePile: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
   const f = frame - BEAT[0];
@@ -125,7 +128,7 @@ const QuotePile: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => 
 
 /* ── B. Horloge 17:00 → 22:00 ─────────────────────────────────────────────── */
 const ClockPanel: React.FC<{ frame: number }> = ({ frame }) => {
-  const f = frame - BEAT[1];
+  const f = frame - BEAT[3];
   // minutes écoulées depuis 17:00 (0 → 300)
   const minutes = tween(f, CLOCK_RUN, [0, 300], EASE_IN_OUT);
   const total = 17 * 60 + minutes;
@@ -227,7 +230,7 @@ function describeArc(r: number, startDeg: number, endDeg: number) {
 
 /* ── C. Boîte de réception qui déborde ────────────────────────────────────── */
 const InboxPanel: React.FC<{ frame: number; fps: number; width: number }> = ({ frame, fps, width }) => {
-  const f = frame - BEAT[2];
+  const f = frame - BEAT[1];
   const rows = TEXTS.probleme.inboxRows;
   const arrived = ROW_AT.filter((t) => f >= t).length;
   const pulse = springAt(f, fps, ROW_AT[Math.max(0, arrived - 1)], SPRINGS.bouncy);
@@ -325,6 +328,103 @@ const InboxPanel: React.FC<{ frame: number; fps: number; width: number }> = ({ f
   );
 };
 
+/* ── C. Appels manqués jamais rappelés ────────────────────────────────────── */
+const CallsPanel: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
+  const f = frame - BEAT[2];
+  const { calls, callsTitle, callTodo, callNever } = TEXTS.probleme;
+  const arrived = CALL_ROW_AT.filter((t) => f >= t).length;
+  const pulse = springAt(f, fps, CALL_ROW_AT[Math.max(0, arrived - 1)], SPRINGS.bouncy);
+  return (
+    <div style={{ ...panelStyle, background: COLORS.pureWhite, border: 'none' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 14,
+          padding: '26px 28px',
+          borderBottom: `1px solid ${COLORS.slate200}`,
+          fontFamily: FONTS.body,
+        }}
+      >
+        <Icon name="phoneMissed" size={28} color={COLORS.danger} />
+        <div style={{ fontWeight: 600, fontSize: 22, color: COLORS.ink, flex: 1 }}>{callsTitle}</div>
+        <div
+          style={{
+            minWidth: 40,
+            height: 40,
+            padding: '0 12px',
+            borderRadius: 99,
+            background: COLORS.danger,
+            color: 'white',
+            fontWeight: 700,
+            fontSize: 20,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transform: `scale(${arrived ? 0.85 + 0.15 * pulse : 0})`,
+          }}
+        >
+          {arrived}
+        </div>
+      </div>
+      {calls.map((c, i) => {
+        const p = springAt(f, fps, CALL_ROW_AT[i], SPRINGS.snappy);
+        const never = tween(f, [CALL_NEVER_AT[i], CALL_NEVER_AT[i] + 6], [0, 1]);
+        const flip = springAt(f, fps, CALL_NEVER_AT[i], SPRINGS.bouncy);
+        return (
+          <div
+            key={i}
+            style={{
+              height: 106,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 16,
+              padding: '0 24px',
+              borderBottom: `1px solid ${COLORS.slate100}`,
+              opacity: p * (1 - never * 0.45),
+              transform: `translateX(${(1 - p) * 40}px)`,
+              fontFamily: FONTS.body,
+            }}
+          >
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 99,
+                background: never > 0.5 ? COLORS.slate100 : 'rgba(229,72,77,0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <Icon name="phoneMissed" size={24} color={never > 0.5 ? COLORS.slate500 : COLORS.danger} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontWeight: 600, fontSize: 19, color: COLORS.ink, whiteSpace: 'nowrap' }}>{c.label}</div>
+              <div style={{ fontSize: 15, color: COLORS.slate500, marginTop: 4 }}>{c.time}</div>
+            </div>
+            <div
+              style={{
+                padding: '7px 12px',
+                borderRadius: 99,
+                fontSize: 14,
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+                background: never > 0.5 ? COLORS.slate200 : 'rgba(245,130,32,0.14)',
+                color: never > 0.5 ? COLORS.slate500 : COLORS.orange,
+                transform: `scale(${never > 0.5 ? 0.9 + 0.1 * flip : 1})`,
+              }}
+            >
+              {never > 0.5 ? callNever : callTodo}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export const S2Probleme: React.FC = () => {
   const frame = useSceneFrame();
   const { fps } = useVideoConfig();
@@ -336,37 +436,21 @@ export const S2Probleme: React.FC = () => {
     return next === undefined ? 1 : tween(frame, [next, next + 20], [1, 0.55]);
   };
 
-  const panels = vertical ? (
-    <div style={{ width: 940, height: PANEL_H * 2 + 40, display: 'flex', flexWrap: 'wrap', gap: 40 }}>
-      <Pop at={BEAT[0] - 4}>
-        <div style={{ opacity: dim(0) }}>
-          <QuotePile frame={frame} fps={fps} />
-        </div>
-      </Pop>
-      <Pop at={BEAT[1] - 4}>
-        <div style={{ opacity: dim(1) }}>
-          <ClockPanel frame={frame} />
-        </div>
-      </Pop>
-      <Pop at={BEAT[2] - 4}>
-        <InboxPanel frame={frame} fps={fps} width={940} />
-      </Pop>
-    </div>
-  ) : (
-    <div style={{ width: PANEL_W * 3 + 80, height: PANEL_H, display: 'flex', gap: 40 }}>
-      <Pop at={BEAT[0] - 4}>
-        <div style={{ opacity: dim(0) }}>
-          <QuotePile frame={frame} fps={fps} />
-        </div>
-      </Pop>
-      <Pop at={BEAT[1] - 4}>
-        <div style={{ opacity: dim(1) }}>
-          <ClockPanel frame={frame} />
-        </div>
-      </Pop>
-      <Pop at={BEAT[2] - 4}>
-        <InboxPanel frame={frame} fps={fps} width={PANEL_W} />
-      </Pop>
+  const cards = [
+    <QuotePile frame={frame} fps={fps} />,
+    <InboxPanel frame={frame} fps={fps} width={PANEL_W} />,
+    <CallsPanel frame={frame} fps={fps} />,
+    <ClockPanel frame={frame} />,
+  ];
+  const GRID_W = vertical ? PANEL_W * 2 + 40 : PANEL_W * 4 + 120;
+  const GRID_H = vertical ? PANEL_H * 2 + 40 : PANEL_H;
+  const panels = (
+    <div style={{ width: GRID_W, height: GRID_H, display: 'flex', flexWrap: 'wrap', gap: 40 }}>
+      {cards.map((card, i) => (
+        <Pop key={i} at={BEAT[i] - 4}>
+          <div style={{ opacity: dim(i) }}>{card}</div>
+        </Pop>
+      ))}
     </div>
   );
 
@@ -387,20 +471,14 @@ export const S2Probleme: React.FC = () => {
         }}
       >
         <div style={{ transform: `scale(${drift})` }}>
-          {vertical ? (
-            <Fit designWidth={940} designHeight={PANEL_H * 2 + 40} maxWidth={width - pad * 2} maxHeight={height * 0.56}>
-              {panels}
-            </Fit>
-          ) : (
-            <Fit
-              designWidth={PANEL_W * 3 + 80}
-              designHeight={PANEL_H}
-              maxWidth={width - pad * 2}
-              maxHeight={height - 360}
-            >
-              {panels}
-            </Fit>
-          )}
+          <Fit
+            designWidth={GRID_W}
+            designHeight={GRID_H}
+            maxWidth={width - pad * 2}
+            maxHeight={vertical ? height * 0.52 : height - 380}
+          >
+            {panels}
+          </Fit>
         </div>
         <div
           style={{

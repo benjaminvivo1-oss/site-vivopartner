@@ -4,7 +4,7 @@
  */
 import { SPEED, TIMELINE, type SceneKey } from '../config';
 import { CALL_END, MISSED_AT, VIBRATE } from '../scenes/S1Hook';
-import { BEAT, CLOCK_RUN, DROPS, ROW_AT, STAMP_AT } from '../scenes/S2Probleme';
+import { BEAT, CALL_NEVER_AT, CALL_ROW_AT, CLOCK_RUN, DROPS, ROW_AT, STAMP_AT } from '../scenes/S2Probleme';
 import { T3 } from '../scenes/S3Bascule';
 import { T as T4 } from '../scenes/S4Aplomb';
 import { T as T5 } from '../scenes/S5Receptionniste';
@@ -53,12 +53,14 @@ export const SFX_CUES: Cue[] = [
   ...scene('probleme', [
     ...DROPS.map((d, i) => ({ sfx: 'paper' as const, frame: BEAT[0] + d, volume: 0.7, rate: 0.9 + (i % 4) * 0.07 })),
     { sfx: 'stamp', frame: BEAT[0] + STAMP_AT, volume: 1 },
-    ...range(BEAT[1] + CLOCK_RUN[0], BEAT[1] + CLOCK_RUN[1], 6).map((f) => ({
+    ...ROW_AT.map((r, i) => ({ sfx: 'pop' as const, frame: BEAT[1] + r, volume: 0.5, rate: 0.95 + i * 0.03 })),
+    ...CALL_ROW_AT.map((r, i) => ({ sfx: 'notif' as const, frame: BEAT[2] + r, volume: 0.35, rate: 1 + i * 0.04 })),
+    ...CALL_NEVER_AT.map((r) => ({ sfx: 'click' as const, frame: BEAT[2] + r, volume: 0.4 })),
+    ...range(BEAT[3] + CLOCK_RUN[0], BEAT[3] + CLOCK_RUN[1], 6).map((f) => ({
       sfx: 'tick' as const,
       frame: f,
       volume: 0.35,
     })),
-    ...ROW_AT.map((r, i) => ({ sfx: 'pop' as const, frame: BEAT[2] + r, volume: 0.5, rate: 0.95 + i * 0.03 })),
   ]),
   ...scene('bascule', [
     { sfx: 'whoosh', frame: T3.wipe, volume: 0.8 },
