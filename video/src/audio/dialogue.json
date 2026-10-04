@@ -7,8 +7,8 @@
       "id": "client",
       "speaker": "Client",
       "text": "Allô ? J'ai une fuite sous l'évier, vous pouvez passer ?",
-      "source": "voix provisoire locale",
-      "duration": 3.187,
+      "source": "dialogue-client.mp3",
+      "duration": 3.109,
       "at": 0.2
     },
     {
@@ -16,9 +16,9 @@
       "speaker": "Assistant IA",
       "text": "Bien sûr ! Jeudi 9 h, ça vous va ?",
       "say": "Bien sûr ! Jeudi neuf heures, ça vous va ?",
-      "source": "voix provisoire locale",
-      "duration": 1.933,
-      "at": 3.537
+      "source": "dialogue-ia.mp3",
+      "duration": 2.952,
+      "at": 3.459
     }
   ]
 }

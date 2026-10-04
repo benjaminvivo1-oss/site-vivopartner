@@ -1,6 +1,6 @@
 /**
  * ─────────────────────────────────────────────────────────────────────────────
- *  VivoPartner — Trailer 31,5 s : TOUTES les constantes modifiables sont ici.
+ *  VivoPartner — Trailer 32,5 s : TOUTES les constantes modifiables sont ici.
  *  Couleurs, polices, durées des scènes, textes à l'écran, pistes audio.
  * ─────────────────────────────────────────────────────────────────────────────
  */
@@ -60,10 +60,10 @@ export const SCENE_SECONDS = {
   probleme: 5.1, //      2,4 → 7,5 s
   bascule: 2.6, //       7,5 → 10,1 s
   aplomb: 3.7, //       10,1 → 13,8 s
-  receptionniste: 7.5, // 13,8 → 21,3 s (dialogue client ↔ IA, durée recalculée par npm run audio:dialogue)
-  visibilite: 3.6, //   21,3 → 24,9 s
-  benefices: 3.1, //    24,9 → 28 s
-  cta: 3.5, //            28 → 31,5 s
+  receptionniste: 8.5, // 13,8 → 22,3 s (dialogue client ↔ IA, durée recalculée par npm run audio:dialogue)
+  visibilite: 3.6, //   22,3 → 25,9 s
+  benefices: 3.1, //    25,9 → 29 s
+  cta: 3.5, //            29 → 32,5 s
 } as const;
 
 /** Vitesse des animations à l'intérieur des scènes (1 = rythme d'origine, 1,6 = 60 % plus rapide).

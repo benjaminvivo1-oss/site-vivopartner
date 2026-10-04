@@ -1,6 +1,6 @@
 # VivoPartner — Trailer vidéo (Remotion)
 
-Trailer commercial animé de 31,5 s, 30 i/s, en deux formats :
+Trailer commercial animé de 32,5 s, 30 i/s, en deux formats :
 
 - `Trailer-16x9` — 1920 × 1080 (site, YouTube, LinkedIn)
 - `Trailer-9x16` — 1080 × 1920 (ads Reels / TikTok / Shorts)
@@ -43,10 +43,10 @@ video/
 │       ├── S2Probleme.tsx      2,4 → 7,5 s
 │       ├── S3Bascule.tsx      7,5 → 10,1 s
 │       ├── S4Aplomb.tsx      10,1 → 13,8 s
-│       ├── S5Receptionniste.tsx 13,8 → 21,3 s
-│       ├── S6Visibilite.tsx  21,3 → 24,9 s
-│       ├── S7Benefices.tsx   24,9 → 28 s
-│       ├── S8Cta.tsx         28 → 31,5 s
+│       ├── S5Receptionniste.tsx 13,8 → 22,3 s
+│       ├── S6Visibilite.tsx  22,3 → 25,9 s
+│       ├── S7Benefices.tsx   25,9 → 29 s
+│       ├── S8Cta.tsx         29 → 32,5 s
 │       └── index.ts             ← registre des scènes (type de transition d'entrée)
 ├── public/
 │   ├── brand/   ← logos VP (copiés depuis src/assets/brand du site)
@@ -83,7 +83,7 @@ Le trailer est livré avec sa bande-son, déjà calée :
 
 - **Voix off** : voix ElevenLabs (voix `jUHQdLfy668sllNiNTSW`, modèle multilingue), enregistrée d'une seule prise (`audio-sources/voix-off-elevenlabs.mp3`) puis découpée à ses pauses en 8 parties (`public/audio/vo/`), chacune placée dans sa scène (`src/audio/voiceover.json`). La musique s'abaisse automatiquement pendant la voix.
 - **Musique** : `public/audio/music.mp3`, composée par programme (`scripts/generate_music_sfx.py`) : tension sombre jusqu'à la bascule, éclaircie sur le logo, groove sur les 3 piliers, montée sur les bénéfices, accord final.
-- **Dialogue (pilier 2)** : client ↔ réceptionniste IA, sous-titré, musique baissée pendant l'échange (`src/audio/dialogue.json`). Voix provisoires tant que les prises ElevenLabs `audio-sources/dialogue-client.mp3` et `dialogue-ia.mp3` ne sont pas déposées.
+- **Dialogue (pilier 2)** : client ↔ réceptionniste IA, sous-titré, musique baissée pendant l'échange (`src/audio/dialogue.json`). Voix ElevenLabs : `audio-sources/dialogue-client.mp3` et `dialogue-ia.mp3`.
 - **Bruitages** : vibreur, notifications, feuilles qui tombent, tampon, tic-tac, pops d'interface, validations, souffles, scintillement du logo, pin qui tombe, impacts. Ils sont accrochés aux animations (`src/audio/sfx.ts`).
 
 Régénérer :
