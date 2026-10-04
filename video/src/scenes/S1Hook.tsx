@@ -10,9 +10,9 @@ import { DarkBackground, Fit } from '../components/ui';
 /* Scène 1 — HOOK : un téléphone vibre, l'appel n'est pas décroché,
    les notifications « Appel manqué » se multiplient. */
 
-export const CALL_END = 50; // l'appel bascule en « manqué »
+export const CALL_END = 64; // l'appel bascule en « manqué »
 /** Images d'apparition des notifications : de plus en plus rapprochées */
-export const MISSED_AT = [54, 66, 76, 84, 91, 97, 102, 106];
+export const MISSED_AT = [70, 88, 102, 114, 124, 132, 139, 145];
 const NUMBERS = [
   '06 •• •• •• 47',
   '07 •• •• •• 12',
@@ -26,8 +26,8 @@ const NUMBERS = [
 
 /** Salves de vibration [début, fin] en images */
 export const VIBRATE: [number, number][] = [
-  [0, 20],
-  [26, 46],
+  [0, 22],
+  [30, 52],
 ];
 const vibrating = (f: number) => VIBRATE.some(([a, b]) => f > a && f < b);
 
@@ -276,7 +276,7 @@ export const S1Hook: React.FC = () => {
       <WordReveal
         text={TEXTS.hook.line1}
         start={0}
-        exit={64}
+        exit={88}
         fontSize={fontSize}
         color={COLORS.white}
         align={vertical ? 'center' : 'left'}
@@ -284,7 +284,7 @@ export const S1Hook: React.FC = () => {
       />
       <WordReveal
         text={TEXTS.hook.line2}
-        start={70}
+        start={96}
         fontSize={fontSize}
         color={COLORS.white}
         align={vertical ? 'center' : 'left'}

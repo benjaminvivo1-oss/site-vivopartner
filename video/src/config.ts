@@ -1,6 +1,6 @@
 /**
  * ─────────────────────────────────────────────────────────────────────────────
- *  VivoPartner — Trailer 32,5 s : TOUTES les constantes modifiables sont ici.
+ *  VivoPartner — Trailer 33,6 s : TOUTES les constantes modifiables sont ici.
  *  Couleurs, polices, durées des scènes, textes à l'écran, pistes audio.
  * ─────────────────────────────────────────────────────────────────────────────
  */
@@ -56,14 +56,14 @@ export const WORD_STAGGER = 4;
  *  Calé sur la voix off (voir VOIX-OFF.md). Modifier une durée décale
  *  automatiquement toutes les scènes suivantes.                                */
 export const SCENE_SECONDS = {
-  hook: 2.4, //            0 → 2,4 s
-  probleme: 5.1, //      2,4 → 7,5 s
-  bascule: 2.6, //       7,5 → 10,1 s
-  aplomb: 3.7, //       10,1 → 13,8 s
-  receptionniste: 8.5, // 13,8 → 22,3 s (dialogue client ↔ IA, durée recalculée par npm run audio:dialogue)
-  visibilite: 3.6, //   22,3 → 25,9 s
-  benefices: 3.1, //    25,9 → 29 s
-  cta: 3.5, //            29 → 32,5 s
+  hook: 3.5, //            0 → 3,5 s
+  probleme: 5.1, //      3,5 → 8,6 s
+  bascule: 2.6, //       8,6 → 11,2 s
+  aplomb: 3.7, //       11,2 → 14,9 s
+  receptionniste: 8.5, // 14,9 → 23,4 s (dialogue client ↔ IA, durée recalculée par npm run audio:dialogue)
+  visibilite: 3.6, //   23,4 → 27 s
+  benefices: 3.1, //    27 → 30,1 s
+  cta: 3.5, //          30,1 → 33,6 s
 } as const;
 
 /** Vitesse des animations à l'intérieur des scènes (1 = rythme d'origine, 1,6 = 60 % plus rapide).
@@ -104,9 +104,8 @@ export const TOTAL_FRAMES = TIMELINE.cursor;
  *  Un mot entouré de *astérisques* s'affiche en orange.                        */
 export const TEXTS = {
   hook: {
-    /** Question posée dès la 1re image (c'est aussi la voix off), puis le contexte */
-    line1: 'Combien d’appels *manquez-vous* ?',
-    line2: '…pendant que vous êtes sur le chantier.',
+    line1: 'Pendant que vous êtes sur le chantier…',
+    line2: '…combien d’appels *manquez-vous* ?',
     incomingCaller: 'Nouveau client',
     incomingNumber: '06 •• •• •• 47',
     missedCall: 'Appel manqué',

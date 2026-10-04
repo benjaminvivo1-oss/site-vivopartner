@@ -4,14 +4,14 @@
   "speed": 1.0,
   "takes": [
     {
-      "say": "Combien d'appels manquez-vous ?",
+      "say": "Pendant que vous êtes sur le chantier… combien d'appels manquez-vous ?",
       "parts": [
         {
           "id": "vo-01",
           "scene": "hook",
           "at": 0.05,
-          "text": "Combien d'appels manquez-vous ?",
-          "duration": 1.332
+          "text": "Pendant que vous êtes sur le chantier… combien d'appels manquez-vous ?",
+          "duration": 3.344
         }
       ]
     },
@@ -91,5 +91,5 @@
     }
   ],
   "elevenlabs_voice_id": "jUHQdLfy668sllNiNTSW",
-  "source": "audio-sources/voix-off-elevenlabs.mp3 (ElevenLabs, voix jUHQdLfy668sllNiNTSW), découpée aux pauses : vo-01 2.00–3.30 s (seulement la question : « Pendant que vous êtes sur le chantier » reste à l'écran), vo-02 3.66–8.62 s, vo-03 9.00–10.95 s, vo-04 11.22–14.10 s, vo-05 14.14–15.72 s, vo-06 15.97–18.56 s, vo-07 18.93–21.85 s, vo-08 22.19–25.54 s"
+  "source": "audio-sources/voix-off-elevenlabs.mp3 (ElevenLabs, voix jUHQdLfy668sllNiNTSW), découpée aux pauses : vo-01 0.00–3.30 s, vo-02 3.66–8.62 s, vo-03 9.00–10.95 s, vo-04 11.22–14.10 s, vo-05 14.14–15.72 s, vo-06 15.97–18.56 s, vo-07 18.93–21.85 s, vo-08 22.19–25.54 s"
 }
