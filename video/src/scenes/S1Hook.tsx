@@ -275,7 +275,7 @@ export const S1Hook: React.FC = () => {
       <WordReveal
         text={TEXTS.hook.line1}
         start={10}
-        exit={86}
+        exit={92}
         fontSize={fontSize}
         color={COLORS.white}
         align={vertical ? 'center' : 'left'}
@@ -283,7 +283,7 @@ export const S1Hook: React.FC = () => {
       />
       <WordReveal
         text={TEXTS.hook.line2}
-        start={96}
+        start={100}
         fontSize={fontSize}
         color={COLORS.white}
         align={vertical ? 'center' : 'left'}

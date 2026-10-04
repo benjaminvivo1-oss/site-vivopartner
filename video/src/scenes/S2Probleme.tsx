@@ -10,9 +10,9 @@ import { Chip, DarkBackground, Fit, Pop, Skeleton } from '../components/ui';
    jusqu'à 22 h, e-mails non lus qui débordent. */
 
 /** Départ de chaque « temps » (images locales) */
-export const BEAT = [8, 62, 143];
+export const BEAT = [8, 60, 170];
 /** Apparition de chaque phrase du texte (une de plus que les panneaux : « Appels oubliés. ») */
-export const TEXT_BEAT = [8, 62, 104, 143];
+export const TEXT_BEAT = [8, 60, 114, 170];
 
 const PANEL_W = 450;
 const PANEL_H = 540;

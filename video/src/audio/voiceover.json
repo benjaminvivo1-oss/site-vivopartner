@@ -4,26 +4,26 @@
   "speed": 1.0,
   "takes": [
     {
-      "say": "Pendant que vous êtes sur le chantier…",
+      "say": "Pendant que vous êtes sur le chantier… combien d'appels manquez-vous ?",
       "parts": [
         {
           "id": "vo-01",
           "scene": "hook",
-          "at": 0.25,
-          "text": "Pendant que vous êtes sur le chantier…",
-          "duration": 1.672
+          "at": 0.15,
+          "text": "Pendant que vous êtes sur le chantier… combien d'appels manquez-vous ?",
+          "duration": 3.344
         }
       ]
     },
     {
-      "say": "Devis en retard, relances oubliées, soirées perdues dans l'admin.",
+      "say": "Devis en retard, relances oubliées, appels oubliés, soirées perdues dans l'admin.",
       "parts": [
         {
           "id": "vo-02",
           "scene": "probleme",
-          "at": 0.2,
-          "text": "Devis en retard, relances oubliées, soirées perdues dans l'admin.",
-          "duration": 3.762
+          "at": 0.15,
+          "text": "Devis en retard, relances oubliées, appels oubliés, soirées perdues dans l'admin.",
+          "duration": 4.989
         }
       ]
     },
@@ -35,7 +35,7 @@
           "scene": "bascule",
           "at": 0.7,
           "text": "Et si votre entreprise tournait toute seule ?",
-          "duration": 2.038
+          "duration": 1.985
         }
       ]
     },
@@ -47,21 +47,21 @@
           "scene": "aplomb",
           "at": 0.25,
           "text": "Avec VivoPartner, vous automatisez votre gestion,",
-          "duration": 3.004
+          "duration": 2.926
         },
         {
           "id": "vo-05",
           "scene": "receptionniste",
           "at": 6.45,
           "text": "vous ne ratez plus un seul appel,",
-          "duration": 1.75
+          "duration": 1.62
         },
         {
           "id": "vo-06",
           "scene": "visibilite",
           "at": 0.2,
           "text": "et vous devenez visible là où vos clients vous cherchent.",
-          "duration": 2.795
+          "duration": 2.638
         }
       ]
     },
@@ -85,11 +85,11 @@
           "scene": "cta",
           "at": 0.15,
           "text": "VivoPartner. Automatise aujourd'hui, accélère demain.",
-          "duration": 3.396
+          "duration": 3.37
         }
       ]
     }
   ],
   "elevenlabs_voice_id": "jUHQdLfy668sllNiNTSW",
-  "source": "audio-sources/voix-off-elevenlabs.mp3 (ElevenLabs, voix jUHQdLfy668sllNiNTSW), découpée aux pauses : vo-01 0.00–1.64 s (la fin « vos clients appellent ailleurs » est retirée), vo-02 3.24–6.95 s, vo-03 8.10–10.10 s, vo-04 10.40–13.37 s, vo-05 13.37–15.09 s, vo-06 15.09–17.84 s, vo-07 18.14–21.06 s, vo-08 21.28–24.68 s"
+  "source": "audio-sources/voix-off-elevenlabs.mp3 (ElevenLabs, voix jUHQdLfy668sllNiNTSW), découpée aux pauses : vo-01 0.00–3.30 s, vo-02 3.66–8.62 s, vo-03 9.00–10.95 s, vo-04 11.22–14.10 s, vo-05 14.14–15.72 s, vo-06 15.97–18.56 s, vo-07 18.93–21.85 s, vo-08 22.19–25.54 s"
 }

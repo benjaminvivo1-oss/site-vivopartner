@@ -57,13 +57,13 @@ export const WORD_STAGGER = 4;
  *  automatiquement toutes les scènes suivantes.                                */
 export const SCENE_SECONDS = {
   hook: 3.5, //            0 → 3,5 s
-  probleme: 5, //        3,5 → 8,5 s
-  bascule: 3.2, //       8,5 → 11,7 s
-  aplomb: 4.5, //       11,7 → 16,2 s
-  receptionniste: 8.4, // 16,2 → 24,6 s (dialogue client ↔ IA)
-  visibilite: 4.6, //   24,6 → 29,2 s
-  benefices: 3.1, //    29,2 → 32,3 s
-  cta: 3.7, //          32,3 → 36 s
+  probleme: 5.2, //      3,5 → 8,7 s
+  bascule: 3.2, //       8,7 → 11,9 s
+  aplomb: 4.5, //       11,9 → 16,4 s
+  receptionniste: 8.4, // 16,4 → 24,8 s (dialogue client ↔ IA)
+  visibilite: 4.6, //   24,8 → 29,4 s
+  benefices: 3.1, //    29,4 → 32,5 s
+  cta: 3.7, //          32,5 → 36,2 s
 } as const;
 
 /** Vitesse des animations à l'intérieur des scènes (1 = rythme d'origine, 1,6 = 60 % plus rapide).
