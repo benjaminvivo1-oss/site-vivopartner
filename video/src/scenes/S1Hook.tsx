@@ -10,9 +10,9 @@ import { DarkBackground, Fit } from '../components/ui';
 /* Scène 1 — HOOK : un téléphone vibre, l'appel n'est pas décroché,
    les notifications « Appel manqué » se multiplient. */
 
-export const CALL_END = 78; // l'appel bascule en « manqué »
+export const CALL_END = 50; // l'appel bascule en « manqué »
 /** Images d'apparition des notifications : de plus en plus rapprochées */
-export const MISSED_AT = [86, 104, 118, 129, 138, 145, 151, 156];
+export const MISSED_AT = [54, 66, 76, 84, 91, 97, 102, 106];
 const NUMBERS = [
   '06 •• •• •• 47',
   '07 •• •• •• 12',
@@ -26,8 +26,8 @@ const NUMBERS = [
 
 /** Salves de vibration [début, fin] en images */
 export const VIBRATE: [number, number][] = [
-  [8, 30],
-  [40, 62],
+  [0, 20],
+  [26, 46],
 ];
 const vibrating = (f: number) => VIBRATE.some(([a, b]) => f > a && f < b);
 
@@ -214,7 +214,8 @@ export const S1Hook: React.FC = () => {
   const { fps } = useVideoConfig();
   const { vertical, width, height, pad } = useLayout();
 
-  const enter = springAt(frame, fps, 0, SPRINGS.soft, 30);
+  // Visible dès la 1re image (arrêt du scroll) : entrée courte, opacité jamais nulle
+  const enter = springAt(frame, fps, 0, SPRINGS.snappy, 14);
   const shakeX = vibrating(frame) ? Math.sin(frame * 2.6) * 7 : 0;
   const shakeR = vibrating(frame) ? Math.sin(frame * 3.1) * 1.6 : 0;
   // Lente poussée caméra sur toute la scène
@@ -231,7 +232,7 @@ export const S1Hook: React.FC = () => {
         style={{
           padding: 20,
           transform: `translate(${shakeX}px, ${(1 - enter) * 80}px) rotate(${shakeR - 4 + enter * 4}deg) scale(${push})`,
-          opacity: enter,
+          opacity: Math.min(1, 0.7 + enter),
         }}
       >
         <Phone>
@@ -274,8 +275,8 @@ export const S1Hook: React.FC = () => {
     <div style={{ position: 'relative', width: vertical ? '100%' : width * 0.44, minHeight: fontSize * 2.4 }}>
       <WordReveal
         text={TEXTS.hook.line1}
-        start={10}
-        exit={92}
+        start={0}
+        exit={64}
         fontSize={fontSize}
         color={COLORS.white}
         align={vertical ? 'center' : 'left'}
@@ -283,7 +284,7 @@ export const S1Hook: React.FC = () => {
       />
       <WordReveal
         text={TEXTS.hook.line2}
-        start={100}
+        start={70}
         fontSize={fontSize}
         color={COLORS.white}
         align={vertical ? 'center' : 'left'}

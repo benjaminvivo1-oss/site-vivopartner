@@ -19,14 +19,14 @@ const DH_V = 1120;
 /** Timeline interne (images locales) */
 export const T = {
   /** Preuve chiffrée (images d'animation) */
-  proof: 120,
-  window: 14,
-  quotes: [40, 58, 76],
-  quoteSent: 22, // délai entre « Génération… » et « Envoyé »
-  relances: [92, 110, 128],
-  reviews: 140,
-  chantier: 156,
-  chart: 172,
+  proof: 78,
+  window: 8,
+  quotes: [24, 36, 48],
+  quoteSent: 18, // délai entre « Génération… » et « Envoyé »
+  relances: [56, 66, 76],
+  reviews: 86,
+  chantier: 96,
+  chart: 106,
 };
 
 const CardTitle: React.FC<{ icon: IconName; label: string; right?: React.ReactNode }> = ({ icon, label, right }) => (

@@ -9,14 +9,23 @@ Sources, par ordre de priorité, pour chaque réplique :
 
 Traitement : le client passe par un filtre « téléphone » (300–3 400 Hz), l'IA reste claire ; les deux
 sont normalisées. Écrit public/audio/dialogue/<id>.mp3 et met à jour at / duration dans le JSON.
+
+Recalage automatique : la voix off qui suit le dialogue (vo-05, « vous ne ratez plus un seul appel »)
+démarre juste après la dernière réplique, et la durée de la scène receptionniste (SCENE_SECONDS dans
+src/config.ts) est ajustée pour finir peu après. Relancer ensuite npm run audio:music.
 """
-import json, os, subprocess, tempfile
+import json, os, re, subprocess, tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / 'src' / 'audio' / 'dialogue.json'
 OUT = ROOT / 'public' / 'audio' / 'dialogue'
 SRC = ROOT / 'audio-sources'
+VO = ROOT / 'src' / 'audio' / 'voiceover.json'
+CONFIG = ROOT / 'src' / 'config.ts'
+VO_AFTER = 'vo-05'  # voix off placée juste après le dialogue
+VO_GAP = 0.1        # silence entre la dernière réplique et vo-05 (s)
+TAIL = 0.35         # temps après vo-05 avant la scène suivante (s)
 
 TRIM = ('silenceremove=start_periods=1:start_threshold=-45dB,areverse,'
         'silenceremove=start_periods=1:start_threshold=-45dB,areverse')
@@ -66,6 +75,17 @@ def main():
         t += line['duration'] + data['gap']
         print(f"{line['id']:7} {line['at']:5.2f} s → {line['at'] + line['duration']:5.2f} s  ({line['source']})  {line['text']}")
     SCRIPT.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', 'utf-8')
+
+    end = t - data['gap']
+    vo = json.loads(VO.read_text('utf-8'))
+    part = next(p for take in vo['takes'] for p in take['parts'] if p['id'] == VO_AFTER)
+    part['at'] = round(end + VO_GAP, 2)
+    VO.write_text(json.dumps(vo, ensure_ascii=False, indent=2) + '\n', 'utf-8')
+    scene = round(part['at'] + part.get('duration', 1.6) + TAIL, 1)
+    cfg = CONFIG.read_text('utf-8')
+    cfg = re.sub(r'(receptionniste:\s*)[\d.]+', lambda m: f"{m.group(1)}{scene}", cfg, count=1)
+    CONFIG.write_text(cfg, 'utf-8')
+    print(f"{VO_AFTER} à {part['at']:.2f} s ; scène receptionniste = {scene} s")
 
 
 if __name__ == '__main__':

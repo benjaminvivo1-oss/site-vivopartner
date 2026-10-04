@@ -19,15 +19,15 @@ const SH_V = 1120;
 
 export const T = {
   /** Preuve chiffrée (images d'animation) */
-  proof: 124,
-  map: 6,
-  pin: 18,
-  listing: 44,
-  stars: 60,
-  phone: 84,
-  scroll: [130, 230] as [number, number],
-  chart: 140,
-  line: [150, 235] as [number, number],
+  proof: 82,
+  map: 4,
+  pin: 12,
+  listing: 28,
+  stars: 38,
+  phone: 52,
+  scroll: [80, 170] as [number, number],
+  chart: 88,
+  line: [96, 172] as [number, number],
 };
 
 const MapCard: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {

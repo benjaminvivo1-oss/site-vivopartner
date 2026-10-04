@@ -1,6 +1,6 @@
 # VivoPartner — Trailer vidéo (Remotion)
 
-Trailer commercial animé de 36,2 s, 30 i/s, en deux formats :
+Trailer commercial animé de 31,5 s, 30 i/s, en deux formats :
 
 - `Trailer-16x9` — 1920 × 1080 (site, YouTube, LinkedIn)
 - `Trailer-9x16` — 1080 × 1920 (ads Reels / TikTok / Shorts)
@@ -39,14 +39,14 @@ video/
 │   ├── anim.ts            ← helpers d'animation (ressorts, easing, mise en page 16:9 / 9:16)
 │   ├── components/        ← WordReveal (mot par mot), Phone, Logo animé, Icon, cartes…
 │   └── scenes/
-│       ├── S1Hook.tsx            0 → 3,5 s
-│       ├── S2Probleme.tsx      3,5 → 8,7 s
-│       ├── S3Bascule.tsx      8,7 → 11,9 s
-│       ├── S4Aplomb.tsx      11,9 → 16,4 s
-│       ├── S5Receptionniste.tsx 16,4 → 24,8 s
-│       ├── S6Visibilite.tsx  24,8 → 29,4 s
-│       ├── S7Benefices.tsx   29,4 → 32,5 s
-│       ├── S8Cta.tsx         32,5 → 36,2 s
+│       ├── S1Hook.tsx            0 → 2,4 s
+│       ├── S2Probleme.tsx      2,4 → 7,5 s
+│       ├── S3Bascule.tsx      7,5 → 10,1 s
+│       ├── S4Aplomb.tsx      10,1 → 13,8 s
+│       ├── S5Receptionniste.tsx 13,8 → 21,3 s
+│       ├── S6Visibilite.tsx  21,3 → 24,9 s
+│       ├── S7Benefices.tsx   24,9 → 28 s
+│       ├── S8Cta.tsx         28 → 31,5 s
 │       └── index.ts             ← registre des scènes (type de transition d'entrée)
 ├── public/
 │   ├── brand/   ← logos VP (copiés depuis src/assets/brand du site)

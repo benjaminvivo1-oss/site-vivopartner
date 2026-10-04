@@ -1,6 +1,6 @@
 /**
  * ─────────────────────────────────────────────────────────────────────────────
- *  VivoPartner — Trailer 32 s : TOUTES les constantes modifiables sont ici.
+ *  VivoPartner — Trailer 31,5 s : TOUTES les constantes modifiables sont ici.
  *  Couleurs, polices, durées des scènes, textes à l'écran, pistes audio.
  * ─────────────────────────────────────────────────────────────────────────────
  */
@@ -56,14 +56,14 @@ export const WORD_STAGGER = 4;
  *  Calé sur la voix off (voir VOIX-OFF.md). Modifier une durée décale
  *  automatiquement toutes les scènes suivantes.                                */
 export const SCENE_SECONDS = {
-  hook: 3.5, //            0 → 3,5 s
-  probleme: 5.2, //      3,5 → 8,7 s
-  bascule: 3.2, //       8,7 → 11,9 s
-  aplomb: 4.5, //       11,9 → 16,4 s
-  receptionniste: 8.4, // 16,4 → 24,8 s (dialogue client ↔ IA)
-  visibilite: 4.6, //   24,8 → 29,4 s
-  benefices: 3.1, //    29,4 → 32,5 s
-  cta: 3.7, //          32,5 → 36,2 s
+  hook: 2.4, //            0 → 2,4 s
+  probleme: 5.1, //      2,4 → 7,5 s
+  bascule: 2.6, //       7,5 → 10,1 s
+  aplomb: 3.7, //       10,1 → 13,8 s
+  receptionniste: 7.5, // 13,8 → 21,3 s (dialogue client ↔ IA, durée recalculée par npm run audio:dialogue)
+  visibilite: 3.6, //   21,3 → 24,9 s
+  benefices: 3.1, //    24,9 → 28 s
+  cta: 3.5, //            28 → 31,5 s
 } as const;
 
 /** Vitesse des animations à l'intérieur des scènes (1 = rythme d'origine, 1,6 = 60 % plus rapide).
@@ -104,8 +104,9 @@ export const TOTAL_FRAMES = TIMELINE.cursor;
  *  Un mot entouré de *astérisques* s'affiche en orange.                        */
 export const TEXTS = {
   hook: {
-    line1: 'Pendant que vous êtes sur le chantier…',
-    line2: '…combien d’appels *manquez-vous* ?',
+    /** Question posée dès la 1re image (c'est aussi la voix off), puis le contexte */
+    line1: 'Combien d’appels *manquez-vous* ?',
+    line2: '…pendant que vous êtes sur le chantier.',
     incomingCaller: 'Nouveau client',
     incomingNumber: '06 •• •• •• 47',
     missedCall: 'Appel manqué',
