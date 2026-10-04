@@ -1,6 +1,6 @@
 import React from 'react';
 import { Composition, Folder } from 'remotion';
-import { FORMATS, FPS, TIMELINE, TOTAL_FRAMES } from './config';
+import { FORMATS, FPS, TIMELINE, TIMELINES, TOTAL_FRAMES } from './config';
 import { loadFonts } from './fonts';
 import { SCENES } from './scenes';
 import { Trailer } from './Trailer';
@@ -9,7 +9,18 @@ loadFonts();
 
 export const RemotionRoot: React.FC = () => (
   <>
-    {/* Compositions principales : la vidéo complète de 60 s */}
+    {/* Version courte (pub Reels / TikTok / Shorts) : hook, réceptionniste IA, bénéfices, CTA */}
+    <Composition
+      id="Short-9x16"
+      component={Trailer}
+      defaultProps={{ cut: 'short' as const }}
+      durationInFrames={TIMELINES.short.cursor}
+      fps={FPS}
+      width={FORMATS.vertical.width}
+      height={FORMATS.vertical.height}
+    />
+
+    {/* Compositions principales : la vidéo complète */}
     {Object.values(FORMATS).map((f) => (
       <Composition
         key={f.id}

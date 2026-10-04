@@ -1,13 +1,18 @@
 import React from 'react';
 import { Audio, Sequence, staticFile, useVideoConfig } from 'remotion';
 import { tween } from '../anim';
-import { AUDIO, sec } from '../config';
-import { DIALOGUE_ABS, dialogueSrc } from './dialogue';
-import { SFX_CUES } from './sfx';
-import { VO_LINES } from './voiceover';
+import { AUDIO, sec, TIMELINES, type CutKey } from '../config';
+import { dialogueAbs, dialogueSrc } from './dialogue';
+import { sfxCues } from './sfx';
+import { voLines } from './voiceover';
+
+const tracks = (cut: CutKey) => {
+  const tl = TIMELINES[cut];
+  return { VO_LINES: voLines(tl), DIALOGUE_ABS: dialogueAbs(tl), SFX_CUES: sfxCues(tl) };
+};
 
 /** Présence d'une voix (voix off ou dialogue) à l'image f : 0 → 1, rampes de 6 images */
-const voiceAt = (f: number) => {
+const voiceAt = ({ VO_LINES, DIALOGUE_ABS }: ReturnType<typeof tracks>, f: number) => {
   let v = 0;
   for (const [from, len] of [
     ...VO_LINES.map((l) => [l.from, l.duration]),
@@ -22,7 +27,7 @@ const voiceAt = (f: number) => {
 };
 
 /** Atténuation de la musique sous la voix off (rampes de 6 images) */
-const duckAt = (f: number) => {
+const duckAt = ({ VO_LINES, DIALOGUE_ABS }: ReturnType<typeof tracks>, f: number) => {
   let d = 0;
   for (const l of VO_LINES) {
     const a = l.from - 6;
@@ -43,12 +48,15 @@ const duckAt = (f: number) => {
 };
 
 /** Musique (atténuée sous la voix), voix off phrase par phrase et bruitages. */
-export const Soundtrack: React.FC = () => {
+export const Soundtrack: React.FC<{ cut?: CutKey }> = ({ cut = 'full' }) => {
   const { durationInFrames } = useVideoConfig();
+  const t = tracks(cut);
+  const { VO_LINES, DIALOGUE_ABS, SFX_CUES } = t;
+  const music = cut === 'short' ? AUDIO.musicShort : AUDIO.music;
 
   const musicVolume = (f: number) =>
     AUDIO.musicVolume *
-    duckAt(f) *
+    duckAt(t, f) *
     Math.min(
       tween(f, [0, sec(AUDIO.musicFadeInSeconds)], [0, 1]),
       tween(f, [durationInFrames - sec(AUDIO.musicFadeOutSeconds), durationInFrames], [1, 0]),
@@ -56,7 +64,7 @@ export const Soundtrack: React.FC = () => {
 
   return (
     <>
-      {AUDIO.music && <Audio src={staticFile(AUDIO.music)} volume={musicVolume} />}
+      {music && <Audio src={staticFile(music)} volume={musicVolume} />}
 
       {AUDIO.voiceover &&
         VO_LINES.map((l) => (
@@ -76,7 +84,7 @@ export const Soundtrack: React.FC = () => {
           <Sequence key={i} name={`Bruitage · ${c.sfx}`} from={c.frame} durationInFrames={sec(2)}>
             <Audio
               src={staticFile(`audio/sfx/${c.sfx}.mp3`)}
-              volume={(f) => AUDIO.sfxVolume * (c.volume ?? 1) * (1 - voiceAt(c.frame + f) * (1 - AUDIO.sfxDuck))}
+              volume={(f) => AUDIO.sfxVolume * (c.volume ?? 1) * (1 - voiceAt(t, c.frame + f) * (1 - AUDIO.sfxDuck))}
               playbackRate={c.rate ?? 1}
             />
           </Sequence>

@@ -86,18 +86,34 @@ export const SCENE_ORDER: SceneKey[] = [
   'cta',
 ];
 
-/** Début (en images) et durée de chaque scène, calculés à partir de SCENE_SECONDS */
-export const TIMELINE = SCENE_ORDER.reduce(
-  (acc, key) => {
-    const from = acc.cursor;
-    const duration = sec(SCENE_SECONDS[key]);
-    acc.items.push({ key, from, duration });
-    acc.cursor += duration;
-    return acc;
-  },
-  { cursor: 0, items: [] as { key: SceneKey; from: number; duration: number }[] },
-);
+/** Montages disponibles : la version complète et la version courte (pub Reels / TikTok / Shorts).
+ *  La version courte reprend les mêmes scènes, voix et bruitages ; sa musique est music-short.mp3. */
+export const CUTS = {
+  full: SCENE_ORDER,
+  short: ['hook', 'receptionniste', 'benefices', 'cta'] as SceneKey[],
+} as const;
+export type CutKey = keyof typeof CUTS;
 
+export type Timeline = { cursor: number; items: { key: SceneKey; from: number; duration: number }[] };
+
+/** Début (en images) et durée de chaque scène d'un montage, calculés à partir de SCENE_SECONDS */
+export const buildTimeline = (order: readonly SceneKey[]): Timeline =>
+  order.reduce(
+    (acc, key) => {
+      const from = acc.cursor;
+      const duration = sec(SCENE_SECONDS[key]);
+      acc.items.push({ key, from, duration });
+      acc.cursor += duration;
+      return acc;
+    },
+    { cursor: 0, items: [] } as Timeline,
+  );
+
+export const TIMELINES: Record<CutKey, Timeline> = {
+  full: buildTimeline(CUTS.full),
+  short: buildTimeline(CUTS.short),
+};
+export const TIMELINE = TIMELINES.full;
 export const TOTAL_FRAMES = TIMELINE.cursor;
 
 /* ── Textes à l'écran ──────────────────────────────────────────────────────────
@@ -211,6 +227,7 @@ export const TEXTS = {
  *  Mettre un élément à `null` / `false` pour le couper.                         */
 export const AUDIO = {
   music: 'audio/music.mp3' as string | null,
+  musicShort: 'audio/music-short.mp3' as string | null,
   voiceover: true,
   sfx: true,
   musicVolume: 0.5, // musique seule (0 → 1)

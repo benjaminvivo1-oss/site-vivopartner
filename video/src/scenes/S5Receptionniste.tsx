@@ -4,6 +4,7 @@ import { AbsoluteFill, staticFile, useCurrentFrame, useVideoConfig } from 'remot
 import { springAt, tween, useLayout, useSceneFrame } from '../anim';
 import { COLORS, FONTS, SPRINGS, TEXTS } from '../config';
 import { animAt, DIALOGUE, dialogueSrc } from '../audio/dialogue';
+import { useCut } from '../cut';
 import { Icon } from '../components/Icon';
 import { ProofCard } from '../components/Proof';
 import { Subtitle } from '../components/Subtitle';
@@ -386,6 +387,7 @@ export const S5Receptionniste: React.FC = () => {
   const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   const { vertical, width, height, pad } = useLayout();
+  const cut = useCut(); // version courte : pas de « Pilier 2 » (les autres piliers n'y sont pas)
   const [l1, l2, l3] = TEXTS.receptionniste.lines;
   const fs = vertical ? 76 : 62;
 
@@ -400,7 +402,7 @@ export const S5Receptionniste: React.FC = () => {
         flexShrink: 0,
       }}
     >
-      <Eyebrow text={TEXTS.receptionniste.eyebrow} at={4} dark size={vertical ? 26 : 22} />
+      {cut === 'full' && <Eyebrow text={TEXTS.receptionniste.eyebrow} at={4} dark size={vertical ? 26 : 22} />}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: vertical ? 'center' : 'flex-start', gap: 4 }}>
         <WordReveal text={l1} start={8} fontSize={fs} color={COLORS.white} align={vertical ? 'center' : 'left'} />
         <WordReveal text={l2} start={34} fontSize={fs} color={COLORS.white} />

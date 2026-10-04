@@ -4,7 +4,8 @@ Musique et bruitages du trailer, entièrement synthétisés (aucun échantillon 
 
     pip install numpy scipy && python3 scripts/generate_music_sfx.py
 
-Écrit public/audio/music.mp3 (60 s, calée sur les scènes) et public/audio/sfx/*.mp3.
+Écrit public/audio/music.mp3 (version complète), public/audio/music-short.mp3 (version courte, CUTS.short
+dans src/config.ts), toutes deux calées sur les scènes, et public/audio/sfx/*.mp3.
 La structure suit le découpage du trailer, lu directement dans SCENE_SECONDS (src/config.ts) :
   hook + problème   tension : nappe grave, battement de cœur, tic-tac qui accélère, montée puis coupure
   bascule           impact doux, l'harmonie s'éclaire (do majeur), nappe + arpège sans batterie
@@ -30,28 +31,36 @@ BPM = 128
 BEAT = 60 / BPM
 
 
-def read_scenes():
-    """Début de chaque scène (secondes), d'après SCENE_SECONDS dans src/config.ts."""
-    src = (ROOT / 'src' / 'config.ts').read_text('utf-8')
-    block = re.search(r'SCENE_SECONDS = \{(.*?)\}', src, re.S).group(1)
-    starts, t = {}, 0.0
-    for key, val in re.findall(r'(\w+):\s*([\d.]+)', block):
-        starts[key] = t
-        t += float(val)
-    starts['end'] = t
-    return starts
+CONFIG = (ROOT / 'src' / 'config.ts').read_text('utf-8')
+SECONDS = {k: float(v) for k, v in re.findall(
+    r'(\w+):\s*([\d.]+)', re.search(r'SCENE_SECONDS = \{(.*?)\}', CONFIG, re.S).group(1))}
+SHORT = re.findall(r"'(\w+)'", re.search(r'short:\s*\[(.*?)\]', CONFIG, re.S).group(1))
 
 
-SC = read_scenes()
-SECTIONS = dict(
-    tension_end=SC['bascule'],
-    reveal_end=SC['aplomb'],
-    groove_end=SC['benefices'],
-    build_end=SC['cta'],
-    end=SC['end'],
-)
-PILLARS = [SC['aplomb'], SC['receptionniste'], SC['visibilite'], SC['benefices']]
-TOTAL = SECTIONS['end']
+def layout(order):
+    """Début de chaque scène du montage (secondes), d'après SCENE_SECONDS dans src/config.ts.
+    Fixe les repères de la musique : tension jusqu'à la bascule (ou jusqu'au 1er pilier si le montage
+    n'a pas de bascule), groove sur les piliers, montée sur les bénéfices, accord final sur le CTA."""
+    global SC, SECTIONS, PILLARS, TOTAL
+    SC, t = {}, 0.0
+    for key in order:
+        SC[key] = t
+        t += SECONDS[key]
+    SC['end'] = t
+    pillars = [k for k in ('aplomb', 'receptionniste', 'visibilite') if k in SC]
+    tension_end = SC.get('bascule', SC[pillars[0]])
+    SECTIONS = dict(
+        tension_end=tension_end,
+        reveal_end=SC[pillars[0]],
+        groove_end=SC['benefices'],
+        build_end=SC['cta'],
+        end=SC['end'],
+    )
+    PILLARS = [SC[k] for k in pillars] + [SC['benefices']]
+    TOTAL = SECTIONS['end']
+
+
+layout(list(SECONDS))
 
 
 # ───────────────────────── outils ─────────────────────────
@@ -251,8 +260,8 @@ def build_music():
         T.add(lp(kick(0.5, 0.2), 180), bar + 0.26, 0.38)
 
     tick = hp(rng.standard_normal(int(0.02 * SR)), 2500) * exp_decay(int(0.02 * SR), 0.003)
-    tt = SC['probleme']
-    accel = SC['probleme'] + (s['tension_end'] - SC['probleme']) * 0.5
+    tt = SC.get('probleme', 0.0)
+    accel = tt + (s['tension_end'] - tt) * 0.5
     while tt < s['tension_end'] - 0.2:  # tic-tac du chantier à l'horloge, qui accélère
         T.add(tick, tt, 0.22, p=0.3 if int(tt / BEAT) % 2 else -0.3)
         tt += BEAT if tt < accel else BEAT / 2
@@ -425,6 +434,7 @@ def write_mp3(path: Path, data: np.ndarray, kbps=192):
 
 
 def main():
+    layout(list(SECONDS))
     write_mp3(OUT / 'music.mp3', build_music())
     print('music.mp3')
     for name, sig in sfx_bank().items():
@@ -432,6 +442,10 @@ def main():
         tail = np.zeros(int(0.05 * SR))
         write_mp3(OUT / 'sfx' / f'{name}.mp3', np.concatenate([sig, tail]), kbps=128)
         print(f'sfx/{name}.mp3')
+    # en dernier : la version courte ne modifie pas le tirage aléatoire de la version complète ni des bruitages
+    layout(SHORT)
+    write_mp3(OUT / 'music-short.mp3', build_music())
+    print('music-short.mp3', SHORT)
 
 
 if __name__ == '__main__':

@@ -2,7 +2,8 @@ import React from 'react';
 import { AbsoluteFill, Sequence, useCurrentFrame } from 'remotion';
 import { EASE_OUT, tween } from './anim';
 import { Soundtrack } from './audio/Soundtrack';
-import { COLORS, CROSSFADE_FRAMES, TIMELINE } from './config';
+import { COLORS, CROSSFADE_FRAMES, TIMELINES, type CutKey } from './config';
+import { CutContext } from './cut';
 import { SCENES } from './scenes';
 
 /** Fondu d'entrée (opacité + léger zoom arrière) appliqué aux scènes 'fade' */
@@ -13,26 +14,29 @@ const SceneEnter: React.FC<{ enabled: boolean; children: React.ReactNode }> = ({
   return <AbsoluteFill style={{ opacity: p, transform: `scale(${1.03 - 0.03 * p})` }}>{children}</AbsoluteFill>;
 };
 
-/** Composition principale : enchaîne les 8 scènes + bande-son (musique, voix off, bruitages) */
-export const Trailer: React.FC = () => {
+/** Composition principale : enchaîne les scènes du montage + bande-son (musique, voix off, bruitages) */
+export const Trailer: React.FC<{ cut?: CutKey }> = ({ cut = 'full' }) => {
+  const TIMELINE = TIMELINES[cut];
   const last = TIMELINE.items.length - 1;
 
   return (
-    <AbsoluteFill style={{ background: COLORS.ink }}>
-      {TIMELINE.items.map(({ key, from, duration }, i) => {
-        const { component: Scene, title, enter } = SCENES[key];
-        // la scène reste affichée pendant le fondu de la suivante
-        const len = i < last ? duration + CROSSFADE_FRAMES : duration;
-        return (
-          <Sequence key={key} name={title} from={from} durationInFrames={len}>
-            <SceneEnter enabled={enter === 'fade'}>
-              <Scene />
-            </SceneEnter>
-          </Sequence>
-        );
-      })}
+    <CutContext.Provider value={cut}>
+      <AbsoluteFill style={{ background: COLORS.ink }}>
+        {TIMELINE.items.map(({ key, from, duration }, i) => {
+          const { component: Scene, title, enter } = SCENES[key];
+          // la scène reste affichée pendant le fondu de la suivante
+          const len = i < last ? duration + CROSSFADE_FRAMES : duration;
+          return (
+            <Sequence key={key} name={title} from={from} durationInFrames={len}>
+              <SceneEnter enabled={enter === 'fade'}>
+                <Scene />
+              </SceneEnter>
+            </Sequence>
+          );
+        })}
 
-      <Soundtrack />
-    </AbsoluteFill>
+        <Soundtrack cut={cut} />
+      </AbsoluteFill>
+    </CutContext.Provider>
   );
 };

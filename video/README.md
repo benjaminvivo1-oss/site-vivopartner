@@ -4,6 +4,7 @@ Trailer commercial animé de 33,6 s, 30 i/s, en deux formats :
 
 - `Trailer-16x9` — 1920 × 1080 (site, YouTube, LinkedIn)
 - `Trailer-9x16` — 1080 × 1920 (ads Reels / TikTok / Shorts)
+- `Short-9x16` — version courte de 18,6 s, 1080 × 1920 (pub Reels / TikTok / Shorts) : hook, réceptionniste IA (dialogue + preuve), bénéfices, CTA
 
 Motion design uniquement : interfaces animées, typographie cinétique, icônes. Aucun visage. Les 3 preuves chiffrées (une par pilier) viennent du brief client : textes et sources dans `TEXTS.proofs` (`src/config.ts`).
 
@@ -19,7 +20,8 @@ npm run dev
 # Export MP4
 npm run render            # → out/vivopartner-trailer-16x9.mp4
 npm run render:vertical   # → out/vivopartner-trailer-9x16.mp4
-npm run render:all        # les deux
+npm run render:short      # → out/vivopartner-short-9x16.mp4 (version courte)
+npm run render:all        # les trois
 
 # Exporter une seule scène (ex. la scène 4 en vertical)
 npx remotion render src/index.ts S4-Aplomb-9x16 out/s4.mp4
@@ -74,6 +76,7 @@ video/
 | Changer une preuve chiffrée ou sa source   | `TEXTS.proofs` dans `src/config.ts`                                            |
 | Changer le dialogue du pilier 2            | `src/audio/dialogue.json` puis `npm run audio:dialogue`                        |
 | Recaler les 3 impacts de la scène 7        | `BENEFIT_HITS` dans `src/scenes/S7Benefices.tsx`                               |
+| Changer les scènes de la version courte    | `CUTS.short` dans `src/config.ts` puis `npm run audio:music`                   |
 
 Le timing interne de chaque scène (apparition des cartes, des bulles, etc.) est regroupé dans une constante `T` / `BEAT` en tête de chaque fichier de scène.
 
@@ -82,7 +85,7 @@ Le timing interne de chaque scène (apparition des cartes, des bulles, etc.) est
 Le trailer est livré avec sa bande-son, déjà calée :
 
 - **Voix off** : voix ElevenLabs (voix `jUHQdLfy668sllNiNTSW`, modèle multilingue), enregistrée d'une seule prise (`audio-sources/voix-off-elevenlabs.mp3`) puis découpée à ses pauses en 8 parties (`public/audio/vo/`), chacune placée dans sa scène (`src/audio/voiceover.json`). La musique s'abaisse automatiquement pendant la voix.
-- **Musique** : `public/audio/music.mp3`, composée par programme (`scripts/generate_music_sfx.py`) : tension sombre jusqu'à la bascule, éclaircie sur le logo, groove sur les 3 piliers, montée sur les bénéfices, accord final.
+- **Musique** : `public/audio/music.mp3` (et `music-short.mp3` pour la version courte), composée par programme (`scripts/generate_music_sfx.py`) : tension sombre jusqu'à la bascule, éclaircie sur le logo, groove sur les 3 piliers, montée sur les bénéfices, accord final.
 - **Dialogue (pilier 2)** : client ↔ réceptionniste IA, sous-titré, musique baissée pendant l'échange (`src/audio/dialogue.json`). Voix ElevenLabs : `audio-sources/dialogue-client.mp3` et `dialogue-ia.mp3`.
 - **Bruitages** : vibreur, notifications, feuilles qui tombent, tampon, tic-tac, pops d'interface, validations, souffles, scintillement du logo, pin qui tombe, impacts. Ils sont accrochés aux animations (`src/audio/sfx.ts`).
 

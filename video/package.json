@@ -7,13 +7,14 @@
     "dev": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts Trailer-16x9 out/vivopartner-trailer-16x9.mp4",
     "render:vertical": "remotion render src/index.ts Trailer-9x16 out/vivopartner-trailer-9x16.mp4",
-    "render:all": "npm run render && npm run render:vertical",
+    "render:all": "npm run render && npm run render:vertical && npm run render:short",
     "still": "remotion still src/index.ts Trailer-16x9 out/still.png --frame=700",
     "typecheck": "tsc --noEmit",
     "audio:music": "python3 scripts/generate_music_sfx.py",
     "audio:voice": "python3 scripts/generate_voiceover.py",
     "audio:durations": "python3 scripts/generate_voiceover.py --durations-only",
-    "audio:dialogue": "python3 scripts/generate_dialogue.py"
+    "audio:dialogue": "python3 scripts/generate_dialogue.py",
+    "render:short": "remotion render src/index.ts Short-9x16 out/vivopartner-short-9x16.mp4"
   },
   "dependencies": {
     "@remotion/cli": "4.0.532",
