@@ -4,14 +4,14 @@
   "speed": 1.0,
   "takes": [
     {
-      "say": "Pendant que vous êtes sur le chantier, vos clients appellent ailleurs.",
+      "say": "Pendant que vous êtes sur le chantier…",
       "parts": [
         {
           "id": "vo-01",
           "scene": "hook",
           "at": 0.25,
-          "text": "Pendant que vous êtes sur le chantier, vos clients appellent ailleurs.",
-          "duration": 3.03
+          "text": "Pendant que vous êtes sur le chantier…",
+          "duration": 1.672
         }
       ]
     },
@@ -91,5 +91,5 @@
     }
   ],
   "elevenlabs_voice_id": "jUHQdLfy668sllNiNTSW",
-  "source": "audio-sources/voix-off-elevenlabs.mp3 (ElevenLabs, voix jUHQdLfy668sllNiNTSW), découpée aux pauses : vo-01 0.00–2.98 s, vo-02 3.24–6.95 s, vo-03 8.10–10.10 s, vo-04 10.40–13.37 s, vo-05 13.37–15.09 s, vo-06 15.09–17.84 s, vo-07 18.14–21.06 s, vo-08 21.28–24.68 s"
+  "source": "audio-sources/voix-off-elevenlabs.mp3 (ElevenLabs, voix jUHQdLfy668sllNiNTSW), découpée aux pauses : vo-01 0.00–1.64 s (la fin « vos clients appellent ailleurs » est retirée), vo-02 3.24–6.95 s, vo-03 8.10–10.10 s, vo-04 10.40–13.37 s, vo-05 13.37–15.09 s, vo-06 15.09–17.84 s, vo-07 18.14–21.06 s, vo-08 21.28–24.68 s"
 }

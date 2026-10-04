@@ -105,7 +105,7 @@ export const TOTAL_FRAMES = TIMELINE.cursor;
 export const TEXTS = {
   hook: {
     line1: 'Pendant que vous êtes sur le chantier…',
-    line2: '…combien de clients *perdez-vous* ?',
+    line2: '…combien d’appels *manquez-vous* ?',
     incomingCaller: 'Nouveau client',
     incomingNumber: '06 •• •• •• 47',
     missedCall: 'Appel manqué',
