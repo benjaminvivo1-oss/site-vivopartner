@@ -35,6 +35,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
 .ok{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:#E8F8EE;color:#16A34A;font-weight:600;font-size:21px}
 .row{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:16px;background:var(--soft);margin-top:12px}
 .bar{height:12px;border-radius:6px;background:#E3E8EF}
+img.masc{position:absolute;visibility:hidden;filter:drop-shadow(0 18px 30px rgba(2,10,30,.35));will-change:transform}
 #wipe{position:absolute;left:540px;top:960px;width:10px;height:10px;margin:-5px;border-radius:50%;background:#F6F7F9;visibility:hidden}
 .check{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:#fff;margin:0 auto}
 </style>
@@ -79,7 +80,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
 
 <!-- S1 · navy : « Vivo Partner, c'est quoi ? » -->
 <section class="scene navy" id="s1"><div class="in" id="s1in">
-  <div class="abs" id="s1phone" style="left:300px;top:250px;width:480px;height:980px;border-radius:72px;background:#0E1F3F;border:3px solid #2A3E66;box-shadow:0 50px 100px rgba(0,0,0,.5),inset 0 0 0 10px #0B1730">
+  <div class="abs" id="s1phone" style="left:300px;top:170px;width:480px;height:980px;border-radius:72px;background:#0E1F3F;border:3px solid #2A3E66;box-shadow:0 50px 100px rgba(0,0,0,.5),inset 0 0 0 10px #0B1730">
     <div class="abs" style="left:170px;top:26px;width:140px;height:38px;border-radius:20px;background:#050C1A"></div>
     <div class="abs" style="left:22px;top:22px;right:22px;bottom:22px;border-radius:54px;background:#F6F7F9;overflow:hidden">
       <div style="padding:90px 30px 0">
@@ -91,8 +92,8 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
       </div>
     </div>
   </div>
-  <div class="t" id="s1a" style="top:1320px;font-size:76px">Vivo Partner,</div>
-  <div class="t" id="s1b" style="top:1410px;font-size:76px"><span class="or">c’est quoi ?</span></div>
+  <div class="t" id="s1a" style="top:1220px;font-size:76px">Vivo Partner,</div>
+  <div class="t" id="s1b" style="top:1310px;font-size:76px"><span class="or">c’est quoi ?</span></div>
 </div></section>
 
 <!-- S2 · light : partenaire de croissance digitale, BTP -->
@@ -349,6 +350,10 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
   </div>
 </div></section>
 
+<img class="masc" id="m_salue" src="assets/masc_salue.png" style="left:0;top:1490px;height:430px">
+<img class="masc" id="m_explique" src="assets/masc_explique.png" style="left:0;top:1440px;height:480px">
+<img class="masc" id="m_reflechit" src="assets/masc_reflechit.png" style="right:0;top:1440px;height:480px">
+<img class="masc" id="m_pointe" src="assets/masc_pointe.png" style="left:0;top:1420px;height:500px">
 <div id="wipe"></div>
 </div>
 
@@ -676,6 +681,36 @@ cue('pop', 48.10, 0.8);
 tl.fromTo('#s11shine', { x: 0 }, { x: 1100, duration: 0.9, ease: 'power2.inOut' }, 48.70);
 tl.fromTo('#s11in', { scale: 1 }, { scale: 1.03, duration: 3.9, ease: 'none', immediateRender: false }, 46.10);
 tl.set({}, {}, DUR);
+
+// ====================================================== Mascotte
+function mascIn(id, t, o = {}) {
+  const fromLeft = o.side !== 'right';
+  tl.set(id, { visibility: 'visible', transformOrigin: fromLeft ? '20% 100%' : '80% 100%' }, t);
+  tl.fromTo(id, { y: 520, x: fromLeft ? -120 : 120, rotation: fromLeft ? -10 : 10 }, { y: 0, x: 0, rotation: 0, duration: 0.65, ease: 'back.out(1.5)' }, t);
+  cue('whoosh', t, 0.5); cue('pop', t + 0.35, 0.5);
+}
+function mascIdle(id, t0, t1, amp = 1.5) {
+  tl.fromTo(id, { y: 0 }, { y: -12, duration: 0.7, ease: 'sine.inOut', yoyo: true, repeat: Math.max(1, Math.floor((t1 - t0) / 0.7) - 1), immediateRender: false }, t0);
+}
+function mascOut(id, t) {
+  tl.to(id, { y: 560, rotation: 6, duration: 0.4, ease: 'power3.in' }, t);
+  tl.set(id, { visibility: 'hidden' }, t + 0.42);
+}
+// 1. intro : elle salue
+mascIn('#m_salue', 0.3);
+tl.to('#m_salue', { keyframes: [{ rotation: -3, duration: 0.18 }, { rotation: 2.5, duration: 0.18 }, { rotation: -3, duration: 0.18 }, { rotation: 2, duration: 0.18 }, { rotation: 0, duration: 0.2 }], ease: 'sine.inOut' }, 0.95);
+mascOut('#m_salue', 2.7);
+// 2. trois leviers : elle explique
+mascIn('#m_explique', 18.3);
+mascIdle('#m_explique', 18.95, 23.2);
+mascOut('#m_explique', 23.3);
+// 3. « pas une solution toute faite » : elle réfléchit
+mascIn('#m_reflechit', 24.4, { side: 'right' });
+mascIdle('#m_reflechit', 25.05, 27.7);
+mascOut('#m_reflechit', 27.8);
+// 4. fin : elle pointe vers vous
+mascIn('#m_pointe', 47.0);
+mascIdle('#m_pointe', 47.65, 50);
 
 tl.progress(1).progress(0);
 window.CUES = window.CUES.map((c) => ({ ...c, t: +(c.t / K).toFixed(3), v: ['count', 'tick', 'type'].includes(c.type) ? c.v / K : c.v })).sort((a, b) => a.t - b.t);

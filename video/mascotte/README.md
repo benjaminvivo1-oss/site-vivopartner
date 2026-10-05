@@ -17,3 +17,7 @@ La planche fait 1254 px : c'est une bonne référence, mais pour animer la masco
 > Using the attached character sheet as the exact reference (same face, curly brown hair, Pixar-style 3D, same outfit), render the character ALONE, full body, [POSE], on a plain transparent background, 2048 px tall. Navy blue hoodie (#0B2F6B) with the attached "Vivo Partner" logo on the left chest (white V, orange #F58220 P, white serif text "Vivo / Partner"), black cargo pants, white sneakers, black smartwatch. Soft studio lighting, no text, no background.
 
 Poses utiles pour les vidéos : salue de la main · pointe vers la caméra · pouce en l'air · explique (deux mains ouvertes) · réfléchit (main au menton) · tient une tablette · bras croisés, confiant.
+
+## Poses détourées
+
+`poses/` : salue, explique, réfléchit, pointe vers la caméra — extraites de la planche 2, agrandies ×4 (EDSR) et détourées sur fond transparent. Elles servent dans la vidéo de présentation ; pour un usage en grand (affiche, site), mieux vaut générer les poses en haute définition avec le prompt ci-dessus.
