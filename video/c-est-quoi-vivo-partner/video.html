@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Vivo Partner — C'est quoi ?</title>
+<style>
+@font-face{font-family:Satoshi;src:url(assets/Satoshi-Medium.woff2) format('woff2');font-weight:500}
+@font-face{font-family:Satoshi;src:url(assets/Satoshi-Bold.woff2) format('woff2');font-weight:700}
+@font-face{font-family:Satoshi;src:url(assets/Satoshi-Black.woff2) format('woff2');font-weight:900}
+@font-face{font-family:Inter;src:url(assets/Inter-latin.woff2) format('woff2');font-weight:100 900}
+@font-face{font-family:Mono;src:url(assets/JetBrainsMono-latin.woff2) format('woff2');font-weight:100 900}
+:root{--navy:#0B2F6B;--orange:#F58220;--night:#0F172A;--soft:#F8FAFC;--slate:#CBD5E1}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy)}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--navy);font-family:Inter,sans-serif;color:var(--soft)}
+#grid{position:absolute;inset:-64px;background-image:linear-gradient(rgba(248,250,252,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(248,250,252,.045) 1px,transparent 1px);background-size:64px 64px}
+.scene{position:absolute;inset:0;opacity:0}
+.c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.kicker{font-family:Mono,monospace;font-size:22px;letter-spacing:.32em;text-transform:uppercase;color:var(--slate)}
+.kicker b{display:inline-block;width:56px;height:2px;background:var(--orange);vertical-align:middle;margin-right:22px}
+h1,h2{font-family:Satoshi,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.02}
+.o{color:var(--orange)}
+.el{will-change:transform,opacity}
+/* Scène 2 : cartes métier */
+.tile{position:absolute;top:42%;width:300px;height:300px;margin-top:-210px;border-radius:28px;background:rgba(248,250,252,.06);border:1px solid rgba(248,250,252,.16);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+.tile svg{width:120px;height:120px;stroke:var(--soft);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.tile span{font-family:Mono,monospace;font-size:20px;letter-spacing:.24em;text-transform:uppercase;color:var(--slate)}
+.tile.on{background:var(--orange);border-color:var(--orange)}
+.tile.on svg{stroke:var(--night)}
+.tile.on span{color:var(--night)}
+/* Cadres */
+.browser{position:absolute;border-radius:18px;overflow:hidden;background:#E4E7EB;box-shadow:0 50px 110px rgba(2,8,22,.6);border:1px solid rgba(248,250,252,.25)}
+.browser .bar{height:44px;display:flex;align-items:center;gap:9px;padding:0 18px;background:#1A2231}
+.browser .bar i{width:13px;height:13px;border-radius:50%;display:block}
+.browser .bar em{margin-left:18px;font-style:normal;font-family:Mono,monospace;font-size:16px;color:#94A3B8;background:#0B1424;padding:6px 18px;border-radius:999px}
+.browser .shot{position:relative;overflow:hidden}
+.browser .shot img{display:block;width:100%}
+.pill{position:absolute;display:flex;align-items:center;gap:16px;padding:20px 30px;border-radius:16px;background:var(--soft);color:var(--night);font-family:Satoshi,sans-serif;font-weight:700;font-size:34px;box-shadow:0 24px 60px rgba(2,8,22,.45)}
+.pill i{width:14px;height:14px;border-radius:50%;background:var(--orange);display:block}
+/* Leviers */
+.lever{font-family:Satoshi,sans-serif;font-weight:900;font-size:136px;letter-spacing:-.03em;line-height:1;white-space:nowrap}
+.lnum{font-family:Mono,monospace;font-size:24px;letter-spacing:.3em;color:var(--orange)}
+.demo{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%)}
+.demo img{display:block;border-radius:14px}
+.dlabel{position:absolute;left:120px;top:80px}
+.logo{display:flex;align-items:center;gap:40px}
+.dlabel h2{font-size:64px;margin-top:14px}
+/* Méthode */
+.step{display:flex;align-items:center;gap:30px;font-family:Satoshi,sans-serif;font-weight:700;font-size:54px;letter-spacing:-.02em;white-space:nowrap}
+.step .n{width:84px;height:84px;border-radius:50%;border:3px solid var(--orange);color:var(--orange);font-family:Mono,monospace;font-size:30px;display:flex;align-items:center;justify-content:center;flex:none}
+.cross{font-family:Mono,monospace;font-size:26px;letter-spacing:.2em;text-transform:uppercase;color:var(--slate)}
+.cross s{text-decoration-color:var(--orange);text-decoration-thickness:4px}
+/* Sous-titres */
+#subs{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);max-width:1500px;text-align:center;font-family:Inter,sans-serif;font-weight:600;font-size:38px;line-height:1.3;color:#fff;padding:12px 28px;border-radius:12px;background:rgba(7,14,30,.72);opacity:0}
+#wm{position:absolute;right:56px;top:46px;height:40px;opacity:0}
+#bar{position:absolute;left:0;bottom:0;height:6px;background:var(--orange);width:0}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="grid"></div>
+
+  <!-- 1. Ouverture -->
+  <div class="scene" id="s1">
+    <div class="c el logo" id="s1logo" style="top:42%"><img src="assets/vp-mark-light.png" style="height:150px"><img src="assets/vp-wordmark-light.png" style="height:96px"></div>
+    <h2 class="c el" id="s1q" style="top:66%;font-size:64px;font-weight:500;white-space:nowrap;color:var(--slate)">Alors… <span style="color:var(--soft)">c’est quoi ?</span></h2>
+  </div>
+
+  <!-- 2. Le BTP -->
+  <div class="scene" id="s2">
+    <div class="tile el" id="t0" style="left:180px"><svg viewBox="0 0 128 128"><path d="M18 92h92M26 92a38 38 0 0 1 76 0"/><path d="M54 56V36h20v20"/><path d="M14 104h100"/></svg><span>Chantier</span></div>
+    <div class="tile el" id="t1" style="left:600px"><svg viewBox="0 0 128 128"><rect x="40" y="14" width="48" height="100" rx="10"/><path d="M58 98h12"/><path d="M96 40c8 6 8 18 0 24M104 32c14 10 14 30 0 40"/></svg><span>Téléphone</span></div>
+    <div class="tile el" id="t2" style="left:1020px"><svg viewBox="0 0 128 128"><rect x="24" y="28" width="80" height="54" rx="6"/><path d="M12 96h104l-8 10H20z"/><path d="M40 48h30M40 62h46"/></svg><span>Ordinateur</span></div>
+    <div class="tile el" id="t3" style="left:1440px"><svg viewBox="0 0 128 128"><path d="M34 14h44l20 20v80H34z"/><path d="M78 14v20h20"/><path d="M48 58h36M48 74h36M48 90h22"/></svg><span>Devis</span></div>
+    <div class="c el" id="s2t" style="top:71%;text-align:center;white-space:nowrap">
+      <div class="kicker" style="margin-bottom:22px"><b></b>Partenaire de croissance digitale</div>
+      <h1 style="font-size:84px">dédié aux entreprises <span class="o">du BTP</span></h1>
+    </div>
+  </div>
+
+  <!-- 3. Le site + objectifs -->
+  <div class="scene" id="s3">
+    <div class="browser el" id="s3b" style="left:120px;top:150px;width:1120px">
+      <div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i><em>vivopartner.com</em></div>
+      <div class="shot" style="height:700px"><img id="s3img" src="assets/home.png"></div>
+    </div>
+    <div class="kicker el" id="s3k" style="position:absolute;left:1320px;top:250px">Notre objectif</div>
+    <div class="pill el" id="p0" style="left:1320px;top:330px"><i></i>Développer<br>votre activité</div>
+    <div class="pill el" id="p1" style="left:1320px;top:520px"><i></i>Gagner du temps</div>
+    <div class="pill el" id="p2" style="left:1320px;top:650px"><i></i>Ne plus rater<br>d’opportunités</div>
+  </div>
+
+  <!-- 4. Trois leviers -->
+  <div class="scene" id="s4">
+    <div class="kicker c el" id="s4k" style="top:12%;white-space:nowrap">Trois leviers</div>
+    <div class="c el" id="l0" style="top:27%;text-align:center"><div class="lnum">01</div><div class="lever">VISIBILITÉ</div></div>
+    <div class="c el" id="l1" style="top:47%;text-align:center"><div class="lnum">02</div><div class="lever">AUTOMATISATION</div></div>
+    <div class="c el" id="l2" style="top:67%;text-align:center"><div class="lnum">03</div><div class="lever o">OUTILS MÉTIER</div></div>
+  </div>
+
+  <!-- 5. Démos -->
+  <div class="scene" id="s5">
+    <div class="el" id="d0" style="position:absolute;inset:0">
+      <div class="dlabel"><div class="kicker"><b></b>01 · Visibilité</div><h2>Attirer les bons clients</h2></div>
+      <div class="demo" style="top:56%"><img src="assets/d-serp.png" style="width:1130px"></div>
+    </div>
+    <div class="el" id="d1" style="position:absolute;inset:0">
+      <div class="dlabel"><div class="kicker"><b></b>02 · Réceptionniste IA</div><h2>Automatiser le quotidien</h2></div>
+      <div class="demo" style="top:55%"><img src="assets/d-ia.png" style="width:1720px"></div>
+    </div>
+    <div class="el" id="d2" style="position:absolute;inset:0">
+      <div class="dlabel"><div class="kicker"><b></b>03 · Aplomb</div><h2>Un outil à votre façon de travailler</h2></div>
+      <div class="demo" style="top:56%;width:1885px;height:595px;overflow:hidden"><img src="assets/d-aplomb-1.png" style="width:1885px;border-radius:0"></div>
+    </div>
+  </div>
+
+  <!-- 6. Méthode + mascotte -->
+  <div class="scene" id="s6">
+    <img class="el" id="s6m" src="assets/vp-mark-light.png" style="position:absolute;left:200px;top:340px;width:440px">
+    <div class="cross el" id="s6x" style="position:absolute;left:780px;top:290px"><s>Pas de solution toute faite</s></div>
+    <div class="step el" id="st0" style="position:absolute;left:780px;top:400px"><div class="n">01</div><div>On comprend <span class="o">votre entreprise</span>.</div></div>
+    <div class="step el" id="st1" style="position:absolute;left:780px;top:560px"><div class="n">02</div><div>On construit ce dont<br>vous avez <span class="o">réellement besoin</span>.</div></div>
+  </div>
+
+  <!-- 7. Signature -->
+  <div class="scene" id="s7">
+    <div class="c el logo" id="s7logo" style="top:32%"><img src="assets/vp-mark-light.png" style="height:180px"><img src="assets/vp-wordmark-light.png" style="height:116px"></div>
+    <div class="c el" id="s7sub" style="top:49%;white-space:nowrap" ><div class="kicker">Le partenaire de croissance digitale des entreprises du BTP</div></div>
+    <h1 class="c el" id="s7tag" style="top:62%;font-size:76px;white-space:nowrap">Automatise aujourd’hui. <span class="o">Accélère demain.</span></h1>
+    <div class="c el" id="s7url" style="top:74%;font-family:Mono,monospace;font-size:26px;letter-spacing:.2em;color:var(--slate)">VIVOPARTNER.COM</div>
+  </div>
+
+  <img id="wm" src="assets/vp-mark-light.png">
+  <div id="subs"></div>
+  <div id="bar"></div>
+</div>
+
+<script>
+const DUR = 40;
+const SUBS = [
+  [0.3, 2.9, 'Alors… Vivo Partner, c’est quoi ?'],
+  [3.0, 7.9, 'Vivo Partner, c’est un partenaire de croissance digitale dédié aux entreprises du BTP.'],
+  [8.0, 10.9, 'Notre objectif : vous aider à développer votre activité,'],
+  [10.9, 13.9, 'gagner du temps et ne plus laisser passer d’opportunités.'],
+  [14.0, 17.2, 'Pour ça, nous travaillons sur trois leviers :'],
+  [17.2, 21.9, 'votre visibilité, l’automatisation de votre entreprise, et vos outils métier.'],
+  [22.0, 24.4, 'De la visibilité pour attirer les bons clients,'],
+  [24.4, 26.7, 'à l’intelligence artificielle pour automatiser votre quotidien,'],
+  [26.7, 28.9, 'jusqu’à des outils conçus autour de votre façon de travailler.'],
+  [29.0, 30.6, 'Et surtout, pas de solution toute faite.'],
+  [30.6, 32.6, 'On commence par comprendre votre entreprise.'],
+  [32.6, 34.9, 'Puis on construit ce dont vous avez réellement besoin.'],
+  [35.0, 39.6, 'Vivo Partner. Le partenaire de croissance digitale des entreprises du BTP.'],
+];
+const SHOW_SUBS = new URLSearchParams(location.search).get('subs') !== '0';
+const $ = (id) => document.getElementById(id);
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);           // easeOutCubic
+const inOut = (x) => { x = clamp(x); return x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2; };
+const p = (t, a, d) => ease((t - a) / d);                     // progression 0→1
+// Visibilité d'une scène : fondu entrée / sortie
+const win = (t, a, b, f = .45) => Math.min(clamp((t - a) / f), clamp((b - t) / f));
+function set(id, o, tf) { const e = $(id); e.style.opacity = o; if (tf !== undefined) e.style.transform = tf; }
+// Apparition : fondu + glissement vertical
+function rise(id, t, a, d = .7, dy = 40, base = '') { const k = p(t, a, d); set(id, k, `${base} translateY(${(1-k)*dy}px)`); }
+const C = 'translate(-50%,-50%)';
+
+function seek(t) {
+  $('grid').style.transform = `translate(${-(t*6)%64}px,${-(t*3)%64}px)`;
+
+  // 1 — 0 → 3 s
+  set('s1', win(t, -1, 3.1, .35));
+  { const k = p(t, .1, 1.1); set('s1logo', k, `${C} scale(${.9 + .1*k})`); }
+  rise('s1q', t, .9, .7, 30, C);
+
+  // 2 — 3 → 8 s : cartes rapides
+  set('s2', win(t, 2.95, 8.1, .35));
+  for (let i = 0; i < 4; i++) {
+    const a = 3.15 + i*.32;
+    const k = p(t, a, .5);
+    const e = $('t'+i);
+    e.style.opacity = k; e.style.transform = `translateY(${(1-k)*60}px) scale(${.92+.08*k})`;
+    // l'accent orange passe de carte en carte
+    const hot = Math.floor((t - 4.6) / .7) % 4;
+    e.classList.toggle('on', t > 4.6 && t < 7.4 && hot === i);
+  }
+  rise('s2t', t, 4.3, .8, 40, C);
+
+  // 3 — 8 → 14 s : site + objectifs
+  set('s3', win(t, 7.95, 14.1, .4));
+  { const k = p(t, 8.0, .9); $('s3b').style.opacity = k; $('s3b').style.transform = `translateX(${(1-k)*-80}px)`;
+    const z = inOut((t - 8) / 6); $('s3img').style.transform = `scale(${1 + .12*z}) translate(${-2*z}%,${-1*z}%)`; $('s3img').style.transformOrigin = '30% 40%'; }
+  rise('s3k', t, 8.6, .6, 20);
+  rise('p0', t, 9.4, .6); rise('p1', t, 11.0, .6); rise('p2', t, 12.2, .6);
+
+  // 4 — 14 → 22 s : trois leviers, synchronisés sur la voix off
+  set('s4', win(t, 13.95, 22.1, .4));
+  rise('s4k', t, 14.2, .6, 20, C);
+  const L = [17.3, 18.9, 20.7];
+  L.forEach((a, i) => { const k = p(t, a, .55); set('l'+i, k, `${C} translateY(${(1-k)*50}px) scale(${1.06 - .06*k})`); });
+
+  // 5 — 22 → 29 s : démos visibilité → IA → Aplomb
+  set('s5', win(t, 21.95, 29.1, .4));
+  const D = [[22.0, 24.45], [24.45, 26.75], [26.75, 29.2]];
+  D.forEach(([a, b], i) => {
+    const k = p(t, a, .55), out = clamp((t - (b - .3)) / .3);
+    const e = $('d'+i);
+    e.style.opacity = (t < a || t > b) ? 0 : k * (1 - out);
+    e.style.transform = `translateX(${(1-k)*90 - out*90}px)`;
+    const img = e.querySelector('.demo img');
+    img.style.transform = `scale(${1 + .035*clamp((t - a)/(b - a))})`;
+  });
+
+  // 6 — 29 → 35 s : méthode
+  set('s6', win(t, 28.95, 35.1, .4));
+  { const k = p(t, 29.1, .9); set('s6m', k, `scale(${.85 + .15*k}) rotate(${(1-k)*-6}deg) translateY(${Math.sin(t*2.2)*8}px)`); }
+  rise('s6x', t, 29.5, .6, 20);
+  rise('st0', t, 30.7, .6); rise('st1', t, 32.7, .6);
+
+  // 7 — 35 → 40 s : signature
+  set('s7', win(t, 34.95, 99, .4));
+  { const k = p(t, 35.1, 1.0); set('s7logo', k, `${C} scale(${.94 + .06*k})`); }
+  rise('s7sub', t, 35.9, .7, 20, C);
+  rise('s7tag', t, 36.9, .8, 30, C);
+  rise('s7url', t, 38.0, .6, 16, C);
+
+  // Filigrane VP (charte : monogramme discret sur les vidéos), masqué sur ouverture et signature
+  set('wm', .55 * Math.min(win(t, 3.2, 34.7, .5), 1));
+
+  // Sous-titres
+  const s = SHOW_SUBS && SUBS.find(([a, b]) => t >= a && t < b);
+  const sub = $('subs');
+  if (s) { if (sub.textContent !== s[2]) sub.textContent = s[2]; sub.style.opacity = Math.min(clamp((t - s[0]) / .15), clamp((s[1] - t) / .15)); }
+  else sub.style.opacity = 0;
+
+  $('bar').style.width = (t / DUR * 100) + '%';
+}
+window.seek = seek; window.DUR = DUR; window.SUBS = SUBS;
+// Prévisualisation dans un navigateur : lecture en temps réel
+if (!navigator.webdriver) { const t0 = performance.now(); (function loop(){ seek(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(loop); })(); }
+else seek(0);
+</script>
+</body>
+</html>
