@@ -6,7 +6,7 @@ from scipy.signal import butter, sosfilt, fftconvolve, stft, istft
 from scipy.io import wavfile
 
 SR = 44100
-DUR = 58.0
+DUR = 60.0
 BEAT = 0.5
 BAR = 2.0
 N = int(SR * DUR)
@@ -188,8 +188,8 @@ ARP = [0, 2, 1, 3, 2, 1, 3, 1]
 
 
 def section(t):
-    for a, b, name in [(0, 4, 'intro'), (4, 12.7, 'verse'), (12.7, 21, 'verse2'), (21, 24, 'build'),
-                       (24, 42, 'chorus'), (42, 46, 'break'), (46, 51.6, 'verse2'), (51.6, 58, 'outro')]:
+    for a, b, name in [(0, 3.6, 'intro'), (3.6, 10, 'verse'), (10, 18, 'verse2'), (18, 24, 'build'),
+                       (24, 42.6, 'chorus'), (42.6, 46, 'break'), (46, 54, 'verse2'), (54, 56, 'chorus'), (56, 60, 'outro')]:
         if a <= t < b:
             return name
     return 'outro'
@@ -201,9 +201,9 @@ for s in range(int(DUR / 0.125)):
     sec = section(t)
     q = s % 4; beat = (s // 4) % 4
     if q == 0:
-        if sec in ('verse', 'verse2', 'chorus') or (sec == 'build' and t < 23.5) or (sec == 'break' and t >= 44 and beat in (0,)):
+        if sec in ('verse', 'verse2', 'chorus') or (sec == 'build' and t < 23.5) or (sec == 'break' and t >= 44.7 and beat in (0,)):
             put('dry', kick(), t, 0.75); kick_times.append(t)
-        if sec == 'outro' and t < 55.6 and beat in (0, 2):
+        if sec == 'outro' and t < 58.6 and beat in (0, 2):
             put('dry', kick(), t, 0.6); kick_times.append(t)
     if sec in ('verse2', 'chorus') and q == 0 and beat in (1, 3):
         put('dry', clap(), t, 0.8, 0.05); put('verb', clap(), t, 0.35)
@@ -215,7 +215,7 @@ for s in range(int(DUR / 0.125)):
         if q == 2: put('dry', hat(op=True), t, 0.16, 0.3)
         else: put('dry', hat(), t, 0.07 + 0.04 * (q == 0), -0.25)
     if sec == 'build' and t < 23.5:
-        put('dry', shaker(), t, 0.08 + 0.2 * (t - 21) / 2.5, 0.2 if q % 2 else -0.2)
+        put('dry', shaker(), t, 0.08 + 0.2 * (t - 18) / 5.5, 0.2 if q % 2 else -0.2)
 
 # ducking
 duck = np.ones(N)
@@ -228,7 +228,7 @@ for bar in range(int(DUR / BAR)):
     t0 = bar * BAR
     sec = section(t0 + 0.01)
     chord, root = PROG[bar % 4]
-    if t0 >= 51.6:
+    if t0 >= 56:
         break
     # nappe
     cut = {'intro': 800, 'verse': 1100, 'verse2': 1500, 'build': 1800, 'chorus': 2400, 'break': 1000}.get(sec, 1200)
@@ -260,16 +260,16 @@ for bar in range(int(DUR / BAR)):
 
 # accord final
 fin = [48, 55, 60, 64, 67, 71]
-put('verb', pad(fin[2:], 6.4, 1, 2200), 51.6, 0.5)
-put('dry', pad(fin[2:], 6.4, 1, 2200), 51.6, 0.35)
+put('verb', pad(fin[2:], 4.4, 1, 2200), 56.1, 0.5)
+put('dry', pad(fin[2:], 4.4, 1, 2200), 56.1, 0.35)
 for k, m in enumerate(fin[2:]):
-    put('verb', ep(m, 4.0), 51.6 + k * 0.04, 0.12)
-put('sub', sub(24 + 12, 4.0), 51.6, 0.6)
+    put('verb', ep(m, 3.8), 56.1 + k * 0.04, 0.12)
+put('sub', sub(24 + 12, 3.8), 56.1, 0.6)
 for k, m in enumerate([72, 76, 79, 83, 84]):
-    put('dly', fm_pluck(m + 12, 0.8, idx=1.5), 52.9 + k * 0.125, 0.07, -0.5 + k * 0.25)
+    put('dly', fm_pluck(m + 12, 0.8, idx=1.5), 58.1 + k * 0.125, 0.07, -0.5 + k * 0.25)
 
 # ---------------------------------------------------------------- bruitages
-for c in json.load(open('cues.json')):
+for c in json.load(open('cues.json')) + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.0, 42.6, 56.1)]:
     t, v, ty = c['t'], c['v'], c['type']
     p = float(rng.uniform(-0.3, 0.3))
     if ty == 'hit':
@@ -295,6 +295,22 @@ for c in json.load(open('cues.json')):
         put('verb', shaped_noise(v, 600, 5000, 0.5) * adsr(v, v * 0.6, v * 0.4), t, 0.12)
     elif ty == 'draw':
         put('verb', shaped_noise(v, 3000, 7000, 0.35) * adsr(v, 0.3, 0.6), t, 0.06)
+    elif ty == 'card':
+        put('verb', whoosh(0.35, 900, 5000), t - 0.05, 0.09 * v, p)
+        put('dry', whoosh(0.35, 900, 5000), t - 0.05, 0.08 * v, p)
+    elif ty == 'toggle':
+        put('dry', glass(1, 1900), t, 0.16 * v, p); put('dry', glass(1, 2600), t + 0.05, 0.1 * v, p)
+    elif ty == 'stamp':
+        put('dry', sine_sweep(160, 55, 0.35) * np.exp(-T(0.35) / 0.09), t, 0.55 * v)
+        put('verb', filt(noise(0.2), 'low', 1800) * np.exp(-T(0.2) / 0.04), t, 0.3 * v)
+    elif ty == 'count':
+        k = 0
+        while k * 0.07 < v:
+            put('dry', glass(1, 2000 + k * 60) * 0.5, t + k * 0.07, 0.08, (-0.2, 0.2)[k % 2]); k += 1
+    elif ty == 'type':
+        k = 0
+        while k * 0.065 < v:
+            put('dry', filt(noise(0.02), 'band', [2000, 7000]) * np.exp(-T(0.02) / 0.004), t + k * 0.065 + rng.uniform(0, 0.015), 0.22, p); k += 1
     elif ty == 'pop':
         put('verb', glass(1, 1600), t, 0.18 * v, p); put('dry', glass(1, 1600), t, 0.18 * v, p)
     elif ty == 'tick1':
@@ -361,7 +377,7 @@ env = uniform_filter1d(maximum_filter1d(env, win * 2), win)
 thr = 0.5
 gain = np.where(env > thr, thr / env, 1.0) ** 0.75
 mix = mix * gain
-pts = [(0, .8), (4, .62), (12.6, .62), (12.8, .78), (21, .8), (23.7, 1.0), (24, 1.0), (41.9, 1.0), (42.1, .78), (46, .8), (46.1, .85), (51.5, .9), (51.6, 1.0), (58, 1.0)]
+pts = [(0, .8), (3.6, .62), (9.9, .62), (10.1, .75), (18, .78), (23.9, .95), (24, 1.0), (42.5, 1.0), (42.7, .75), (46, .78), (46.1, .82), (53.9, .85), (54, 1.0), (60, 1.0)]
 mix = mix * np.interp(tt, [p[0] for p in pts], [p[1] for p in pts])
 mix = mix / np.max(np.abs(mix)) * 0.95
 wavfile.write('music.wav', SR, (mix.T * 32767).astype(np.int16))
