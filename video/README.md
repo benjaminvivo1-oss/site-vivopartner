@@ -1,6 +1,7 @@
 # Vidéo « Vivo Partner, c'est quoi ? »
 
-`vivopartner-cest-quoi-9x16.mp4` : 48 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
+`vivopartner-cest-quoi-9x16.mp4` : 58 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
+Style « motion design premium » : fond sombre, typographie révélée par masques, cartes en verre 3D, plans d'architecte, grain cinéma.
 
 Ce dossier n'est pas publié avec le site (hors de `public/`).
 
@@ -8,17 +9,17 @@ Ce dossier n'est pas publié avec le site (hors de `public/`).
 
 | Temps | Séquence |
 | --- | --- |
-| 0 – 3 s | Accroche : « VIVO PARTNER, c'est quoi ? » |
-| 3 – 8 s | Partenaire de croissance digitale, dédié aux entreprises du BTP |
-| 8 – 14 s | Objectif : développer l'activité, gagner du temps, ne plus perdre d'opportunités |
-| 14 – 16 s | 3 leviers |
-| 16 – 21 s | 01 Visibilité (recherche Google, fiche, avis, appel entrant) |
-| 21 – 26 s | 02 Automatisation (appel, réceptionniste IA, agenda, SMS) |
-| 26 – 31 s | 03 Outils métier (tableau de bord Aplomb, devis signés, relances) |
-| 31 – 33 s | Récapitulatif des trois leviers |
-| 33 – 37 s | « Et surtout… pas de solution toute faite » |
-| 37 – 42 s | Audit, puis construction sur mesure |
-| 42 – 48 s | Logo, slogan, « Audit gratuit · 30 min », vivopartner.com |
+| 0 – 4 s | « Vivo Partner, c'est quoi ? » autour d'une ligne de lumière |
+| 4 – 8,6 s | Un partenaire de croissance digitale (courbe de croissance) |
+| 8,6 – 12,6 s | Dédié aux entreprises du BTP (plan d'architecte qui se dessine) |
+| 12,7 – 21 s | Notre objectif : développer l'activité, gagner du temps, ne plus laisser passer d'opportunités |
+| 21 – 24 s | Trois leviers (trois piliers lumineux) |
+| 24 – 30 s | 01 · Visibilité |
+| 30 – 36 s | 02 · Automatisation |
+| 36 – 42 s | 03 · Outils métier |
+| 42 – 46 s | Et surtout, pas de solution toute faite |
+| 46 – 51,6 s | Audit, puis construction sur mesure |
+| 51,6 – 58 s | Logo, slogan, « Réservez votre audit gratuit », vivopartner.com |
 
 ## Régénérer la vidéo
 
@@ -30,11 +31,11 @@ npm install
 pip install numpy scipy
 node render.mjs cues cues.json                  # repères son
 python3 music.py                                # -> music.wav
-for i in 0 1 2 3; do node render.mjs 60 $((i*720)) $(((i+1)*720)) frames & done; wait
+for i in 0 1 2 3; do node render.mjs 60 $((i*870)) $(((i+1)*870)) frames & done; wait
 ffmpeg -framerate 60 -i frames/f%05d.jpg -i music.wav -c:v libx264 -preset slow -crf 18 \
   -pix_fmt yuv420p -movflags +faststart -af "loudnorm=I=-14:TP=-1:LRA=7" \
   -c:a aac -b:a 192k -shortest ../vivopartner-cest-quoi-9x16.mp4
 ```
 
-Aperçu de quelques instants : `node render.mjs shots 1.5,18,44 shots`.
+Aperçu de quelques instants : `node render.mjs shots 2,26,54 shots`.
 Les textes se modifient directement dans `src/index.html`.
