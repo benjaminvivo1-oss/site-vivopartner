@@ -6,7 +6,7 @@ from scipy.signal import butter, sosfilt, fftconvolve, stft, istft
 from scipy.io import wavfile
 
 SR = 44100
-DUR = 62.2
+DUR = 43.4
 BEAT = 0.5
 BAR = 2.0
 N = int(SR * DUR)
@@ -188,8 +188,8 @@ ARP = [0, 2, 1, 3, 2, 1, 3, 1]
 
 
 def section(t):
-    for a, b, name in [(0, 3.6, 'intro'), (3.6, 10, 'verse'), (10, 18, 'verse2'), (18, 24, 'build'),
-                       (24, 42.6, 'chorus'), (42.6, 48.2, 'break'), (48.2, 56.2, 'verse2'), (56.2, 58.2, 'chorus'), (58.2, 62.2, 'outro')]:
+    for a, b, name in [(0, 3.6, 'intro'), (3.6, 10.6, 'verse'), (10.6, 18.6, 'verse2'), (18.6, 24, 'build'),
+                       (24, 29.4, 'break'), (29.4, 39.4, 'chorus'), (39.4, 43.4, 'outro')]:
         if a <= t < b:
             return name
     return 'outro'
@@ -201,9 +201,9 @@ for s in range(int(DUR / 0.125)):
     sec = section(t)
     q = s % 4; beat = (s // 4) % 4
     if q == 0:
-        if sec in ('verse', 'verse2', 'chorus') or (sec == 'build' and t < 23.5) or (sec == 'break' and t >= 46.2 and beat in (0,)):
+        if sec in ('verse', 'verse2', 'chorus') or (sec == 'build' and t < 23.6) or (sec == 'break' and t >= 26.6 and beat in (0,)):
             put('dry', kick(), t, 0.75); kick_times.append(t)
-        if sec == 'outro' and t < 60.8 and beat in (0, 2):
+        if sec == 'outro' and t < 42.0 and beat in (0, 2):
             put('dry', kick(), t, 0.6); kick_times.append(t)
     if sec in ('verse2', 'chorus') and q == 0 and beat in (1, 3):
         put('dry', clap(), t, 0.8, 0.05); put('verb', clap(), t, 0.35)
@@ -214,8 +214,8 @@ for s in range(int(DUR / 0.125)):
     if sec == 'chorus':
         if q == 2: put('dry', hat(op=True), t, 0.16, 0.3)
         else: put('dry', hat(), t, 0.07 + 0.04 * (q == 0), -0.25)
-    if sec == 'build' and t < 23.5:
-        put('dry', shaker(), t, 0.08 + 0.2 * (t - 18) / 5.5, 0.2 if q % 2 else -0.2)
+    if sec == 'build' and t < 23.6:
+        put('dry', shaker(), t, 0.08 + 0.2 * (t - 18.6) / 5.0, 0.2 if q % 2 else -0.2)
 
 # ducking
 duck = np.ones(N)
@@ -228,7 +228,7 @@ for bar in range(int(DUR / BAR)):
     t0 = bar * BAR
     sec = section(t0 + 0.01)
     chord, root = PROG[bar % 4]
-    if t0 >= 58.2:
+    if t0 >= 39.4:
         break
     # nappe
     cut = {'intro': 800, 'verse': 1100, 'verse2': 1500, 'build': 1800, 'chorus': 2400, 'break': 1000}.get(sec, 1200)
@@ -260,16 +260,16 @@ for bar in range(int(DUR / BAR)):
 
 # accord final
 fin = [48, 55, 60, 64, 67, 71]
-put('verb', pad(fin[2:], 4.4, 1, 2200), 58.6, 0.5)
-put('dry', pad(fin[2:], 4.4, 1, 2200), 58.6, 0.35)
+put('verb', pad(fin[2:], 4.4, 1, 2200), 39.8, 0.5)
+put('dry', pad(fin[2:], 4.4, 1, 2200), 39.8, 0.35)
 for k, m in enumerate(fin[2:]):
-    put('verb', ep(m, 3.8), 58.6 + k * 0.04, 0.12)
-put('sub', sub(24 + 12, 3.8), 58.6, 0.6)
+    put('verb', ep(m, 3.8), 39.8 + k * 0.04, 0.12)
+put('sub', sub(24 + 12, 3.6), 39.8, 0.6)
 for k, m in enumerate([72, 76, 79, 83, 84]):
-    put('dly', fm_pluck(m + 12, 0.8, idx=1.5), 60.3 + k * 0.125, 0.07, -0.5 + k * 0.25)
+    put('dly', fm_pluck(m + 12, 0.8, idx=1.5), 41.4 + k * 0.125, 0.07, -0.5 + k * 0.25)
 
 # ---------------------------------------------------------------- bruitages
-for c in [dict(c, t=c['t'] * 1.25, v=c['v'] * 1.25 if c['type'] in ('count', 'tick', 'type') else c['v']) for c in json.load(open('cues.json'))] + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.0, 42.6, 58.6)]:
+for c in [dict(c, t=c['t'] * 1.25, v=c['v'] * 1.25 if c['type'] in ('count', 'tick', 'type') else c['v']) for c in json.load(open('cues.json'))] + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.2, 29.4, 39.8)]:
     t, v, ty = c['t'], c['v'], c['type']
     p = float(rng.uniform(-0.3, 0.3))
     if ty == 'hit':
@@ -377,7 +377,7 @@ env = uniform_filter1d(maximum_filter1d(env, win * 2), win)
 thr = 0.5
 gain = np.where(env > thr, thr / env, 1.0) ** 0.75
 mix = mix * gain
-pts = [(0, .8), (3.6, .62), (9.9, .62), (10.1, .75), (18, .78), (23.9, .95), (24, 1.0), (42.5, 1.0), (42.7, .75), (48.2, .78), (48.3, .82), (56.1, .85), (56.2, 1.0), (62.2, 1.0)]
+pts = [(0, .8), (3.6, .62), (10.5, .62), (10.7, .75), (18.6, .78), (23.9, .95), (24.1, .72), (29.3, .78), (29.4, 1.0), (43.4, 1.0)]
 mix = mix * np.interp(tt, [p[0] for p in pts], [p[1] for p in pts])
 mix = mix / np.max(np.abs(mix)) * 0.95
 wavfile.write('music.wav', SR, (mix.T * 32767).astype(np.int16))
