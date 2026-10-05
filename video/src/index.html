@@ -316,8 +316,8 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
 
 <script src="node_modules/gsap/dist/gsap.min.js"></script>
 <script>
-const DUR = 60;
-window.DURATION = DUR;
+const DUR = 60, K = 1.25;
+window.DURATION = DUR / K;
 window.CUES = [];
 const cue = (type, t, v = 1) => window.CUES.push({ type, t: +t.toFixed(3), v });
 const $ = (s) => document.querySelector(s);
@@ -350,13 +350,14 @@ const hide = (s, t) => tl.set(s, { visibility: 'hidden' }, t);
 
 // Comme la VSL : chaque mot apparaît flou puis se met au net, au rythme de la voix.
 function say(el, t, per = 0.16) {
-  const w = words($(el));
-  tl.fromTo(w, { opacity: 0, filter: 'blur(14px)', y: 14 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.55, stagger: per, ease: 'power2.out' }, t);
+  const w = words($(el)); per *= 0.85;
+  tl.fromTo(w, { opacity: 0, filter: 'blur(14px)', y: 34, scale: 0.82 }, { opacity: 1, filter: 'blur(0px)', y: 0, scale: 1, duration: 0.42, stagger: per, ease: 'back.out(1.8)' }, t);
+  w.forEach((x, i) => { if (x.closest('.or')) tl.fromTo(x, { scale: 1 }, { scale: 1.06, y: -6, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t + i * per + 0.3); });
   return t + w.length * per;
 }
 function unsay(els, t) { tl.to(els, { opacity: 0, filter: 'blur(14px)', duration: 0.35, ease: 'power2.in' }, t); }
 function up(el, t, o = {}) {
-  tl.fromTo(el, { opacity: 0, y: o.y ?? 90, scale: o.s ?? 0.96 }, { opacity: 1, y: 0, scale: 1, duration: o.d ?? 0.8, ease: 'expo.out' }, t);
+  tl.fromTo(el, { opacity: 0, y: (o.y ?? 90) * 1.6, scale: o.s ?? 0.88, rotation: (rnd() - 0.5) * 6 }, { opacity: 1, y: 0, scale: 1, rotation: 0, duration: (o.d ?? 0.8) * 0.85, ease: 'back.out(1.5)' }, t);
   if (o.cue !== false) cue('card', t, o.v ?? 0.5);
 }
 function pop(el, t, o = {}) {
@@ -364,19 +365,20 @@ function pop(el, t, o = {}) {
   if (o.cue !== false) cue('pop', t, o.v ?? 0.5);
 }
 function count(el, t, to, d = 1.2, from = 0) { const o = { v: from }; tl.fromTo(o, { v: from }, { v: to, duration: d, ease: 'power2.out', onUpdate: () => ($(el).textContent = fmt(o.v)) }, t); cue('count', t, d); }
-function drift(sc, t0, t1, s = 1.04) { tl.fromTo(sc + ' .in', { scale: 1 }, { scale: s, duration: t1 - t0, ease: 'none', immediateRender: false }, t0); }
+function drift(sc, t0, t1, s = 1.04) { s = 1 + (s - 1) * 1.8; tl.fromTo(sc + ' .in', { scale: 1 }, { scale: s, duration: t1 - t0, ease: 'none', immediateRender: false }, t0); }
 // Transition « cercle blanc » de la VSL (bleu → clair)
 function circleTo(sc, t, from = '#s1') {
   tl.set('#wipe', { visibility: 'visible', scale: 0 }, t);
   tl.to('#wipe', { scale: 460, duration: 0.7, ease: 'power3.in' }, t);
   show(sc, t + 0.7); hide(from, t + 0.7); tl.set('#wipe', { visibility: 'hidden' }, t + 0.72);
+  tl.fromTo(sc, { scale: 1.14 }, { scale: 1, duration: 0.7, ease: 'expo.out' }, t + 0.7);
   cue('whoosh', t + 0.1, 0.8);
 }
 // Fondu flou entre deux scènes
 function blurTo(a, b, t) {
-  tl.to(a, { opacity: 0, filter: 'blur(20px)', scale: 1.04, duration: 0.5, ease: 'power2.in' }, t);
+  tl.to(a, { opacity: 0, filter: 'blur(20px)', scale: 1.18, duration: 0.45, ease: 'power3.in' }, t);
   show(b, t + 0.35);
-  tl.fromTo(b, { opacity: 0, filter: 'blur(20px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.6, ease: 'power2.out' }, t + 0.35);
+  tl.fromTo(b, { opacity: 0, filter: 'blur(20px)', scale: 0.86 }, { opacity: 1, filter: 'blur(0px)', scale: 1, duration: 0.6, ease: 'expo.out' }, t + 0.35);
   hide(a, t + 0.55);
   cue('whoosh', t + 0.1, 0.6);
 }
@@ -640,17 +642,17 @@ blurTo('#s9', '#s10', 53.2);
 
 // ====================================================== S10 (53.4 → 56)
 drift('#s10', 53.55, 56, 1.04);
-pop('#s10k1', 53.6, { v: 0.6 }); say('#s10a', 53.65, 0.15);
-pop('#s10k2', 54.25, { v: 0.6 }); say('#s10b', 54.3, 0.15);
-pop('#s10k3', 54.9, { v: 0.7 }); say('#s10c', 54.95, 0.15);
-circleTo('#s11', 55.4, '#s10');
+pop('#s10k1', 53.45, { v: 0.6 }); say('#s10a', 53.5, 0.15);
+pop('#s10k2', 53.95, { v: 0.6 }); say('#s10b', 54.0, 0.15);
+pop('#s10k3', 54.45, { v: 0.7 }); say('#s10c', 54.5, 0.15);
+circleTo('#s11', 55.75, '#s10');
 
 // ====================================================== S11 (56.1 → 60)
-tl.fromTo('#s11mark', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 56.15);
-cue('pop', 56.15, 0.8);
-tl.fromTo('#s11wordw', { width: 0 }, { width: 550, duration: 0.8, ease: 'power2.inOut' }, 56.45);
-say('#s11a', 56.9, 0.16);
-say('#s11b', 57.4, 0.16);
+tl.fromTo('#s11mark', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 56.45);
+cue('pop', 56.45, 0.8);
+tl.fromTo('#s11wordw', { width: 0 }, { width: 550, duration: 0.8, ease: 'power2.inOut' }, 56.7);
+say('#s11a', 57.1, 0.16);
+say('#s11b', 57.55, 0.16);
 tl.fromTo('#s11url', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 57.8);
 tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 58.1);
 cue('pop', 58.1, 0.8);
@@ -659,8 +661,8 @@ tl.fromTo('#s11in', { scale: 1 }, { scale: 1.03, duration: 3.9, ease: 'none', im
 tl.set({}, {}, DUR);
 
 tl.progress(1).progress(0);
-window.CUES.sort((a, b) => a.t - b.t);
-window.seek = (t) => { tl.seek(t, false); return 0; };
+window.CUES = window.CUES.map((c) => ({ ...c, t: +(c.t / K).toFixed(3), v: ['count', 'tick', 'type'].includes(c.type) ? c.v / K : c.v })).sort((a, b) => a.t - b.t);
+window.seek = (t) => { tl.seek(t * K, false); return 0; };
 </script>
 </body>
 </html>

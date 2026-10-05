@@ -260,16 +260,16 @@ for bar in range(int(DUR / BAR)):
 
 # accord final
 fin = [48, 55, 60, 64, 67, 71]
-put('verb', pad(fin[2:], 4.4, 1, 2200), 56.1, 0.5)
-put('dry', pad(fin[2:], 4.4, 1, 2200), 56.1, 0.35)
+put('verb', pad(fin[2:], 4.4, 1, 2200), 56.4, 0.5)
+put('dry', pad(fin[2:], 4.4, 1, 2200), 56.4, 0.35)
 for k, m in enumerate(fin[2:]):
-    put('verb', ep(m, 3.8), 56.1 + k * 0.04, 0.12)
-put('sub', sub(24 + 12, 3.8), 56.1, 0.6)
+    put('verb', ep(m, 3.8), 56.4 + k * 0.04, 0.12)
+put('sub', sub(24 + 12, 3.8), 56.4, 0.6)
 for k, m in enumerate([72, 76, 79, 83, 84]):
     put('dly', fm_pluck(m + 12, 0.8, idx=1.5), 58.1 + k * 0.125, 0.07, -0.5 + k * 0.25)
 
 # ---------------------------------------------------------------- bruitages
-for c in json.load(open('cues.json')) + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.0, 42.6, 56.1)]:
+for c in [dict(c, t=c['t'] * 1.25, v=c['v'] * 1.25 if c['type'] in ('count', 'tick', 'type') else c['v']) for c in json.load(open('cues.json'))] + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.0, 42.6, 56.4)]:
     t, v, ty = c['t'], c['v'], c['type']
     p = float(rng.uniform(-0.3, 0.3))
     if ty == 'hit':
