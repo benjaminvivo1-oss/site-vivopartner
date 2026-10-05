@@ -16,9 +16,9 @@ Vidéo « qui je suis » : les trois leviers sont seulement annoncés ; chacun a
 | 0 – 2,9 s | Recherche « vivo partner c'est quoi » sur un téléphone |
 | 2,9 – 8,2 s | Logo, partenaire de croissance digitale du BTP, basé à Carcassonne, 12 métiers « … et tous les métiers du BTP » |
 | 8,2 – 14,4 s | Notre objectif : activité, temps, opportunités (4 cartes) |
-| 14,4 – 19,2 s | Trois leviers : la visibilité, notre réceptionniste IA, Aplomb notre outil métier |
-| 19,2 – 23,4 s | Et surtout, pas une solution toute faite, bateau, la même pour tous |
-| 23,4 – 29,6 s | Audit, puis plan sur mesure |
+| 14,4 – 19,1 s | Trois leviers : la visibilité, notre réceptionniste IA, Aplomb notre outil métier sur mesure |
+| 19,1 – 23,1 s | Et surtout : le même « pack standard » copié-collé sur toutes les entreprises, puis « votre entreprise » s'allume en orange |
+| 23,1 – 29,6 s | Le cercle blanc part de « votre entreprise » : audit, puis plan sur mesure |
 | 29,6 – 31,9 s | + de clients, + de temps, zéro opportunité perdue |
 | 31,9 – 34,7 s | Logo, slogan, vivopartner.com, « Diagnostic gratuit · 30 min » |
 

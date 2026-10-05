@@ -158,7 +158,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
   <div class="t" id="s4cs" style="top:1068px;font-size:36px;font-weight:500;color:#9FB3D9">notre réceptionniste, 24h/24</div>
   <div class="abs" id="s4k3" style="left:0;right:0;top:1150px"><div class="check" style="background:#F58220"><svg class="ic" style="width:32px;height:32px;stroke-width:3"><use href="#i-check"/></svg></div></div>
   <div class="t" id="s4d" style="top:1225px;font-size:110px"><span class="or">Aplomb.</span></div>
-  <div class="t" id="s4ds" style="top:1345px;font-size:36px;font-weight:500;color:#9FB3D9">notre outil métier</div>
+  <div class="t" id="s4ds" style="top:1345px;font-size:36px;font-weight:500;color:#9FB3D9">notre outil métier sur mesure</div>
 </div></section>
 
 <!-- S5 · light : levier 1 visibilité -->
@@ -276,12 +276,10 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
 
 <!-- S8 · navy : pas de solution toute faite -->
 <section class="scene navy" id="s8"><div class="in" id="s8in">
-  <div class="abs" id="s8tile" style="left:240px;top:330px;width:600px;height:700px;border-radius:40px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.10)">
-    <div id="s8packs"></div>
-  </div>
-  <div class="t" id="s8a" style="top:1140px;font-size:62px;color:#CFDBF0">Et surtout,</div>
-  <div class="t" id="s8b" style="top:1225px;font-size:68px">pas une solution <span class="or">toute faite,</span></div>
-  <div class="t" id="s8c" style="top:1310px;font-size:68px"><span class="or">bateau,</span> la même pour tous.</div>
+  <div class="t" id="s8a" style="top:330px;font-size:64px;color:#CFDBF0">Et surtout,</div>
+  <div class="abs" id="s8grid" style="left:105px;top:470px;width:870px;height:580px"></div>
+  <div class="t" id="s8b" style="top:1150px;font-size:68px">pas une solution <span class="or">toute faite,</span></div>
+  <div class="t" id="s8c" style="top:1235px;font-size:68px"><span class="or">bateau,</span> la même pour tous.</div>
 </div></section>
 
 <!-- S9 · light : audit puis sur mesure -->
@@ -499,31 +497,53 @@ say('#s4a', 18.05, 0.16);
 pop('#s4k1', 19.40, { v: 0.6 }); say('#s4b', 19.45, 0.2); say('#s4bs', 19.95, 0.12);
 pop('#s4k2', 20.80, { v: 0.6 }); say('#s4c', 20.85, 0.2); say('#s4cs', 21.35, 0.12);
 pop('#s4k3', 22.20, { v: 0.6 }); say('#s4d', 22.25, 0.2); say('#s4ds', 22.55, 0.12);
-blurTo('#s4', '#s8', 23.60);
+tl.to('#s4in', { y: -420, opacity: 0, filter: 'blur(10px)', duration: 0.5, ease: 'power3.in' }, 23.55);
+show('#s8', 23.85); hide('#s4', 24.1);
+cue('whoosh', 23.6, 0.6);
 
 // ====================================================== S8 (23.80 → 27.00)
-drift('#s8', 23.95, 29.20, 1.05);
-up('#s8tile', 23.95, { y: 60, cue: false });
+drift('#s8', 23.85, 28.9, 1.05);
+say('#s8a', 23.95, 0.2);
 {
-  const packs = ['Pack standard', 'Logiciel générique', 'Formule unique'];
-  const wrap = $('#s8packs');
-  packs.forEach((p, i) => {
+  const names = ['Plombier', 'Maçon', 'Couvreur', 'Électricien', 'Votre entreprise', 'Peintre', 'Menuisier', 'Carreleur', 'Paysagiste'];
+  const wrap = $('#s8grid'); const W = 270, Hc = 176, cx = 300, cy = 202;
+  const cards = names.map((n, i) => {
     const c = document.createElement('div'); c.className = 'card';
-    c.style.cssText += `left:60px;top:${70 + i * 200}px;width:480px;height:170px;padding:26px 28px;background:#E8ECF2;transform:rotate(${[-3, 2, -1.5][i]}deg)`;
-    c.innerHTML = `<div style="display:flex;align-items:center;gap:16px"><div class="ico" style="width:62px;height:62px;background:#CBD5E1;color:#fff">${icon('grid', 'width:34px;height:34px')}</div><div><div style="font-weight:700;font-size:30px;color:#475569">${p}</div><div class="lbl" style="font-size:19px;color:#94A3B8">Le même pour tout le monde</div></div></div><div class="bar" style="margin-top:18px;width:70%;background:#D5DCE6"></div>`;
+    const x = (i % 3) * 300, y = Math.floor(i / 3) * 202;
+    c.style.cssText += `left:${x}px;top:${y}px;width:${W}px;height:${Hc}px;padding:20px;background:#E9EDF3;overflow:hidden`;
+    c.innerHTML = `<div style="display:flex;align-items:center;gap:12px"><div class="ico" style="width:44px;height:44px;border-radius:12px;background:#CBD5E1;color:#fff">${icon('grid', 'width:24px;height:24px')}</div><div style="font-weight:700;font-size:22px;color:#475569;white-space:nowrap">${n}</div></div>
+      <div style="display:inline-block;margin-top:14px;padding:5px 12px;border-radius:999px;background:#D5DCE6;color:#64748B;font-weight:600;font-size:17px">Pack standard</div>
+      <div class="bar" style="margin-top:14px;width:85%;background:#D5DCE6"></div><div class="bar" style="margin-top:9px;width:60%;background:#D5DCE6"></div>
+      ${i === 4 ? `<div class="hi" style="position:absolute;inset:0;padding:20px;background:linear-gradient(140deg,#FFB067,#F58220 55%,#E5631A);color:#fff;opacity:0">
+        <div style="display:flex;align-items:center;gap:12px"><div class="ico" style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.22)">${icon('house', 'width:24px;height:24px')}</div><div style="font-weight:700;font-size:22px;white-space:nowrap">Votre entreprise</div></div>
+        <div style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:5px 12px;border-radius:999px;background:#fff;color:#E8741A;font-weight:700;font-size:17px">${icon('check', 'width:16px;height:16px;stroke-width:3')}Sur mesure</div>
+        <div class="bar" style="margin-top:14px;width:85%;background:rgba(255,255,255,.45)"></div><div class="bar" style="margin-top:9px;width:60%;background:rgba(255,255,255,.45)"></div></div>` : ''}`;
     wrap.appendChild(c);
-    up(c, 24.05 + i * 0.15, { y: -80, v: 0.35, cue: i === 0 });
+    return { c, dx: cx - x, dy: cy - y };
   });
-  const stamp = document.createElement('div'); stamp.className = 'abs';
-  stamp.style.cssText = 'left:120px;top:250px;padding:14px 30px;border:7px solid #E5484D;border-radius:18px;color:#E5484D;font-family:Satoshi;font-weight:900;font-size:64px;letter-spacing:.04em;transform:rotate(-12deg);background:rgba(255,255,255,.88)';
-  stamp.textContent = 'BATEAU'; stamp.style.left = '150px'; wrap.appendChild(stamp);
-  tl.fromTo(stamp, { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: 'power3.in' }, 27.10);
-  cue('stamp', 27.38, 1);
+  // l'original apparaît au centre…
+  tl.fromTo(cards[4].c, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, 24.3);
+  cue('pop', 24.3, 0.7);
+  // …puis il est copié-collé, identique, sur toutes les autres entreprises
+  const order = [1, 3, 5, 7, 0, 2, 6, 8];
+  order.forEach((k, j) => {
+    const { c, dx, dy } = cards[k]; const t = 24.75 + j * 0.08;
+    tl.fromTo(c, { opacity: 0, x: dx, y: dy, scale: 0.9 }, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.45, ease: 'expo.out' }, t);
+    cue('tick1', t, 0.45);
+  });
+  // le déclic : les copies s'éteignent, votre entreprise s'allume
+  tl.to(order.map((k) => cards[k].c), { opacity: 0.22, scale: 0.94, duration: 0.45, ease: 'power2.out', stagger: 0.02 }, 27.0);
+  tl.to(cards[4].c.querySelector('.hi'), { opacity: 1, duration: 0.3 }, 27.05);
+  tl.to(cards[4].c, { scale: 1.14, boxShadow: '0 0 0 10px rgba(245,130,32,.25), 0 30px 70px rgba(245,130,32,.45)', duration: 0.5, ease: 'back.out(2)' }, 27.05);
+  cue('pop', 27.05, 1);
+  cue('sparkle', 27.15, 0.6);
 }
-say('#s8a', 24.20, 0.2);
-say('#s8b', 25.00, 0.2);
-say('#s8c', 26.20, 0.2);
-circleTo('#s9', 28.50, '#s8');
+say('#s8b', 25.05, 0.2);
+say('#s8c', 26.05, 0.2);
+// le cercle blanc s'ouvre depuis « votre entreprise »
+tl.set('#wipe', { top: 760 }, 27.9);
+tl.set('#wipe', { top: 960 }, 29.0);
+circleTo('#s9', 28.20, '#s8');
 
 // ====================================================== S9 (47 → 36.80)
 drift('#s9', 28.20, 36.80, 1.025);
