@@ -70,6 +70,8 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
   <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
   <symbol id="i-truck" viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
   <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="i-euro" viewBox="0 0 24 24"><path d="M18 7a7 7 0 1 0 0 10M4 10h10M4 14h10"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
   <symbol id="i-clip" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9zM9 12l2 2 4-4M9 18h6"/></symbol>
 </defs></svg>
 
@@ -279,10 +281,32 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
   <div class="t" id="s8a" style="top:330px;font-size:64px;color:#CFDBF0">Et surtout,</div>
   <div class="abs" id="s8grid" style="left:105px;top:470px;width:870px;height:580px"></div>
   <div class="t" id="s8b" style="top:1150px;font-size:68px">pas une solution <span class="or">toute faite,</span></div>
-  <div class="t" id="s8c" style="top:1235px;font-size:68px"><span class="or">bateau,</span> la même pour tous.</div>
+  <div class="t" id="s8c" style="top:1235px;font-size:68px">la même pour tous.</div>
 </div></section>
 
 <!-- S9 · light : audit puis sur mesure -->
+<section class="scene light" id="sad"><div class="in" id="sadin">
+  <div class="t" id="s8bp" style="top:170px"><span class="pill"><i></i>Notre approche</span></div>
+  <div class="t" id="s8ba" style="top:250px;font-size:66px">On s’adapte à vous,</div>
+  <div class="t" id="s8bb" style="top:332px;font-size:66px">votre entreprise, <span class="or">vos process.</span></div>
+  <div class="t" id="s8bc" style="top:420px;font-size:84px;color:#0B2F6B">Et pas l’inverse.</div>
+  <div class="card" id="s8bproc" style="left:90px;top:580px;width:900px;height:700px;padding:30px 28px">
+    <div style="display:flex;align-items:center;gap:14px;font-weight:700;font-size:30px"><span>Vos process</span><span style="margin-left:auto;font-size:20px;color:#E8741A;padding:6px 14px;border-radius:999px;background:#FFF1E6">Nos outils s’y adaptent</span></div>
+    <div id="s8bsteps" class="abs" style="left:28px;top:110px;width:844px;height:540px"></div>
+  </div>
+  <div class="card" id="s8bcmp" style="left:90px;top:1320px;width:900px;height:250px;padding:28px 32px">
+    <div id="s8bx" style="position:relative;display:flex;align-items:center;gap:16px;color:#94A3B8">
+      <div class="ico" style="width:52px;height:52px;border-radius:50%;background:#FEE2E2;color:#DC2626"><svg class="ic" style="width:28px;height:28px;stroke-width:3"><use href="#i-x"/></svg></div>
+      <span style="font-weight:600;font-size:30px">Changer vos habitudes pour un logiciel</span>
+      <div id="s8bstrike" class="abs" style="left:68px;right:20px;top:26px;height:4px;border-radius:2px;background:#DC2626;transform-origin:0 50%"></div>
+    </div>
+    <div id="s8bv" style="display:flex;align-items:center;gap:16px;margin-top:30px">
+      <div id="s8bvk" class="ico" style="width:52px;height:52px;border-radius:50%;background:#F58220;color:#fff"><svg class="ic" style="width:28px;height:28px;stroke-width:3"><use href="#i-check"/></svg></div>
+      <span style="font-weight:700;font-size:30px;color:#0F1B33">Des outils qui suivent <span style="color:#E8741A">votre façon de travailler</span></span>
+    </div>
+  </div>
+</div></section>
+
 <section class="scene light" id="s9"><div class="in" id="s9in">
   <div class="t" id="s9p1" style="top:170px"><span class="pill"><i></i>Étape 1 · Audit</span></div>
   <div class="t" id="s9a" style="top:255px;font-size:68px">On commence par <span class="or">comprendre</span></div>
@@ -330,7 +354,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
 
 <script src="node_modules/gsap/dist/gsap.min.js"></script>
 <script>
-const DUR = 43.4, K = 1.25;
+const DUR = 50.0, K = 1.25;
 window.DURATION = DUR / K;
 window.CUES = [];
 const cue = (type, t, v = 1) => window.CUES.push({ type, t: +t.toFixed(3), v });
@@ -543,15 +567,52 @@ say('#s8c', 26.05, 0.2);
 // le cercle blanc s'ouvre depuis « votre entreprise »
 tl.set('#wipe', { top: 760 }, 27.9);
 tl.set('#wipe', { top: 960 }, 29.0);
-circleTo('#s9', 28.20, '#s8');
+circleTo('#sad', 28.20, '#s8');
 
-// ====================================================== S9 (47 → 36.80)
-drift('#s9', 28.20, 36.80, 1.025);
-tl.set(['#s9p2', '#s9c', '#s9d', '#s9plan'], { opacity: 0 }, 28.20);
-tl.fromTo('#s9p1', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 29.25);
-say('#s9a', 29.40, 0.18);
-say('#s9b', 30.10, 0.18);
-up('#s9audit', 29.60, { y: 160, v: 0.6 });
+// ====================================================== S8b (28.9 → 35.5) : on s'adapte à vous
+drift('#sad', 28.9, 36.0, 1.03);
+tl.fromTo('#s8bp', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 28.95);
+let t8 = say('#s8ba', 29.1, 0.18);
+t8 = say('#s8bb', t8 + 0.05, 0.18);
+say('#s8bc', t8 + 0.25, 0.2);
+up('#s8bproc', 29.5, { y: 160, v: 0.6 });
+{
+  const steps = [['phone', 'Appel client', 'bot', 'Réceptionniste IA'], ['house', 'Visite chantier', 'cal', 'Agenda'], ['doc', 'Devis', 'zap', 'Aplomb · devis'], ['hat', 'Travaux', 'clip', 'Suivi de chantier'], ['euro', 'Facture', 'refresh', 'Relance auto']];
+  const wrap = $('#s8bsteps');
+  steps.forEach((st, i) => {
+    const d = document.createElement('div'); d.className = 'abs';
+    d.style.cssText = `left:0;top:${i * 104}px;width:844px;height:84px`;
+    d.innerHTML = `<div class="abs" style="left:0;top:0;width:390px;height:84px;border-radius:20px;background:#F3F5F8;display:flex;align-items:center;gap:16px;padding:0 20px">
+        <div class="ico" style="width:50px;height:50px;background:#0B2F6B;color:#fff">${icon(st[0], 'width:28px;height:28px')}</div><span style="font-weight:700;font-size:26px">${st[1]}</span></div>
+      <div class="lnk abs" style="left:398px;top:40px;width:46px;height:4px;border-radius:2px;background:#F58220;transform-origin:0 50%"></div>
+      <div class="tool abs" style="left:452px;top:0;width:392px;height:84px;border-radius:20px;background:#FFF1E6;border:2px solid rgba(245,130,32,.45);display:flex;align-items:center;gap:14px;padding:0 18px;color:#B45309">
+        <div class="ico" style="width:50px;height:50px;background:#F58220;color:#fff">${icon(st[2], 'width:28px;height:28px')}</div><span style="font-weight:700;font-size:25px;color:#0F1B33">${st[3]}</span>${icon('check', 'margin-left:auto;width:26px;height:26px;stroke-width:3;color:#16A34A')}</div>`;
+    wrap.appendChild(d);
+    const t = 30.0 + i * 0.38;
+    tl.fromTo(d.firstElementChild, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.4 }, t);
+    tl.fromTo(d.querySelector('.tool'), { opacity: 0, x: 220, scale: 0.9 }, { opacity: 1, x: 0, scale: 1, duration: 0.45, ease: 'back.out(1.6)' }, t + 0.2);
+    tl.fromTo(d.querySelector('.lnk'), { scaleX: 0 }, { scaleX: 1, duration: 0.25 }, t + 0.5);
+    cue('toggle', t + 0.5, 0.45);
+  });
+}
+up('#s8bcmp', 32.4, { y: 120, v: 0.6 });
+tl.fromTo('#s8bx', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, 32.7);
+tl.fromTo('#s8bstrike', { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.inOut' }, 33.2);
+cue('swish', 33.2, 0.5);
+tl.fromTo('#s8bv', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, 33.5);
+pop('#s8bvk', 33.75, { v: 0.6 });
+tl.to('#sadin', { opacity: 0, filter: 'blur(20px)', scale: 1.12, duration: 0.45, ease: 'power3.in' }, 35.55);
+show('#s9', 35.75); hide('#sad', 36.25);
+tl.fromTo('#s9in', { opacity: 0, filter: 'blur(20px)', scale: 0.88 }, { opacity: 1, filter: 'blur(0px)', scale: 1, duration: 0.6, ease: 'expo.out' }, 35.75);
+cue('whoosh', 35.65, 0.6);
+
+// ====================================================== S9 (47 → 43.40)
+drift('#s9', 34.80, 43.40, 1.025);
+tl.set(['#s9p2', '#s9c', '#s9d', '#s9plan'], { opacity: 0 }, 34.80);
+tl.fromTo('#s9p1', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 35.85);
+say('#s9a', 36.00, 0.18);
+say('#s9b', 36.70, 0.18);
+up('#s9audit', 36.20, { y: 160, v: 0.6 });
 {
   const rows = [['phone', 'Appels entrants', 'Priorité', '#FEE2E2', '#DC2626', 0.35], ['doc', 'Devis & relances', 'À améliorer', '#FFF1E6', '#E8741A', 0.55], ['pin', 'Visibilité locale', 'À améliorer', '#FFF1E6', '#E8741A', 0.5], ['users', 'Temps administratif', 'Priorité', '#FEE2E2', '#DC2626', 0.3], ['globe', 'Site internet', 'OK', '#E8F8EE', '#16A34A', 0.85]];
   const wrap = $('#s9rows');
@@ -561,21 +622,21 @@ up('#s9audit', 29.60, { y: 160, v: 0.6 });
       <div style="flex:1"><div style="font-size:27px;font-weight:600">${r[1]}</div><div class="bar" style="margin-top:12px;width:100%;position:relative;overflow:hidden"><div class="fill" style="position:absolute;left:0;top:0;bottom:0;width:${r[5] * 100}%;background:${r[4]};border-radius:6px;transform-origin:0 50%"></div></div></div>
       <span class="chipst" style="padding:8px 16px;border-radius:999px;background:${r[3]};color:${r[4]};font-weight:700;font-size:20px;white-space:nowrap">${r[2]}</span>`;
     wrap.appendChild(d);
-    const t = 30.30 + i * 0.32;
+    const t = 36.90 + i * 0.32;
     tl.fromTo(d, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.4 }, t);
     tl.fromTo(d.querySelector('.fill'), { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.out' }, t + 0.15);
     pop(d.querySelector('.chipst'), t + 0.45, { v: 0.35 });
   });
 }
 // étape 2
-unsay(['#s9p1', '#s9a', '#s9b'], 32.90);
-tl.to('#s9audit', { opacity: 0, x: -200, duration: 0.45, ease: 'power3.in' }, 32.90);
-tl.set(['#s9p2', '#s9c', '#s9d'], { opacity: 1 }, 33.30);
-tl.fromTo('#s9p2', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 33.30);
-say('#s9c', 33.40, 0.17);
-say('#s9d', 34.30, 0.18);
-tl.fromTo('#s9plan', { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.7, ease: 'expo.out' }, 33.40);
-cue('whoosh', 33.30, 0.5);
+unsay(['#s9p1', '#s9a', '#s9b'], 39.50);
+tl.to('#s9audit', { opacity: 0, x: -200, duration: 0.45, ease: 'power3.in' }, 39.50);
+tl.set(['#s9p2', '#s9c', '#s9d'], { opacity: 1 }, 39.90);
+tl.fromTo('#s9p2', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 39.90);
+say('#s9c', 40.00, 0.17);
+say('#s9d', 40.90, 0.18);
+tl.fromTo('#s9plan', { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.7, ease: 'expo.out' }, 40.00);
+cue('whoosh', 39.90, 0.5);
 {
   const mods = [['pin', 'Visibilité', 'Fiche Google, site, avis', true], ['bot', 'Réceptionniste IA', 'Appels et rendez-vous 24h/24', true], ['doc', 'Aplomb', 'Devis, relances, suivi', true], ['grid', 'Pack standard', 'Inutile pour vous', false]];
   const wrap = $('#s9mods');
@@ -585,7 +646,7 @@ cue('whoosh', 33.30, 0.5);
       <div style="flex:1"><div style="font-size:28px;font-weight:700;${m[3] ? '' : 'text-decoration:line-through;color:#94A3B8'}">${m[1]}</div><div class="lbl" style="font-size:21px">${m[2]}</div></div>
       <div class="tg" style="width:86px;height:48px;border-radius:24px;background:#CBD5E1;position:relative"><div class="kn" style="position:absolute;left:5px;top:5px;width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2)"></div></div>`;
     wrap.appendChild(d);
-    const t = 34.00 + i * 0.4;
+    const t = 40.60 + i * 0.4;
     tl.fromTo(d, { opacity: 0, y: 30 }, { opacity: m[3] ? 1 : 0.55, y: 0, duration: 0.4 }, t);
     if (m[3]) {
       tl.to(d.querySelector('.tg'), { backgroundColor: '#F58220', duration: 0.2 }, t + 0.35);
@@ -594,26 +655,26 @@ cue('whoosh', 33.30, 0.5);
     }
   });
 }
-blurTo('#s9', '#s10', 36.60);
+blurTo('#s9', '#s10', 43.20);
 
-// ====================================================== S10 (36.80 → 56)
-drift('#s10', 36.95, 39.40, 1.04);
-pop('#s10k1', 36.85, { v: 0.6 }); say('#s10a', 36.90, 0.15);
-pop('#s10k2', 37.35, { v: 0.6 }); say('#s10b', 37.40, 0.15);
-pop('#s10k3', 37.85, { v: 0.7 }); say('#s10c', 37.90, 0.15);
-circleTo('#s11', 39.15, '#s10');
+// ====================================================== S10 (43.40 → 56)
+drift('#s10', 43.55, 46.00, 1.04);
+pop('#s10k1', 43.45, { v: 0.6 }); say('#s10a', 43.50, 0.15);
+pop('#s10k2', 43.95, { v: 0.6 }); say('#s10b', 44.00, 0.15);
+pop('#s10k3', 44.45, { v: 0.7 }); say('#s10c', 44.50, 0.15);
+circleTo('#s11', 45.75, '#s10');
 
-// ====================================================== S11 (39.50 → 60)
-tl.fromTo('#s11mark', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 39.85);
-cue('pop', 39.85, 0.8);
-tl.fromTo('#s11wordw', { width: 0 }, { width: 550, duration: 0.8, ease: 'power2.inOut' }, 40.10);
-say('#s11a', 40.50, 0.16);
-say('#s11b', 40.95, 0.16);
-tl.fromTo('#s11url', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 40.20);
-tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 41.50);
-cue('pop', 41.50, 0.8);
-tl.fromTo('#s11shine', { x: 0 }, { x: 1100, duration: 0.9, ease: 'power2.inOut' }, 42.10);
-tl.fromTo('#s11in', { scale: 1 }, { scale: 1.03, duration: 3.9, ease: 'none', immediateRender: false }, 39.50);
+// ====================================================== S11 (46.10 → 60)
+tl.fromTo('#s11mark', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 46.45);
+cue('pop', 46.45, 0.8);
+tl.fromTo('#s11wordw', { width: 0 }, { width: 550, duration: 0.8, ease: 'power2.inOut' }, 46.70);
+say('#s11a', 47.10, 0.16);
+say('#s11b', 47.55, 0.16);
+tl.fromTo('#s11url', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 46.80);
+tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 48.10);
+cue('pop', 48.10, 0.8);
+tl.fromTo('#s11shine', { x: 0 }, { x: 1100, duration: 0.9, ease: 'power2.inOut' }, 48.70);
+tl.fromTo('#s11in', { scale: 1 }, { scale: 1.03, duration: 3.9, ease: 'none', immediateRender: false }, 46.10);
 tl.set({}, {}, DUR);
 
 tl.progress(1).progress(0);
