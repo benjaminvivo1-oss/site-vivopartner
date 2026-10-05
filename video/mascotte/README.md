@@ -1,12 +1,14 @@
 # Mascotte Vivo Partner
 
-`mascotte-vivopartner.png` : la planche de personnage adaptée à la marque.
+`mascotte-vivopartner-2.png` : la planche complète (poses utiles, expressions, angles, au bureau, sur le chantier) adaptée à la marque. Le casque de chantier porte la marque VP marine et orange, et l'ordinateur le logo gravé.
+
+`mascotte-vivopartner.png` : la première planche adaptée.
 
 - Sweat et fonds sombres : vert sapin → bleu marine de la marque (`#0B2F6B`), ombres et plis conservés.
 - Logo de poitrine : remplacé partout par le vrai logo (V blanc, P orange `#F58220`, « Vivo / Partner »), y compris l'enseigne murale, l'écran en arrière-plan et les détails.
 - Palette : marine `#0B2F6B` · orange `#F58220` · blanc · noir.
 
-Sources dans `src/` : planche d'origine, `recolor.py` (changement de couleur), `relogo2.py` (remplacement des logos, positions mesurées à la main), `chest_logo.png` (logo de poitrine).
+Sources dans `src/` (et `src/planche-2/` pour la seconde planche) : planche d'origine, `recolor.py` (changement de couleur), `relogo2.py` (remplacement des logos, positions mesurées à la main), `chest_logo.png` (logo de poitrine).
 
 ## Générer les poses en haute définition
 
