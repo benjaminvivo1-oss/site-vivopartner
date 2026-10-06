@@ -14,7 +14,7 @@ Vidéo « qui je suis » : les trois leviers sont seulement annoncés ; chacun a
 | Temps | Séquence |
 | --- | --- |
 | 0 – 2,9 s | Recherche « vivo partner c'est quoi » sur un téléphone |
-| 2,9 – 8,2 s | Logo, partenaire de croissance digitale du BTP, carte « Fondé par Benjamin Vivo · Carcassonne » (avatar de la mascotte), 12 métiers « … et tous les métiers du BTP » |
+| 2,9 – 8,2 s | Logo, partenaire de croissance digitale du BTP, 12 métiers « … et tous les métiers du BTP », puis temps fort du fondateur : avatar de la mascotte en grand, « Fondé par Benjamin Vivo », « Fondateur · Carcassonne » |
 | 8,2 – 14,4 s | Notre objectif : activité, temps, opportunités (4 cartes) |
 | 14,4 – 19,1 s | Trois leviers : la visibilité, notre réceptionniste IA, Aplomb notre outil métier sur mesure |
 | 19,1 – 23,1 s | Et surtout : le même « pack standard » copié-collé sur toutes les entreprises, puis « votre entreprise » s'allume |

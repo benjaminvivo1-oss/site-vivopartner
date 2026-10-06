@@ -1,6 +1,6 @@
 # Voix off : « Vivo Partner, c'est quoi ? »
 
-Une seule voix : **la mascotte** (voix ElevenLabs « confident Viv »). La mascotte, c'est Benjamin Vivo, le fondateur, en version cartoon : elle le dit elle-même (« … fondé par moi, Benjamin Vivo ») pendant qu'apparaît la carte « Fondé par Benjamin Vivo · Carcassonne » avec son avatar.
+Une seule voix : **la mascotte** (voix ElevenLabs « confident Viv »). La mascotte, c'est Benjamin Vivo, le fondateur, en version cartoon : elle le dit elle-même (« … fondé par moi, Benjamin Vivo ») pendant le temps fort du fondateur : son avatar en grand, « Fondé par Benjamin Vivo » et « Fondateur · Carcassonne ».
 
 Quand elle est à l'écran et qu'elle parle, sa bouche bouge et une bulle avec des ondes sonores apparaît à côté de sa tête. Quand elle n'est pas à l'écran, elle continue de raconter comme une narratrice.
 
@@ -19,7 +19,7 @@ Les minutages correspondent à `vivopartner-cest-quoi-9x16.mp4` (40,6 s). Un éc
 | 0:34,8 | 0:36,5 | **À enregistrer** | Plus de clients. Plus de temps. Zéro opportunité perdue. |
 | 0:37,2 | 0:40,2 | Enregistré | Vivo Partner. Réservez votre diagnostic gratuit. |
 
-« … fondé par moi, Benjamin Vivo » tombe vers 0:07,0 : c'est le moment où la mascotte en tenue de chantier parle et où la carte du fondateur apparaît.
+« … fondé par moi, Benjamin Vivo » tombe vers 0:07,0 : la mascotte en tenue de chantier parle et l'écran passe au temps fort du fondateur (0:06,9 – 0:08,5).
 
 Les phrases enregistrées sont dans `voix/mascotte-elevenlabs.mp3`. Elles sont découpées et placées par `voix/build_voice.py` ; la phrase « Trois leviers… » est accélérée de 6 % pour tenir dans la scène. La bouche suit le volume réel de la voix et la musique baisse pendant qu'elle parle (`voix/mix.py`). Pour la mascotte en tenue de chantier, en attendant l'enregistrement, la bouche suit un rythme générique.
 
