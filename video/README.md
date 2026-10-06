@@ -25,6 +25,16 @@ Vidéo « qui je suis » : les trois leviers sont seulement annoncés ; chacun a
 
 La mascotte apparaît en bas de l'écran à six moments : elle salue (intro), arrive en tenue de chantier (métiers du BTP), explique (trois leviers), réfléchit (« pas une solution toute faite »), travaille sur son ordinateur (audit et plan sur mesure) et pointe vers vous (fin). Les poses viennent de la planche `mascotte/mascotte-vivopartner-2.png` : extraites, agrandies ×4 (EDSR) puis détourées (rembg, modèle isnet) ; elles sont dans `mascotte/poses/`.
 
+### Mascotte en 3D
+
+La mascotte n'est pas affichée comme une image plate : elle est rendue en WebGL (three.js) sur le canevas `#m3d`. Pour chaque pose :
+
+- une carte de profondeur (`src/assets/depth_*.png`) a été estimée avec Depth Anything (`mascotte/src/depth.py`) ;
+- l'image devient un maillage déformé par cette profondeur, lissée pour éviter les déchirures aux bords. Quand la mascotte pivote, ses mains et son visage avancent réellement par rapport au corps (parallaxe) ;
+- l'éclairage est recalculé à chaque image (lumière principale, liseré chaud côté lampe et froid à l'opposé, ombre portée détachée du corps).
+
+Les balises `<img class="masc">` restent dans la page comme repères invisibles : la timeline GSAP les anime (position, rotation, rotation 3D) et le canevas recopie leur état. `mascotte/src/bundle-3d.py` regroupe images, profondeurs et ombres dans `src/assets/masc3d.js`, chargé directement par la page.
+
 Les scènes détaillées des leviers (`#s5`, `#s6`, `#s7`) restent dans `src/index.html` mais ne sont plus jouées : elles serviront de base aux vidéos dédiées.
 
 L'animation est écrite sur 50 s dans `src/index.html` puis jouée 25 % plus vite (constante `K`). La musique est générée sur 50 s puis accélérée de la même façon (`asetrate`), ce qui la passe à 150 BPM.

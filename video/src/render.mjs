@@ -8,6 +8,7 @@ page.on('pageerror', (e) => console.error('PAGEERROR', e.message));
 page.on('console', (m) => m.type() === 'error' && console.error('CONSOLE', m.text()));
 await page.goto(url);
 await page.evaluate(() => document.fonts.ready);
+await page.evaluate(() => window.READY);
 await page.waitForTimeout(300);
 const [, , mode, a, b, c, d] = process.argv;
 if (mode === 'cues') { fs.writeFileSync(a, JSON.stringify(await page.evaluate(() => window.CUES))); }
