@@ -20,4 +20,4 @@ Poses utiles pour les vidéos : salue de la main · pointe vers la caméra · po
 
 ## Poses détourées
 
-`poses/` : salue, explique, réfléchit, pointe vers la caméra — extraites de la planche 2, agrandies ×4 (EDSR) et détourées sur fond transparent. Elles servent dans la vidéo de présentation ; pour un usage en grand (affiche, site), mieux vaut générer les poses en haute définition avec le prompt ci-dessus.
+`poses/` : salue, explique, réfléchit, pointe vers la caméra, chantier (casque, dôme reconstruit car coupé par la vignette) et bureau (ordinateur) — extraites de la planche 2, agrandies ×4 (EDSR) et détourées sur fond transparent. Elles servent dans la vidéo de présentation ; pour un usage en grand (affiche, site), mieux vaut générer les poses en haute définition avec le prompt ci-dessus.
