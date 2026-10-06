@@ -421,7 +421,7 @@ const hide = (s, t) => tl.set(s, { visibility: 'hidden' }, t);
 function say(el, t, per = 0.16) {
   const w = words($(el)); per *= 0.85;
   tl.fromTo(w, { opacity: 0, filter: 'blur(14px)', y: 34, z: -120, rotationX: -78, scale: 0.82, transformPerspective: 700, transformOrigin: '50% 100%' }, { opacity: 1, filter: 'blur(0px)', y: 0, z: 0, rotationX: 0, scale: 1, duration: 0.5, stagger: per, ease: 'back.out(1.6)' }, t);
-  w.forEach((x, i) => { if (x.closest('.or')) tl.fromTo(x, { scale: 1, z: 0 }, { scale: 1.06, y: -6, z: 40, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t + i * per + 0.3); });
+  w.forEach((x, i) => { if (x.closest('.or')) tl.fromTo(x, { scale: 1, z: 0 }, { scale: 1.06, y: -6, z: 0, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t + i * per + 0.3); });
   return t + w.length * per;
 }
 function unsay(els, t) { tl.to(els, { opacity: 0, filter: 'blur(14px)', duration: 0.35, ease: 'power2.in' }, t); }
