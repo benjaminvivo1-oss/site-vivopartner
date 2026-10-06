@@ -3,7 +3,7 @@ import json, subprocess, sys, numpy as np
 from scipy.io import wavfile
 SRC, OUT, ENV, TOTAL = sys.argv[1], sys.argv[2], sys.argv[3], float(sys.argv[4])
 SR = 44100
-INTRO = 3.2  # intro « Salut, moi c'est Benjamin » (secondes vidéo) ajoutée devant
+INTRO = 0.0  # décalage global (secondes vidéo), si on ajoute une intro devant
 # (début source, fin source, début vidéo, tempo)
 SEGS = [(0.00, 1.45, 0.40, 1.0),    # Vivo Partner, c'est quoi ?
         (1.80, 7.80, 13.85, 1.06),  # Trois leviers : … sur mesure.

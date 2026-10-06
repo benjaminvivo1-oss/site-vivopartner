@@ -108,7 +108,7 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
   <div class="t" id="s2a" style="top:500px;font-size:66px">Un partenaire de</div>
   <div class="t" id="s2a2" style="top:582px;font-size:66px"><span class="or">croissance digitale</span></div>
   <div class="t" id="s2b" style="top:664px;font-size:66px">dédié aux entreprises du <span class="or">BTP.</span></div>
-  <div class="t" id="s2loc" style="top:765px"><span style="display:inline-flex;align-items:center;gap:12px;padding:14px 28px;border-radius:999px;background:#fff;border:1.5px solid #E6EAF0;box-shadow:0 10px 30px rgba(15,23,42,.08);font-family:Inter;font-weight:600;font-size:32px;color:#0B2F6B"><svg class="ic" style="width:34px;height:34px;color:#F58220"><use href="#i-pin"/></svg>Basé à Carcassonne</span></div>
+  <div class="t" id="s2loc" style="top:752px"><span style="display:inline-flex;align-items:center;gap:18px;padding:12px 30px 12px 12px;border-radius:999px;background:#fff;border:1.5px solid #E6EAF0;box-shadow:0 14px 34px rgba(15,23,42,.10);font-family:Inter;text-align:left"><img src="assets/avatar.png" style="width:88px;height:88px;border-radius:50%;display:block"><span><span style="display:block;font-weight:500;font-size:24px;color:#64748B;line-height:1.15">Fondé par</span><span style="display:block;font-family:Satoshi;font-weight:900;font-size:40px;letter-spacing:-.02em;color:#0B2F6B;line-height:1.1">Benjamin Vivo</span></span><span style="display:inline-flex;align-items:center;gap:6px;margin-left:10px;padding:8px 16px;border-radius:999px;background:#FFF1E6;color:#E8741A;font-weight:700;font-size:22px"><svg class="ic" style="width:24px;height:24px"><use href="#i-pin"/></svg>Carcassonne</span></span></div>
   <div id="s2trades" class="abs" style="left:90px;top:890px;width:900px;height:700px"></div>
 </div></section>
 
@@ -356,19 +356,6 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
   <div class="t" id="s11who" style="top:1345px;font-family:Inter;font-weight:500;font-size:30px;color:#64748B;visibility:hidden">avec <b style="color:#0B2F6B;font-weight:700">Benjamin</b>, votre interlocuteur unique à Carcassonne</div>
 </div></section>
 
-<!-- S0 · navy : la mascotte se présente (au-dessus des autres scènes pendant l'intro) -->
-<section class="scene navy" id="s0"><div class="in" id="s0in">
-  <div class="t" id="s0a" style="top:420px;font-size:130px">Salut !</div>
-  <div class="abs" id="s0card" style="left:140px;top:640px;width:800px;height:230px;border-radius:36px;background:#fff;box-shadow:0 30px 70px rgba(2,10,30,.35);display:flex;align-items:center;gap:30px;padding:0 40px;font-family:Inter;color:#0F1B33">
-    <div style="width:140px;height:140px;border-radius:32px;background:#F3F5F8;display:flex;align-items:center;justify-content:center;flex:none"><img src="assets/vp-mark-navy.png" style="width:104px"></div>
-    <div style="flex:1;min-width:0">
-      <div style="font-family:Satoshi;font-weight:900;font-size:70px;letter-spacing:-.03em;color:#0B2F6B;line-height:1">Benjamin</div>
-      <div style="font-weight:600;font-size:30px;color:#64748B;margin-top:10px">Fondateur · <span style="color:#E8741A">Vivo Partner</span></div>
-      <div id="s0loc" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 16px;border-radius:999px;background:#FFF1E6;color:#E8741A;font-weight:700;font-size:22px"><svg class="ic" style="width:24px;height:24px"><use href="#i-pin"/></svg>Carcassonne</div>
-    </div>
-  </div>
-</div></section>
-
 <img class="masc" id="m_salue" src="assets/masc_salue.png" style="left:0;top:1490px;height:430px">
 <img class="masc" id="m_explique" src="assets/masc_explique.png" style="left:0;top:1440px;height:480px">
 <img class="masc" id="m_reflechit" src="assets/masc_reflechit.png" style="right:0;top:1440px;height:480px">
@@ -385,8 +372,8 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
 <script src="assets/masc3d.js"></script>
 <script src="assets/voice-env.js"></script>
 <script>
-const DUR = 50.75, K = 1.25, D0 = 4.0; // D0 : intro où la mascotte se présente
-window.DURATION = (DUR + D0) / K;
+const DUR = 50.75, K = 1.25;
+window.DURATION = DUR / K;
 window.CUES = [];
 const cue = (type, t, v = 1) => window.CUES.push({ type, t: +t.toFixed(3), v });
 const $ = (s) => document.querySelector(s);
@@ -418,10 +405,10 @@ const show = (s, t) => tl.set(s, { visibility: 'visible' }, t);
 const hide = (s, t) => tl.set(s, { visibility: 'hidden' }, t);
 
 // Comme la VSL : chaque mot apparaît flou puis se met au net, au rythme de la voix.
-function say(el, t, per = 0.16, on = tl) {
+function say(el, t, per = 0.16) {
   const w = words($(el)); per *= 0.85;
-  on.fromTo(w, { opacity: 0, filter: 'blur(14px)', y: 34, scale: 0.82 }, { opacity: 1, filter: 'blur(0px)', y: 0, scale: 1, duration: 0.42, stagger: per, ease: 'back.out(1.8)' }, t);
-  w.forEach((x, i) => { if (x.closest('.or')) on.fromTo(x, { scale: 1 }, { scale: 1.06, y: -6, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t + i * per + 0.3); });
+  tl.fromTo(w, { opacity: 0, filter: 'blur(14px)', y: 34, scale: 0.82 }, { opacity: 1, filter: 'blur(0px)', y: 0, scale: 1, duration: 0.42, stagger: per, ease: 'back.out(1.8)' }, t);
+  w.forEach((x, i) => { if (x.closest('.or')) tl.fromTo(x, { scale: 1 }, { scale: 1.06, y: -6, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t + i * per + 0.3); });
   return t + w.length * per;
 }
 function unsay(els, t) { tl.to(els, { opacity: 0, filter: 'blur(14px)', duration: 0.35, ease: 'power2.in' }, t); }
@@ -476,14 +463,15 @@ say('#s1b', 1.1, 0.2);
 circleTo('#s2', 2.9, '#s1');
 
 // ====================================================== S2 (3.6 → 9.6)
-drift('#s2', 3.6, 10.2, 1.03);
+drift('#s2', 3.6, 10.7, 1.03);
 tl.fromTo('#s2mark', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 3.65);
 cue('pop', 3.65, 0.7);
 tl.fromTo('#s2wordw', { width: 0 }, { width: 480, duration: 0.8, ease: 'power2.inOut' }, 3.95);
 let t2 = say('#s2a', 4.55, 0.16); t2 = say('#s2a2', t2 + 0.05, 0.18);
 t2 = say('#s2b', t2 + 0.15, 0.16);
-tl.fromTo('#s2loc', { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(2)' }, t2 + 0.1);
-cue('pop', t2 + 0.1, 0.7);
+// « … fondé par moi, Benjamin Vivo » : la carte du fondateur, avec l'avatar de la mascotte
+tl.fromTo('#s2loc', { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: 'back.out(2)' }, 8.85);
+cue('pop', 8.85, 0.8);
 {
   const trades = [['wrench', 'Plombier'], ['plug', 'Électricien'], ['bricks', 'Maçon'], ['roof', 'Couvreur'], ['hammer', 'Menuisier'], ['flame', 'Chauffagiste'],
     ['roller', 'Peintre'], ['grid', 'Carreleur'], ['layers', 'Plaquiste'], ['house', 'Charpentier'], ['truck', 'Terrassier'], ['leaf', 'Paysagiste']];
@@ -502,7 +490,7 @@ cue('pop', t2 + 0.1, 0.7);
   tl.fromTo(all, { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: 'back.out(2)' }, 7.75);
   cue('pop', 7.75, 0.9);
 }
-blurTo('#s2', '#s3', 10.0);
+blurTo('#s2', '#s3', 10.45);
 
 // ====================================================== S3 (10.20 → 17.80)
 drift('#s3', 10.35, 17.80, 1.03);
@@ -726,7 +714,9 @@ function mascOut(id, t) {
   tl.set(id, { visibility: 'hidden' }, t + 0.42);
 }
 // 1. intro : elle salue
-// (la mascotte qui salue est animée sur la timeline maître, avec l'intro)
+mascIn('#m_salue', 0.3);
+tl.to('#m_salue', { keyframes: [{ rotation: -3, duration: 0.18 }, { rotation: 2.5, duration: 0.18 }, { rotation: -3, duration: 0.18 }, { rotation: 2, duration: 0.18 }, { rotation: 0, duration: 0.2 }], ease: 'sine.inOut' }, 0.95);
+mascOut('#m_salue', 2.7);
 // 2. trois leviers : elle explique
 mascIn('#m_explique', 17.2);
 mascIdle('#m_explique', 17.85, 24.2);
@@ -737,8 +727,8 @@ mascIdle('#m_reflechit', 24.95, 28.3);
 mascOut('#m_reflechit', 28.4);
 // 1 bis. métiers du BTP : en tenue de chantier
 mascIn('#m_chantier', 7.9, { side: 'right' });
-mascIdle('#m_chantier', 8.55, 9.7);
-mascOut('#m_chantier', 9.7);
+mascIdle('#m_chantier', 8.55, 10.2);
+mascOut('#m_chantier', 10.3);
 // 3 bis. audit puis plan sur mesure : au bureau, devant l'ordinateur
 mascIn('#m_bureau', 35.9, { side: 'right' });
 mascIdle('#m_bureau', 36.55, 43.0);
@@ -747,35 +737,6 @@ mascOut('#m_bureau', 43.1);
 mascIn('#m_pointe', 46.4);
 mascIdle('#m_pointe', 47.05, 50.75);
 
-
-// ====================================================== Timeline maître : intro (0 → D0) puis tout le reste
-const master = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
-window.CUES.forEach((c) => (c.t += D0)); // les repères posés jusqu'ici sont sur tl
-tl.paused(false); master.add(tl, D0);
-master.set('#s0', { visibility: 'visible' }, 0); master.set('#s0', { visibility: 'hidden' }, D0 + 0.05);
-master.fromTo('#s0in', { scale: 1 }, { scale: 1.05, duration: D0, ease: 'none' }, 0);
-say('#s0a', 0.3, 0.2, master);
-master.fromTo('#s0card', { opacity: 0, y: 70, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 1.0);
-cue('card', 1.0, 0.7);
-master.fromTo('#s0loc', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, 1.9);
-cue('pop', 1.9, 0.5);
-master.to('#s0in', { opacity: 0, y: -90, filter: 'blur(14px)', duration: 0.4, ease: 'power3.in' }, D0 - 0.4);
-cue('whoosh', D0 - 0.35, 0.6);
-// la mascotte arrive en grand au centre, salue, puis rejoint sa place pour « Vivo Partner, c'est quoi ? »
-{
-  const W = [{ rotation: -3, duration: 0.18 }, { rotation: 2.5, duration: 0.18 }, { rotation: -3, duration: 0.18 }, { rotation: 2, duration: 0.18 }, { rotation: 0, duration: 0.2 }];
-  $('#m_salue').dataset.ox = 0.2;
-  master.set('#m_salue', { visibility: 'visible', transformOrigin: '20% 100%' }, 0.1);
-  master.fromTo('#m_salue', { y: 760, x: 140, scale: 2, rotation: -8 }, { y: 0, x: 140, scale: 2, rotation: 0, duration: 0.8, ease: 'back.out(1.4)' }, 0.1);
-  cue('whoosh', 0.1, 0.6); cue('pop', 0.5, 0.5);
-  master.to('#m_salue', { keyframes: W, ease: 'sine.inOut' }, 0.85);
-  master.fromTo('#m_salue', { y: 0 }, { y: -14, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 1, immediateRender: false }, 1.95);
-  master.to('#m_salue', { x: 0, scale: 1, y: 0, duration: 0.6, ease: 'power3.inOut' }, D0 - 0.35);
-  master.to('#m_salue', { keyframes: W, ease: 'sine.inOut' }, D0 + 0.95);
-  master.to('#m_salue', { y: 560, rotation: 6, duration: 0.4, ease: 'power3.in' }, D0 + 2.7);
-  master.set('#m_salue', { visibility: 'hidden' }, D0 + 3.12);
-  cue('whoosh', D0 + 2.7, 0.4);
-}
 
 // ====================================================== Paroles de la mascotte
 // Coins gauche/droit et milieu de la commissure des lèvres (px dans l'image), boîte du visage.
@@ -788,8 +749,8 @@ const MOUTH = {
   chantier: { L: [382, 318], R: [479, 314], M: [426, 323], face: [308, 125, 196, 263] },
 };
 // Quand la mascotte parle (temps de l'animation). Le reste du texte, c'est la voix du fondateur.
-// Temps de la timeline maître. 'synth' : pas encore de voix enregistrée, la bouche suit un rythme générique.
-const TALK = { salue: [[0.35, 3.35, 'synth'], [4.5, 6.3]], explique: [[21.3, 28.4]], reflechit: [[28.5, 32.4]], bureau: [[39.95, 43.6], [43.95, 47.1]], pointe: [[50.45, 54.3]] };
+// 'synth' : voix pas encore enregistrée, la bouche suit un rythme générique.
+const TALK = { salue: [[0.5, 2.3]], chantier: [[8.7, 10.3, 'synth']], explique: [[17.3, 24.4]], reflechit: [[24.5, 28.4]], bureau: [[35.95, 39.6], [39.95, 43.1]], pointe: [[46.45, 50.3]] };
 function talkAt(name, t) {
   const segs = TALK[name]; if (!segs) return 0;
   let env = 0, syn = false;
@@ -808,10 +769,10 @@ function talkAt(name, t) {
 }
 // Petite bulle « ondes sonores » à côté de la tête pendant qu'elle parle
 TALK && Object.entries(TALK).forEach(([name, segs]) => segs.forEach(([a, b]) => {
-  master.set('#bub', { visibility: 'visible', attr: { 'data-m': name } }, a - 0.05);
-  master.fromTo('#bub', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, a - 0.05);
-  master.to('#bub', { scale: 0, opacity: 0, duration: 0.2, ease: 'power2.in' }, b);
-  master.set('#bub', { visibility: 'hidden' }, b + 0.21);
+  tl.set('#bub', { visibility: 'visible', attr: { 'data-m': name } }, a - 0.05);
+  tl.fromTo('#bub', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, a - 0.05);
+  tl.to('#bub', { scale: 0, opacity: 0, duration: 0.2, ease: 'power2.in' }, b);
+  tl.set('#bub', { visibility: 'hidden' }, b + 0.21);
   cue('pop', a - 0.05, 0.35);
 }));
 
@@ -893,12 +854,12 @@ const M3D = (() => {
     }));
   });
   function render() {
-    const T = master.time(), bub = $('#bub');
+    const T = tl.time(), bub = $('#bub');
     Object.values(items).forEach(({ el, g, mesh, shadow, mat, a, name }) => {
       const vis = getComputedStyle(el).visibility === 'visible'; g.visible = vis; if (!vis) return;
-      const P = (k) => +gsap.getProperty(el, k) || 0, sc = +gsap.getProperty(el, 'scale');
-      const h0 = el.offsetHeight, w0 = h0 * a.w / a.h, h = h0 * sc, w = w0 * sc, ox = +(el.dataset.ox || 0.2);
-      const pxX = el.offsetLeft + ox * w0 + P('x'), pxY = el.offsetTop + h0 + P('y');
+      const h = el.offsetHeight, w = h * a.w / a.h, ox = +(el.dataset.ox || 0.2);
+      const P = (k) => +gsap.getProperty(el, k) || 0;
+      const pxX = el.offsetLeft + ox * w + P('x'), pxY = el.offsetTop + h + P('y');
       g.position.set(pxX - 540, 960 - pxY, 0);
       g.rotation.set(P('rotationX') * Math.PI / 180, P('rotationY') * Math.PI / 180, -P('rotation') * Math.PI / 180, 'YXZ');
       const ext = 0.14; mesh.scale.set(w, h * (1 + ext), 1); mesh.position.set((0.5 - ox) * w, h / 2 - h * ext / 2, 0);
@@ -908,7 +869,7 @@ const M3D = (() => {
       mat.uniforms.open.value = talkAt(name, T);
       if (bub.getAttribute('data-m') === name) {
         const s = h / a.h, f = MOUTH[name].face, left = ox < 0.5;
-        const hx = pxX + ((left ? f[0] + f[2] : f[0]) - ox * a.w) * s + (left ? 6 : -138), hy = pxY - (a.h - f[1]) * s - 40;
+        const hx = el.offsetLeft + P('x') + (left ? (f[0] + f[2]) * s + 6 : f[0] * s - 138), hy = el.offsetTop + P('y') + f[1] * s - 40;
         bub.style.left = hx + 'px'; bub.style.top = hy + 'px';
         bub.style.setProperty('--ox', left ? '0%' : '100%'); bub.style.setProperty('--tx', left ? '18px' : '86px');
         const o = talkAt(name, T);
@@ -923,9 +884,9 @@ const M3D = (() => {
 })();
 window.READY = M3D.ready.then(() => { M3D.render(); return 0; });
 
-master.progress(1).progress(0);
+tl.progress(1).progress(0);
 window.CUES = window.CUES.map((c) => ({ ...c, t: +(c.t / K).toFixed(3), v: ['count', 'tick', 'type'].includes(c.type) ? c.v / K : c.v })).sort((a, b) => a.t - b.t);
-window.seek = (t) => { master.seek(t * K, false); M3D.render(); return 0; };
+window.seek = (t) => { tl.seek(t * K, false); M3D.render(); return 0; };
 </script>
 </body>
 </html>

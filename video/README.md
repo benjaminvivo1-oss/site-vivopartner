@@ -1,6 +1,6 @@
 # Vidéo « Vivo Partner, c'est quoi ? »
 
-`vivopartner-cest-quoi-9x16.mp4` : 43,8 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
+`vivopartner-cest-quoi-9x16.mp4` : 40,6 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
 Même langage visuel que la VSL : alternance bleu marine / clair, transition en cercle blanc, texte qui apparaît mot par mot, maquettes d'interface, pastilles « Levier ».
 
 La vidéo est calée sur une voix off : texte et minutages dans [`VOIX-OFF.md`](VOIX-OFF.md).
@@ -13,10 +13,8 @@ Vidéo « qui je suis » : les trois leviers sont seulement annoncés ; chacun a
 
 | Temps | Séquence |
 | --- | --- |
-| 0 – 3,2 s | Intro : la mascotte (Benjamin en version cartoon) salue, « Salut ! » et étiquette « Benjamin · Fondateur · Vivo Partner · Carcassonne » |
-| + 3,2 s | Les séquences suivantes sont décalées de 3,2 s |
 | 0 – 2,9 s | Recherche « vivo partner c'est quoi » sur un téléphone |
-| 2,9 – 8,2 s | Logo, partenaire de croissance digitale du BTP, basé à Carcassonne, 12 métiers « … et tous les métiers du BTP » |
+| 2,9 – 8,2 s | Logo, partenaire de croissance digitale du BTP, carte « Fondé par Benjamin Vivo · Carcassonne » (avatar de la mascotte), 12 métiers « … et tous les métiers du BTP » |
 | 8,2 – 14,4 s | Notre objectif : activité, temps, opportunités (4 cartes) |
 | 14,4 – 19,1 s | Trois leviers : la visibilité, notre réceptionniste IA, Aplomb notre outil métier sur mesure |
 | 19,1 – 23,1 s | Et surtout : le même « pack standard » copié-collé sur toutes les entreprises, puis « votre entreprise » s'allume |
@@ -41,7 +39,7 @@ Les balises `<img class="masc">` restent dans la page comme repères invisibles 
 
 Les scènes détaillées des leviers (`#s5`, `#s6`, `#s7`) restent dans `src/index.html` mais ne sont plus jouées : elles serviront de base aux vidéos dédiées.
 
-L'animation est écrite sur 50,75 s dans `src/index.html` (timeline `tl`), précédée d'une intro de 4 s (timeline `master`, constante `D0`), puis jouée 25 % plus vite (constante `K`). La musique est générée sur 50 s puis accélérée de la même façon (`asetrate`), ce qui la passe à 150 BPM.
+L'animation est écrite sur 50,75 s dans `src/index.html` puis jouée 25 % plus vite (constante `K`). La musique est générée sur 50 s puis accélérée de la même façon (`asetrate`), ce qui la passe à 150 BPM.
 
 ## Régénérer la vidéo
 
@@ -53,8 +51,8 @@ npm install
 pip install numpy scipy
 node render.mjs cues cues.json                  # repères son
 python3 music.py                                # -> music.wav (50 s)
-ffmpeg -i music.wav -af "asetrate=44100*1.25,aresample=44100" -t 43.8 music_fast.wav
-for i in 0 1 2 3; do node render.mjs 60 $((i*657)) $(((i+1)*657)) frames & done; wait
+ffmpeg -i music.wav -af "asetrate=44100*1.25,aresample=44100" -t 40.6 music_fast.wav
+for i in 0 1 2 3; do node render.mjs 60 $((i*609)) $(((i+1)*609)) frames & done; wait
 ffmpeg -framerate 60 -i frames/f%05d.jpg -i music_fast.wav -c:v libx264 -preset slow -crf 18 \
   -pix_fmt yuv420p -movflags +faststart -af "loudnorm=I=-14:TP=-1:LRA=7" \
   -c:a aac -b:a 192k -shortest ../vivopartner-cest-quoi-9x16.mp4
@@ -63,12 +61,12 @@ ffmpeg -framerate 60 -i frames/f%05d.jpg -i music_fast.wav -c:v libx264 -preset 
 Avec la voix de la mascotte (dossier `voix/`) :
 
 ```bash
-python3 ../voix/build_voice.py ../voix/mascotte-elevenlabs.mp3 voix.wav env.json 43.8   # place les phrases
+python3 ../voix/build_voice.py ../voix/mascotte-elevenlabs.mp3 voix.wav env.json 40.6   # place les phrases
 python3 -c "import json;open('assets/voice-env.js','w').write('window.VOICE_ENV='+open('env.json').read()+';')"
 python3 ../voix/mix.py music_fast.wav voix.wav mix.wav                                  # musique baissée sous la voix
 ```
 
-puis encoder avec `-i mix.wav` à la place de `music_fast.wav` (la durée est de 43,8 s : `-t 43.8` pour la musique, 2 628 images).
+puis encoder avec `-i mix.wav` à la place de `music_fast.wav` (la durée est de 40,6 s : `-t 40.6` pour la musique, 2 436 images).
 
 Aperçu de quelques instants : `node render.mjs shots 2,26,38 shots`.
 Les textes se modifient directement dans `src/index.html`.

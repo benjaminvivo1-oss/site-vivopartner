@@ -7,10 +7,9 @@ from scipy.io import wavfile
 
 SR = 44100
 DUR = 50.75
-OFF = 4.0  # intro « Salut, moi c'est Benjamin » ajoutée devant (2 mesures)
 BEAT = 0.5
 BAR = 2.0
-N = int(SR * (DUR + OFF))
+N = int(SR * DUR)
 rng = np.random.default_rng(5)
 
 # Bus : dry (batterie), wet (envoyé en réverb), dly (délai ping-pong + réverb)
@@ -22,7 +21,7 @@ def T(d):
 
 
 def put(name, sig, t, g=1.0, pan=0.0):
-    i = int(round((t + OFF) * SR))
+    i = int(round(t * SR))
     if i >= N or len(sig) == 0:
         return
     if i < 0:
@@ -221,7 +220,7 @@ for s in range(int(DUR / 0.125)):
 # ducking
 duck = np.ones(N)
 for kt in kick_times:
-    i = int((kt + OFF) * SR); d = int(0.25 * SR); j = min(N, i + d)
+    i = int(kt * SR); d = int(0.25 * SR); j = min(N, i + d)
     e = 1 - 0.6 * np.exp(-np.arange(j - i) / (0.06 * SR))
     duck[i:j] = np.minimum(duck[i:j], e)
 
@@ -259,13 +258,6 @@ for bar in range(int(DUR / BAR)):
     if sec == 'intro':
         put('verb', bell(chord[3] + 12, 2.0), t0 + 0.5, 0.06)
 
-# intro : Am7 puis Fmaj7, qui se résolvent sur le Cmaj7 du début
-for t0, (chord, root) in ((-4.0, PROG[2]), (-2.0, PROG[3])):
-    put('verb', pad(chord, BAR + 0.6, 1, 800), t0, 0.45)
-    put('dry', pad(chord, BAR + 0.6, 1, 800), t0, 0.4)
-    put('verb', bell(chord[3] + 12, 2.0), t0 + 0.5, 0.06)
-put('verb', riser(1.4), -1.4, 0.12)
-
 # accord final
 fin = [48, 55, 60, 64, 67, 71]
 put('verb', pad(fin[2:], 4.4, 1, 2200), 46.4, 0.5)
@@ -277,7 +269,7 @@ for k, m in enumerate([72, 76, 79, 83, 84]):
     put('dly', fm_pluck(m + 12, 0.8, idx=1.5), 48.0 + k * 0.125, 0.07, -0.5 + k * 0.25)
 
 # ---------------------------------------------------------------- bruitages
-for c in [dict(c, t=c['t'] * 1.25 - OFF, v=c['v'] * 1.25 if c['type'] in ('count', 'tick', 'type') else c['v']) for c in json.load(open('cues.json'))] + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.45, 29.05, 35.8, 46.4)]:
+for c in [dict(c, t=c['t'] * 1.25, v=c['v'] * 1.25 if c['type'] in ('count', 'tick', 'type') else c['v']) for c in json.load(open('cues.json'))] + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.45, 29.05, 35.8, 46.4)]:
     t, v, ty = c['t'], c['v'], c['type']
     p = float(rng.uniform(-0.3, 0.3))
     if ty == 'hit':
@@ -373,7 +365,7 @@ mix = bus['dry'] + tonal * duck + filt(bus['sub'], 'low', 180) * duck * 0.3
 
 mix = filt(mix, 'high', 28)
 # fondu de fin
-tt = np.arange(N) / SR - OFF
+tt = np.arange(N) / SR
 mix *= np.clip((DUR - tt) / 1.6, 0, 1)
 # limiteur doux (lookahead simple) puis normalisation
 peak = np.max(np.abs(mix))
