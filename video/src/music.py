@@ -6,7 +6,7 @@ from scipy.signal import butter, sosfilt, fftconvolve, stft, istft
 from scipy.io import wavfile
 
 SR = 44100
-DUR = 50.0
+DUR = 50.75
 BEAT = 0.5
 BAR = 2.0
 N = int(SR * DUR)
@@ -188,8 +188,8 @@ ARP = [0, 2, 1, 3, 2, 1, 3, 1]
 
 
 def section(t):
-    for a, b, name in [(0, 3.6, 'intro'), (3.6, 10.6, 'verse'), (10.6, 18.6, 'verse2'), (18.6, 24, 'build'),
-                       (24, 28.8, 'break'), (28.8, 35.8, 'verse2'), (35.8, 46, 'chorus'), (46, 50, 'outro')]:
+    for a, b, name in [(0, 3.6, 'intro'), (3.6, 10.6, 'verse'), (10.6, 18.6, 'verse2'), (18.6, 24.4, 'build'),
+                       (24.4, 28.9, 'break'), (28.8, 35.8, 'verse2'), (35.8, 46, 'chorus'), (46, 50.75, 'outro')]:
         if a <= t < b:
             return name
     return 'outro'
@@ -269,7 +269,7 @@ for k, m in enumerate([72, 76, 79, 83, 84]):
     put('dly', fm_pluck(m + 12, 0.8, idx=1.5), 48.0 + k * 0.125, 0.07, -0.5 + k * 0.25)
 
 # ---------------------------------------------------------------- bruitages
-for c in [dict(c, t=c['t'] * 1.25, v=c['v'] * 1.25 if c['type'] in ('count', 'tick', 'type') else c['v']) for c in json.load(open('cues.json'))] + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.2, 28.9, 35.8, 46.4)]:
+for c in [dict(c, t=c['t'] * 1.25, v=c['v'] * 1.25 if c['type'] in ('count', 'tick', 'type') else c['v']) for c in json.load(open('cues.json'))] + [{'type': 'hit', 't': x, 'v': 0.8} for x in (3.6, 24.45, 29.05, 35.8, 46.4)]:
     t, v, ty = c['t'], c['v'], c['type']
     p = float(rng.uniform(-0.3, 0.3))
     if ty == 'hit':

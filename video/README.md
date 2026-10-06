@@ -1,6 +1,6 @@
 # Vidéo « Vivo Partner, c'est quoi ? »
 
-`vivopartner-cest-quoi-9x16.mp4` : 40 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
+`vivopartner-cest-quoi-9x16.mp4` : 40,6 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
 Même langage visuel que la VSL : alternance bleu marine / clair, transition en cercle blanc, texte qui apparaît mot par mot, maquettes d'interface, pastilles « Levier ».
 
 La vidéo est calée sur une voix off : texte et minutages dans [`VOIX-OFF.md`](VOIX-OFF.md).
@@ -21,7 +21,7 @@ Vidéo « qui je suis » : les trois leviers sont seulement annoncés ; chacun a
 | 23,1 – 28,6 s | Notre approche : on s'adapte à vous, votre entreprise, vos process, et pas l'inverse |
 | 28,6 – 34,9 s | Audit, puis plan sur mesure |
 | 34,9 – 37,2 s | + de clients, + de temps, zéro opportunité perdue |
-| 37,2 – 40 s | Logo, slogan, vivopartner.com, « Diagnostic gratuit · 30 min » |
+| 37,2 – 40,6 s | Logo, slogan, vivopartner.com, « Diagnostic gratuit · 30 min » |
 
 La mascotte apparaît en bas de l'écran à six moments : elle salue (intro), arrive en tenue de chantier (métiers du BTP), explique (trois leviers), réfléchit (« pas une solution toute faite »), travaille sur son ordinateur (audit et plan sur mesure) et pointe vers vous (fin). Les poses viennent de la planche `mascotte/mascotte-vivopartner-2.png` : extraites, agrandies ×4 (EDSR) puis détourées (rembg, modèle isnet) ; elles sont dans `mascotte/poses/`.
 
@@ -51,12 +51,22 @@ npm install
 pip install numpy scipy
 node render.mjs cues cues.json                  # repères son
 python3 music.py                                # -> music.wav (50 s)
-ffmpeg -i music.wav -af "asetrate=44100*1.25,aresample=44100" -t 40 music_fast.wav
-for i in 0 1 2 3; do node render.mjs 60 $((i*600)) $(((i+1)*600)) frames & done; wait
+ffmpeg -i music.wav -af "asetrate=44100*1.25,aresample=44100" -t 40.6 music_fast.wav
+for i in 0 1 2 3; do node render.mjs 60 $((i*609)) $(((i+1)*609)) frames & done; wait
 ffmpeg -framerate 60 -i frames/f%05d.jpg -i music_fast.wav -c:v libx264 -preset slow -crf 18 \
   -pix_fmt yuv420p -movflags +faststart -af "loudnorm=I=-14:TP=-1:LRA=7" \
   -c:a aac -b:a 192k -shortest ../vivopartner-cest-quoi-9x16.mp4
 ```
+
+Avec la voix de la mascotte (dossier `voix/`) :
+
+```bash
+python3 ../voix/build_voice.py ../voix/mascotte-elevenlabs.mp3 voix.wav env.json 40.6   # place les phrases
+python3 -c "import json;open('assets/voice-env.js','w').write('window.VOICE_ENV='+open('env.json').read()+';')"
+python3 ../voix/mix.py music_fast.wav voix.wav mix.wav                                  # musique baissée sous la voix
+```
+
+puis encoder avec `-i mix.wav` à la place de `music_fast.wav` (la durée est de 40,6 s : `-t 40.6` pour la musique, 2 436 images).
 
 Aperçu de quelques instants : `node render.mjs shots 2,26,38 shots`.
 Les textes se modifient directement dans `src/index.html`.
