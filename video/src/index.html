@@ -319,7 +319,7 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
   <div class="t" id="s9b" style="top:340px;font-size:68px">votre entreprise.</div>
   <div class="card" id="s9audit" style="left:90px;top:520px;width:900px;height:760px;padding:34px">
     <div style="display:flex;align-items:center;gap:16px"><div class="ico" style="width:66px;height:66px;background:#0B2F6B;color:#fff;border-radius:18px"><svg class="ic" style="width:36px;height:36px"><use href="#i-clip"/></svg></div>
-      <div><div style="font-weight:700;font-size:34px">Audit de votre entreprise</div><div class="lbl" style="font-size:22px">Gratuit · 30 min · avec le fondateur</div></div></div>
+      <div><div style="font-weight:700;font-size:34px">Audit de votre entreprise</div><div class="lbl" style="font-size:22px">Gratuit · 30 min · avec Benjamin, le fondateur</div></div></div>
     <div id="s9rows" style="margin-top:20px"></div>
   </div>
   <div class="t" id="s9p2" style="top:170px"><span class="pill"><i></i>Étape 2 · Sur mesure</span></div>
@@ -353,6 +353,20 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
     <span id="s11btn" style="position:relative;display:inline-flex;align-items:center;gap:16px;padding:30px 52px;border-radius:999px;background:#F58220;color:#fff;font-weight:700;font-size:46px;box-shadow:0 0 0 10px rgba(245,130,32,.15),0 20px 40px rgba(245,130,32,.35);overflow:hidden">Diagnostic gratuit · 30 min <svg class="ic" style="width:44px;height:44px;stroke-width:2.6"><use href="#i-arrow"/></svg>
     <span id="s11shine" style="position:absolute;top:-30px;left:-200px;width:120px;height:200px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:rotate(20deg)"></span></span>
   </div>
+  <div class="t" id="s11who" style="top:1345px;font-family:Inter;font-weight:500;font-size:30px;color:#64748B;visibility:hidden">avec <b style="color:#0B2F6B;font-weight:700">Benjamin</b>, votre interlocuteur unique à Carcassonne</div>
+</div></section>
+
+<!-- S0 · navy : la mascotte se présente (au-dessus des autres scènes pendant l'intro) -->
+<section class="scene navy" id="s0"><div class="in" id="s0in">
+  <div class="t" id="s0a" style="top:420px;font-size:130px">Salut !</div>
+  <div class="abs" id="s0card" style="left:140px;top:640px;width:800px;height:230px;border-radius:36px;background:#fff;box-shadow:0 30px 70px rgba(2,10,30,.35);display:flex;align-items:center;gap:30px;padding:0 40px;font-family:Inter;color:#0F1B33">
+    <div style="width:140px;height:140px;border-radius:32px;background:#F3F5F8;display:flex;align-items:center;justify-content:center;flex:none"><img src="assets/vp-mark-navy.png" style="width:104px"></div>
+    <div style="flex:1;min-width:0">
+      <div style="font-family:Satoshi;font-weight:900;font-size:70px;letter-spacing:-.03em;color:#0B2F6B;line-height:1">Benjamin</div>
+      <div style="font-weight:600;font-size:30px;color:#64748B;margin-top:10px">Fondateur · <span style="color:#E8741A">Vivo Partner</span></div>
+      <div id="s0loc" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 16px;border-radius:999px;background:#FFF1E6;color:#E8741A;font-weight:700;font-size:22px"><svg class="ic" style="width:24px;height:24px"><use href="#i-pin"/></svg>Carcassonne</div>
+    </div>
+  </div>
 </div></section>
 
 <img class="masc" id="m_salue" src="assets/masc_salue.png" style="left:0;top:1490px;height:430px">
@@ -371,8 +385,8 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
 <script src="assets/masc3d.js"></script>
 <script src="assets/voice-env.js"></script>
 <script>
-const DUR = 50.75, K = 1.25;
-window.DURATION = DUR / K;
+const DUR = 50.75, K = 1.25, D0 = 4.0; // D0 : intro où la mascotte se présente
+window.DURATION = (DUR + D0) / K;
 window.CUES = [];
 const cue = (type, t, v = 1) => window.CUES.push({ type, t: +t.toFixed(3), v });
 const $ = (s) => document.querySelector(s);
@@ -404,10 +418,10 @@ const show = (s, t) => tl.set(s, { visibility: 'visible' }, t);
 const hide = (s, t) => tl.set(s, { visibility: 'hidden' }, t);
 
 // Comme la VSL : chaque mot apparaît flou puis se met au net, au rythme de la voix.
-function say(el, t, per = 0.16) {
+function say(el, t, per = 0.16, on = tl) {
   const w = words($(el)); per *= 0.85;
-  tl.fromTo(w, { opacity: 0, filter: 'blur(14px)', y: 34, scale: 0.82 }, { opacity: 1, filter: 'blur(0px)', y: 0, scale: 1, duration: 0.42, stagger: per, ease: 'back.out(1.8)' }, t);
-  w.forEach((x, i) => { if (x.closest('.or')) tl.fromTo(x, { scale: 1 }, { scale: 1.06, y: -6, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t + i * per + 0.3); });
+  on.fromTo(w, { opacity: 0, filter: 'blur(14px)', y: 34, scale: 0.82 }, { opacity: 1, filter: 'blur(0px)', y: 0, scale: 1, duration: 0.42, stagger: per, ease: 'back.out(1.8)' }, t);
+  w.forEach((x, i) => { if (x.closest('.or')) on.fromTo(x, { scale: 1 }, { scale: 1.06, y: -6, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t + i * per + 0.3); });
   return t + w.length * per;
 }
 function unsay(els, t) { tl.to(els, { opacity: 0, filter: 'blur(14px)', duration: 0.35, ease: 'power2.in' }, t); }
@@ -691,6 +705,8 @@ tl.fromTo('#s11url', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 },
 tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 48.10);
 cue('pop', 48.10, 0.8);
 tl.fromTo('#s11shine', { x: 0 }, { x: 1100, duration: 0.9, ease: 'power2.inOut' }, 48.70);
+tl.set('#s11who', { visibility: 'visible' }, 48.4);
+tl.fromTo('#s11who', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5 }, 48.4);
 tl.fromTo('#s11in', { scale: 1 }, { scale: 1.03, duration: 3.9, ease: 'none', immediateRender: false }, 46.10);
 tl.set({}, {}, DUR);
 
@@ -710,9 +726,7 @@ function mascOut(id, t) {
   tl.set(id, { visibility: 'hidden' }, t + 0.42);
 }
 // 1. intro : elle salue
-mascIn('#m_salue', 0.3);
-tl.to('#m_salue', { keyframes: [{ rotation: -3, duration: 0.18 }, { rotation: 2.5, duration: 0.18 }, { rotation: -3, duration: 0.18 }, { rotation: 2, duration: 0.18 }, { rotation: 0, duration: 0.2 }], ease: 'sine.inOut' }, 0.95);
-mascOut('#m_salue', 2.7);
+// (la mascotte qui salue est animée sur la timeline maître, avec l'intro)
 // 2. trois leviers : elle explique
 mascIn('#m_explique', 17.2);
 mascIdle('#m_explique', 17.85, 24.2);
@@ -734,6 +748,35 @@ mascIn('#m_pointe', 46.4);
 mascIdle('#m_pointe', 47.05, 50.75);
 
 
+// ====================================================== Timeline maître : intro (0 → D0) puis tout le reste
+const master = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+window.CUES.forEach((c) => (c.t += D0)); // les repères posés jusqu'ici sont sur tl
+tl.paused(false); master.add(tl, D0);
+master.set('#s0', { visibility: 'visible' }, 0); master.set('#s0', { visibility: 'hidden' }, D0 + 0.05);
+master.fromTo('#s0in', { scale: 1 }, { scale: 1.05, duration: D0, ease: 'none' }, 0);
+say('#s0a', 0.3, 0.2, master);
+master.fromTo('#s0card', { opacity: 0, y: 70, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 1.0);
+cue('card', 1.0, 0.7);
+master.fromTo('#s0loc', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, 1.9);
+cue('pop', 1.9, 0.5);
+master.to('#s0in', { opacity: 0, y: -90, filter: 'blur(14px)', duration: 0.4, ease: 'power3.in' }, D0 - 0.4);
+cue('whoosh', D0 - 0.35, 0.6);
+// la mascotte arrive en grand au centre, salue, puis rejoint sa place pour « Vivo Partner, c'est quoi ? »
+{
+  const W = [{ rotation: -3, duration: 0.18 }, { rotation: 2.5, duration: 0.18 }, { rotation: -3, duration: 0.18 }, { rotation: 2, duration: 0.18 }, { rotation: 0, duration: 0.2 }];
+  $('#m_salue').dataset.ox = 0.2;
+  master.set('#m_salue', { visibility: 'visible', transformOrigin: '20% 100%' }, 0.1);
+  master.fromTo('#m_salue', { y: 760, x: 140, scale: 2, rotation: -8 }, { y: 0, x: 140, scale: 2, rotation: 0, duration: 0.8, ease: 'back.out(1.4)' }, 0.1);
+  cue('whoosh', 0.1, 0.6); cue('pop', 0.5, 0.5);
+  master.to('#m_salue', { keyframes: W, ease: 'sine.inOut' }, 0.85);
+  master.fromTo('#m_salue', { y: 0 }, { y: -14, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 1, immediateRender: false }, 1.95);
+  master.to('#m_salue', { x: 0, scale: 1, y: 0, duration: 0.6, ease: 'power3.inOut' }, D0 - 0.35);
+  master.to('#m_salue', { keyframes: W, ease: 'sine.inOut' }, D0 + 0.95);
+  master.to('#m_salue', { y: 560, rotation: 6, duration: 0.4, ease: 'power3.in' }, D0 + 2.7);
+  master.set('#m_salue', { visibility: 'hidden' }, D0 + 3.12);
+  cue('whoosh', D0 + 2.7, 0.4);
+}
+
 // ====================================================== Paroles de la mascotte
 // Coins gauche/droit et milieu de la commissure des lèvres (px dans l'image), boîte du visage.
 const MOUTH = {
@@ -745,11 +788,19 @@ const MOUTH = {
   chantier: { L: [382, 318], R: [479, 314], M: [426, 323], face: [308, 125, 196, 263] },
 };
 // Quand la mascotte parle (temps de l'animation). Le reste du texte, c'est la voix du fondateur.
-const TALK = { salue: [[0.5, 2.3]], explique: [[17.3, 24.4]], reflechit: [[24.5, 28.4]], bureau: [[35.95, 39.6], [39.95, 43.1]], pointe: [[46.45, 50.3]] };
+// Temps de la timeline maître. 'synth' : pas encore de voix enregistrée, la bouche suit un rythme générique.
+const TALK = { salue: [[0.35, 3.35, 'synth'], [4.5, 6.3]], explique: [[21.3, 28.4]], reflechit: [[28.5, 32.4]], bureau: [[39.95, 43.6], [43.95, 47.1]], pointe: [[50.45, 54.3]] };
 function talkAt(name, t) {
   const segs = TALK[name]; if (!segs) return 0;
-  let env = 0; segs.forEach(([a, b]) => { env = Math.max(env, Math.min(1, (t - a) / 0.12, (b - t) / 0.12)); });
+  let env = 0, syn = false;
+  segs.forEach(([a, b, mode]) => { const e = Math.min(1, (t - a) / 0.12, (b - t) / 0.12); if (e > env) { env = e; syn = mode === 'synth'; } });
   if (env <= 0) return 0;
+  if (syn) {
+    const v = t / K;
+    const syl = 0.62 * Math.abs(Math.sin(Math.PI * 4.4 * v)) + 0.38 * Math.abs(Math.sin(Math.PI * 7.1 * v + 1.3));
+    const pause = 0.55 + 0.45 * Math.sin(Math.PI * 0.9 * v + 0.4) ** 2;
+    return Math.max(0, Math.min(1, env * (syl * pause * 1.25 - 0.12)));
+  }
   // ouverture de la bouche = volume de la voix enregistrée (assets/voice-env.js, 60 valeurs par seconde vidéo)
   const f = (t / K) * 60, i = Math.floor(f), E = window.VOICE_ENV || [];
   const e = (E[i] || 0) * (1 - (f - i)) + (E[i + 1] || 0) * (f - i);
@@ -757,10 +808,10 @@ function talkAt(name, t) {
 }
 // Petite bulle « ondes sonores » à côté de la tête pendant qu'elle parle
 TALK && Object.entries(TALK).forEach(([name, segs]) => segs.forEach(([a, b]) => {
-  tl.set('#bub', { visibility: 'visible', attr: { 'data-m': name } }, a - 0.05);
-  tl.fromTo('#bub', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, a - 0.05);
-  tl.to('#bub', { scale: 0, opacity: 0, duration: 0.2, ease: 'power2.in' }, b);
-  tl.set('#bub', { visibility: 'hidden' }, b + 0.21);
+  master.set('#bub', { visibility: 'visible', attr: { 'data-m': name } }, a - 0.05);
+  master.fromTo('#bub', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, a - 0.05);
+  master.to('#bub', { scale: 0, opacity: 0, duration: 0.2, ease: 'power2.in' }, b);
+  master.set('#bub', { visibility: 'hidden' }, b + 0.21);
   cue('pop', a - 0.05, 0.35);
 }));
 
@@ -842,12 +893,12 @@ const M3D = (() => {
     }));
   });
   function render() {
-    const T = tl.time(), bub = $('#bub');
+    const T = master.time(), bub = $('#bub');
     Object.values(items).forEach(({ el, g, mesh, shadow, mat, a, name }) => {
       const vis = getComputedStyle(el).visibility === 'visible'; g.visible = vis; if (!vis) return;
-      const h = el.offsetHeight, w = h * a.w / a.h, ox = +(el.dataset.ox || 0.2);
-      const P = (k) => +gsap.getProperty(el, k) || 0;
-      const pxX = el.offsetLeft + ox * w + P('x'), pxY = el.offsetTop + h + P('y');
+      const P = (k) => +gsap.getProperty(el, k) || 0, sc = +gsap.getProperty(el, 'scale');
+      const h0 = el.offsetHeight, w0 = h0 * a.w / a.h, h = h0 * sc, w = w0 * sc, ox = +(el.dataset.ox || 0.2);
+      const pxX = el.offsetLeft + ox * w0 + P('x'), pxY = el.offsetTop + h0 + P('y');
       g.position.set(pxX - 540, 960 - pxY, 0);
       g.rotation.set(P('rotationX') * Math.PI / 180, P('rotationY') * Math.PI / 180, -P('rotation') * Math.PI / 180, 'YXZ');
       const ext = 0.14; mesh.scale.set(w, h * (1 + ext), 1); mesh.position.set((0.5 - ox) * w, h / 2 - h * ext / 2, 0);
@@ -857,7 +908,7 @@ const M3D = (() => {
       mat.uniforms.open.value = talkAt(name, T);
       if (bub.getAttribute('data-m') === name) {
         const s = h / a.h, f = MOUTH[name].face, left = ox < 0.5;
-        const hx = el.offsetLeft + P('x') + (left ? (f[0] + f[2]) * s + 6 : f[0] * s - 138), hy = el.offsetTop + P('y') + f[1] * s - 40;
+        const hx = pxX + ((left ? f[0] + f[2] : f[0]) - ox * a.w) * s + (left ? 6 : -138), hy = pxY - (a.h - f[1]) * s - 40;
         bub.style.left = hx + 'px'; bub.style.top = hy + 'px';
         bub.style.setProperty('--ox', left ? '0%' : '100%'); bub.style.setProperty('--tx', left ? '18px' : '86px');
         const o = talkAt(name, T);
@@ -872,9 +923,9 @@ const M3D = (() => {
 })();
 window.READY = M3D.ready.then(() => { M3D.render(); return 0; });
 
-tl.progress(1).progress(0);
+master.progress(1).progress(0);
 window.CUES = window.CUES.map((c) => ({ ...c, t: +(c.t / K).toFixed(3), v: ['count', 'tick', 'type'].includes(c.type) ? c.v / K : c.v })).sort((a, b) => a.t - b.t);
-window.seek = (t) => { tl.seek(t * K, false); M3D.render(); return 0; };
+window.seek = (t) => { master.seek(t * K, false); M3D.render(); return 0; };
 </script>
 </body>
 </html>
