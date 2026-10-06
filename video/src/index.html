@@ -36,6 +36,10 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
 .row{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:16px;background:var(--soft);margin-top:12px}
 .bar{height:12px;border-radius:6px;background:#E3E8EF}
 img.masc{position:absolute;visibility:hidden;opacity:0}
+.bub{position:absolute;width:132px;height:84px;border-radius:42px;background:#fff;box-shadow:0 14px 30px rgba(2,10,30,.28);display:flex;align-items:center;justify-content:center;gap:9px;visibility:hidden;transform-origin:var(--ox,0%) 100%}
+.bub::after{content:'';position:absolute;bottom:-12px;left:var(--tx,22px);border:14px solid transparent;border-top-color:#fff;border-bottom:0}
+.bub i{display:block;width:10px;height:40px;border-radius:5px;background:#F58220}
+.bub i:nth-child(even){background:#0B2F6B}
 #m3d{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-events:none}
 #wipe{position:absolute;left:540px;top:960px;width:10px;height:10px;margin:-5px;border-radius:50%;background:#F6F7F9;visibility:hidden}
 .check{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:#fff;margin:0 auto}
@@ -358,6 +362,7 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
 <img class="masc" id="m_chantier" src="assets/masc_chantier.png" style="right:-55px;top:1545px;height:375px">
 <img class="masc" id="m_bureau" src="assets/masc_bureau.png" style="right:0;top:1395px;height:525px">
 <canvas id="m3d" width="1080" height="1920"></canvas>
+<div class="bub" id="bub"><i></i><i></i><i></i><i></i></div>
 <div id="wipe"></div>
 </div>
 
@@ -708,25 +713,55 @@ mascIn('#m_salue', 0.3);
 tl.to('#m_salue', { keyframes: [{ rotation: -3, duration: 0.18 }, { rotation: 2.5, duration: 0.18 }, { rotation: -3, duration: 0.18 }, { rotation: 2, duration: 0.18 }, { rotation: 0, duration: 0.2 }], ease: 'sine.inOut' }, 0.95);
 mascOut('#m_salue', 2.7);
 // 2. trois leviers : elle explique
-mascIn('#m_explique', 18.3);
-mascIdle('#m_explique', 18.95, 23.2);
+mascIn('#m_explique', 17.6);
+mascIdle('#m_explique', 18.25, 23.2);
 mascOut('#m_explique', 23.3);
 // 3. « pas une solution toute faite » : elle réfléchit
-mascIn('#m_reflechit', 24.4, { side: 'right' });
-mascIdle('#m_reflechit', 25.05, 27.7);
-mascOut('#m_reflechit', 27.8);
+mascIn('#m_reflechit', 23.9, { side: 'right' });
+mascIdle('#m_reflechit', 24.55, 27.9);
+mascOut('#m_reflechit', 27.95);
 // 1 bis. métiers du BTP : en tenue de chantier
 mascIn('#m_chantier', 7.9, { side: 'right' });
 mascIdle('#m_chantier', 8.55, 9.7);
 mascOut('#m_chantier', 9.7);
 // 3 bis. audit puis plan sur mesure : au bureau, devant l'ordinateur
-mascIn('#m_bureau', 36.5, { side: 'right' });
-mascIdle('#m_bureau', 37.15, 42.9);
+mascIn('#m_bureau', 35.9, { side: 'right' });
+mascIdle('#m_bureau', 36.55, 42.9);
 mascOut('#m_bureau', 42.9);
 // 4. fin : elle pointe vers vous
-mascIn('#m_pointe', 47.0);
-mascIdle('#m_pointe', 47.65, 50);
+mascIn('#m_pointe', 46.4);
+mascIdle('#m_pointe', 47.05, 50);
 
+
+// ====================================================== Paroles de la mascotte
+// Coins gauche/droit et milieu de la commissure des lèvres (px dans l'image), boîte du visage.
+const MOUTH = {
+  salue: { L: [514, 269], R: [601, 309], M: [558, 297], face: [471, 109, 218, 249] },
+  explique: { L: [334, 269], R: [426, 295], M: [379, 291], face: [285, 99, 210, 247] },
+  reflechit: { L: [338, 301], R: [421, 331], M: [380, 322], face: [299, 131, 217, 240] },
+  pointe: { L: [314, 273], R: [409, 313], M: [360, 299], face: [267, 113, 218, 247] },
+  bureau: { L: [526, 285], R: [614, 320], M: [571, 310], face: [469, 104, 235, 272] },
+  chantier: { L: [382, 318], R: [479, 314], M: [426, 323], face: [308, 125, 196, 263] },
+};
+// Quand la mascotte parle (temps de l'animation). Le reste du texte, c'est la voix du fondateur.
+const TALK = { salue: [[0.5, 2.0]], explique: [[17.85, 23.2]], reflechit: [[24.1, 27.9]], bureau: [[36.1, 42.8]], pointe: [[46.6, 49.8]] };
+function talkAt(name, t) {
+  const segs = TALK[name]; if (!segs) return 0;
+  let env = 0; segs.forEach(([a, b]) => { env = Math.max(env, Math.min(1, (t - a) / 0.12, (b - t) / 0.12)); });
+  if (env <= 0) return 0;
+  const v = t / K; // syllabes au rythme de la voix (temps vidéo)
+  const syl = 0.62 * Math.abs(Math.sin(Math.PI * 4.4 * v)) + 0.38 * Math.abs(Math.sin(Math.PI * 7.1 * v + 1.3));
+  const pause = 0.55 + 0.45 * Math.sin(Math.PI * 0.9 * v + 0.4) ** 2; // respirations entre les groupes de mots
+  return Math.max(0, Math.min(1, env * (syl * pause * 1.25 - 0.12)));
+}
+// Petite bulle « ondes sonores » à côté de la tête pendant qu'elle parle
+TALK && Object.entries(TALK).forEach(([name, segs]) => segs.forEach(([a, b]) => {
+  tl.set('#bub', { visibility: 'visible', attr: { 'data-m': name } }, a - 0.05);
+  tl.fromTo('#bub', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, a - 0.05);
+  tl.to('#bub', { scale: 0, opacity: 0, duration: 0.2, ease: 'power2.in' }, b);
+  tl.set('#bub', { visibility: 'hidden' }, b + 0.21);
+  cue('pop', a - 0.05, 0.35);
+}));
 
 // ====================================================== Mascotte 3D (WebGL)
 // Chaque pose est un maillage déformé par sa carte de profondeur, éclairé en direct.
@@ -744,10 +779,30 @@ const M3D = (() => {
       p.z += (texture2D(vmap, vec2(vUv.x, max(vUv.y, 0.002))).r - 0.45) * S;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }`;
   const fs = `uniform sampler2D map; uniform sampler2D dmap; uniform vec2 px; uniform float S; uniform mat3 uR; uniform vec3 L;
+    uniform vec2 mL; uniform vec2 mR; uniform float sag; uniform float open;
     varying vec2 vUv;
     void main(){
       vec2 uvc = vec2(vUv.x, max(vUv.y, 0.002));
+      // bouche : la lèvre inférieure et le menton descendent, l'intérieur sombre apparaît
+      vec2 sz = 1.0 / px, p = vec2(uvc.x, 1.0 - uvc.y) * sz;
+      vec2 ax = mR - mL; float mw = length(ax); vec2 ma = ax / mw, mn = vec2(-ma.y, ma.x);
+      float sp = dot(p - mL, ma) / mw, bell = clamp(4.0 * sp * (1.0 - sp), 0.0, 1.0);
+      float v = dot(p - mL, mn) - sag * bell;
+      float o = open * mw * 0.30 * pow(bell, 0.75);
+      float inside = 0.0;
+      if (o > 0.3 && v > -1.0) {
+        float Rj = mw * 0.55;
+        if (v < o) { inside = smoothstep(-1.0, 0.8, v) * (1.0 - smoothstep(o - 1.2, o + 0.4, v)); }
+        float g = 1.0 - smoothstep(0.0, Rj, v - o);
+        if (v >= o - 1.0) { vec2 ps = p - mn * o * g; uvc = vec2(ps.x / sz.x, 1.0 - ps.y / sz.y); }
+      }
       vec4 c = texture2D(map, uvc); if (c.a < 0.02) discard;
+      if (inside > 0.0) {
+        float k = clamp(v / max(o, 1.0), 0.0, 1.0);
+        vec3 mo = mix(vec3(0.16, 0.04, 0.05), vec3(0.55, 0.18, 0.2), smoothstep(0.55, 1.0, k) * 0.7);
+        mo = mix(vec3(0.95, 0.93, 0.9), mo, smoothstep(0.12, 0.3, k) + step(o, 6.0));
+        c.rgb = mix(c.rgb, mo, inside);
+      }
       vec2 e = px * 5.0;
       float dx = (texture2D(dmap, vUv + vec2(e.x, 0.)).r - texture2D(dmap, vUv - vec2(e.x, 0.)).r) * S / 10.0;
       float dy = (texture2D(dmap, vUv + vec2(0., e.y)).r - texture2D(dmap, vUv - vec2(0., e.y)).r) * S / 10.0;
@@ -757,8 +812,8 @@ const M3D = (() => {
       // liseré de lumière sur le bord tourné vers la lampe (chaud) et à l'opposé (froid)
       vec3 Ll = transpose(uR) * L; vec2 ld = normalize(Ll.xy + 1e-4);
       float rim = 0., rim2 = 0.;
-      for (int i = 1; i <= 4; i++) { float o = float(i) * 3.0;
-        rim += 1.0 - texture2D(map, uvc + ld * px * o).a; rim2 += 1.0 - texture2D(map, uvc - ld * px * o).a; }
+      for (int i = 1; i <= 4; i++) { float ro = float(i) * 3.0;
+        rim += 1.0 - texture2D(map, uvc + ld * px * ro).a; rim2 += 1.0 - texture2D(map, uvc - ld * px * ro).a; }
       rim = c.a * c.a * rim / 4.0; rim2 = c.a * c.a * rim2 / 4.0;
       if (vUv.y < 0.03) { rim = 0.; rim2 = 0.; }
       col += vec3(1.0, 0.84, 0.66) * rim * 0.38 + vec3(0.6, 0.75, 1.0) * rim2 * 0.2;
@@ -773,17 +828,21 @@ const M3D = (() => {
     const el = $('#m_' + name); if (!el) return;
     loads.push(Promise.all([tex(a.c), tex(a.d), tex(a.s), tex(a.v)]).then(([c, d, sh, v]) => {
       const g = new THREE.Group(), mat = new THREE.ShaderMaterial({ vertexShader: vs, fragmentShader: fs, transparent: true, premultipliedAlpha: true, depthWrite: true,
-        uniforms: { map: { value: c }, dmap: { value: d }, vmap: { value: v }, S: { value: 1 }, px: { value: new THREE.Vector2(1 / a.w, 1 / a.h) }, uR: { value: new THREE.Matrix3() }, L: { value: new THREE.Vector3(0.55, 0.5, 0.67).normalize() } } });
+        uniforms: { map: { value: c }, dmap: { value: d }, vmap: { value: v }, S: { value: 1 }, px: { value: new THREE.Vector2(1 / a.w, 1 / a.h) }, uR: { value: new THREE.Matrix3() }, L: { value: new THREE.Vector3(0.55, 0.5, 0.67).normalize() },
+          mL: { value: new THREE.Vector2(...MOUTH[name].L) }, mR: { value: new THREE.Vector2(...MOUTH[name].R) }, sag: { value: 0 }, open: { value: 0 } } });
+      { const m = MOUTH[name], ax = [m.R[0] - m.L[0], m.R[1] - m.L[1]], l = Math.hypot(...ax), nn = [-ax[1] / l, ax[0] / l];
+        mat.uniforms.sag.value = (m.M[0] - (m.L[0] + m.R[0]) / 2) * nn[0] + (m.M[1] - (m.L[1] + m.R[1]) / 2) * nn[1]; }
       const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 220, Math.round(250 * a.h / a.w)), mat);
       const smat = new THREE.ShaderMaterial({ vertexShader: svs, fragmentShader: sfs, transparent: true, premultipliedAlpha: true, depthWrite: false, uniforms: { map: { value: sh }, op: { value: 0.5 } } });
       const shadow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), smat);
       shadow.renderOrder = 0; mesh.renderOrder = 1;
       g.add(shadow); g.add(mesh); g.visible = false; scene.add(g);
-      items[name] = { el, g, mesh, shadow, mat, a };
+      items[name] = { el, g, mesh, shadow, mat, a, name };
     }));
   });
   function render() {
-    Object.values(items).forEach(({ el, g, mesh, shadow, mat, a }) => {
+    const T = tl.time(), bub = $('#bub');
+    Object.values(items).forEach(({ el, g, mesh, shadow, mat, a, name }) => {
       const vis = getComputedStyle(el).visibility === 'visible'; g.visible = vis; if (!vis) return;
       const h = el.offsetHeight, w = h * a.w / a.h, ox = +(el.dataset.ox || 0.2);
       const P = (k) => +gsap.getProperty(el, k) || 0;
@@ -794,6 +853,15 @@ const M3D = (() => {
       mat.uniforms.S.value = h * 0.26;
       const sw = w * (a.w + 2 * a.pad) / a.w, sh = h * (a.h + 2 * a.pad) / a.h;
       shadow.scale.set(sw, sh, 1); shadow.position.set((0.5 - ox) * w + 14, h / 2 - 22, -0.2 * h);
+      mat.uniforms.open.value = talkAt(name, T);
+      if (bub.getAttribute('data-m') === name) {
+        const s = h / a.h, f = MOUTH[name].face, left = ox < 0.5;
+        const hx = el.offsetLeft + P('x') + (left ? (f[0] + f[2]) * s + 6 : f[0] * s - 138), hy = el.offsetTop + P('y') + f[1] * s - 40;
+        bub.style.left = hx + 'px'; bub.style.top = hy + 'px';
+        bub.style.setProperty('--ox', left ? '0%' : '100%'); bub.style.setProperty('--tx', left ? '18px' : '86px');
+        const o = talkAt(name, T);
+        bub.querySelectorAll('i').forEach((b, i) => { b.style.height = (12 + 36 * Math.min(1, o * (0.6 + 0.5 * Math.abs(Math.sin(T * 9 + i * 1.7))))) + 'px'; });
+      }
       g.updateMatrixWorld(true);
       mat.uniforms.uR.value.setFromMatrix4(g.matrixWorld);
     });
