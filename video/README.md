@@ -21,7 +21,7 @@ Vidéo « qui je suis » : les trois leviers sont seulement annoncés ; chacun a
 | 23,1 – 28,6 s | Notre approche : on s'adapte à vous, votre entreprise, vos process, et pas l'inverse |
 | 28,6 – 34,9 s | Audit, puis plan sur mesure |
 | 34,9 – 37,2 s | + de clients, + de temps, zéro opportunité perdue |
-| 45,1 – 49,8 s | Logo, slogan, vivopartner.com, téléphone et e-mail, « Diagnostic gratuit · 30 min » |
+| 45,1 – 49,8 s | Logo, slogan, vivopartner.com, téléphone et e-mail, réseaux @vivopartner, « Diagnostic gratuit · 30 min » |
 
 La mascotte apparaît en bas de l'écran à six moments : elle salue (intro), arrive en tenue de chantier (métiers du BTP), explique (trois leviers), croise les bras, sûr de lui (« pas une solution toute faite » ; pose `masc_bras.png`, haut des cheveux reconstruit par `mascotte/src/fix-hair.py`), travaille sur son ordinateur (audit et plan sur mesure) et pointe vers vous (fin). Les poses viennent de la planche `mascotte/mascotte-vivopartner-2.png` : extraites, agrandies ×4 (EDSR) puis détourées (rembg, modèle isnet) ; elles sont dans `mascotte/poses/`.
 
