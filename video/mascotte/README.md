@@ -25,3 +25,7 @@ Poses utiles pour les vidéos : salue de la main · pointe vers la caméra · po
 ## Photos de profil
 
 `profil/photo-profil-navy.png`, `photo-profil-orange.png` et `photo-profil-clair.png` : 1080 × 1080 px, mascotte bras croisés (logo VP visible) dans un anneau, aux couleurs de Vivo Partner. Le cadrage est prévu pour un recadrage rond (Instagram, Facebook, LinkedIn, TikTok, WhatsApp, Google) : la tête reste entière dans le cercle. Versions fond blanc avec le logo VP en grand derrière la mascotte : `photo-profil-clair-logo.png` (logo en couleurs) et `photo-profil-clair-logo-discret.png` (logo en filigrane) ; le logo est agrandi couleur par couleur avec des bords resserrés pour rester net. Le logo du sweat est remplacé par le vrai logo (net, incliné comme le sweat, ombré par les plis) : `src/relogo.py`. Régénérer : `python3 src/profil.py ../src/assets/masc_bras.png profil`.
+
+## Bannière
+
+`banniere/banniere-linkedin-mascotte.png` (2000 × 500, format LinkedIn) : la bannière d'origine (`banniere-linkedin-originale.webp`) avec la mascotte bras croisés devant la diagonale orange, hors de la zone couverte par la photo de profil sur LinkedIn (en bas à gauche) et sans toucher le texte. Régénérer : `python3 src/banniere.py ../src/assets/masc_bras.png banniere/banniere-linkedin-originale.webp banniere/banniere-linkedin-mascotte.png 560` (le dernier nombre est la position horizontale du visage).
