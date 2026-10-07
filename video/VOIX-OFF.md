@@ -1,6 +1,6 @@
 # Voix off : « Vivo Partner, c'est quoi ? »
 
-Une seule voix : **la mascotte** (voix ElevenLabs « confident Viv »). La mascotte, c'est Benjamin Vivo, le fondateur, en version cartoon : elle le dit elle-même (« … fondé par moi, Benjamin Vivo ») pendant le temps fort du fondateur : son avatar en grand, « Fondé par Benjamin Vivo » et « Fondateur · Carcassonne ».
+Une seule voix : **la mascotte**. Elle sera enregistrée par Benjamin lui-même : texte et conseils d'enregistrement dans [`TEXTE-A-LIRE.md`](TEXTE-A-LIRE.md). En attendant, la vidéo utilise une voix ElevenLabs provisoire (« confident Viv »). La mascotte, c'est Benjamin Vivo, le fondateur, en version cartoon : elle le dit elle-même (« … fondé par moi, Benjamin Vivo ») pendant le temps fort du fondateur : son avatar en grand, « Fondé par Benjamin Vivo » et « Fondateur · Carcassonne ».
 
 Quand elle est à l'écran et qu'elle parle, sa bouche bouge et une bulle avec des ondes sonores apparaît à côté de sa tête. Quand elle n'est pas à l'écran, elle continue de raconter comme une narratrice.
 

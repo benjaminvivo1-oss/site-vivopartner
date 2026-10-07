@@ -364,7 +364,7 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
 
 <img class="masc" id="m_salue" src="assets/masc_salue.png" style="left:0;top:1490px;height:430px">
 <img class="masc" id="m_explique" src="assets/masc_explique.png" style="left:0;top:1440px;height:480px">
-<img class="masc" id="m_reflechit" src="assets/masc_reflechit.png" style="right:0;top:1440px;height:480px">
+<img class="masc" id="m_bras" src="assets/masc_bras.png" style="right:-20px;top:1415px;height:505px">
 <img class="masc" id="m_pointe" src="assets/masc_pointe.png" style="left:0;top:1420px;height:500px">
 <img class="masc" id="m_chantier" src="assets/masc_chantier.png" style="right:-55px;top:1545px;height:375px">
 <img class="masc" id="m_bureau" src="assets/masc_bureau.png" style="right:0;top:1395px;height:525px">
@@ -738,10 +738,10 @@ mascOut('#m_salue', 2.7);
 mascIn('#m_explique', 17.2);
 mascIdle('#m_explique', 17.85, 24.2);
 mascOut('#m_explique', 24.3);
-// 3. « pas une solution toute faite » : elle réfléchit
-mascIn('#m_reflechit', 24.3, { side: 'right' });
-mascIdle('#m_reflechit', 24.95, 28.3);
-mascOut('#m_reflechit', 28.4);
+// 3. « pas une solution toute faite » : bras croisés, sûr de lui
+mascIn('#m_bras', 24.3, { side: 'right' });
+mascIdle('#m_bras', 24.95, 28.3);
+mascOut('#m_bras', 28.4);
 // 1 bis. métiers du BTP : en tenue de chantier
 mascIn('#m_chantier', 7.9, { side: 'right' });
 mascIdle('#m_chantier', 8.55, 10.4);
@@ -760,14 +760,14 @@ mascIdle('#m_pointe', 47.05, 50.75);
 const MOUTH = {
   salue: { L: [514, 269], R: [601, 309], M: [558, 297], face: [471, 109, 218, 249] },
   explique: { L: [334, 269], R: [426, 295], M: [379, 291], face: [285, 99, 210, 247] },
-  reflechit: { L: [338, 301], R: [421, 331], M: [380, 322], face: [299, 131, 217, 240] },
+  bras: { L: [469, 294], R: [566, 313], M: [517, 313], face: [417, 125, 206, 249] },
   pointe: { L: [314, 273], R: [409, 313], M: [360, 299], face: [267, 113, 218, 247] },
   bureau: { L: [526, 285], R: [614, 320], M: [571, 310], face: [469, 104, 235, 272] },
   chantier: { L: [382, 318], R: [479, 314], M: [426, 323], face: [308, 125, 196, 263] },
 };
 // Quand la mascotte parle (temps de l'animation). Le reste du texte, c'est la voix du fondateur.
 // 'synth' : voix pas encore enregistrée, la bouche suit un rythme générique.
-const TALK = { salue: [[0.5, 2.3]], chantier: [[8.7, 10.5, 'synth']], explique: [[17.3, 24.4]], reflechit: [[24.5, 28.4]], bureau: [[35.95, 39.6], [39.95, 43.1]], pointe: [[46.45, 50.3]] };
+const TALK = { salue: [[0.5, 2.3]], chantier: [[8.7, 10.5, 'synth']], explique: [[17.3, 24.4]], bras: [[24.5, 28.4]], bureau: [[35.95, 39.6], [39.95, 43.1]], pointe: [[46.45, 50.3]] };
 function talkAt(name, t) {
   const segs = TALK[name]; if (!segs) return 0;
   let env = 0, syn = false;
@@ -785,13 +785,21 @@ function talkAt(name, t) {
   return Math.max(0, Math.min(1, env * e * 1.1));
 }
 // Petite bulle « ondes sonores » à côté de la tête pendant qu'elle parle
-TALK && Object.entries(TALK).forEach(([name, segs]) => segs.forEach(([a, b]) => {
-  tl.set('#bub', { visibility: 'visible', attr: { 'data-m': name } }, a - 0.05);
-  tl.fromTo('#bub', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, a - 0.05);
-  tl.to('#bub', { scale: 0, opacity: 0, duration: 0.2, ease: 'power2.in' }, b);
-  tl.set('#bub', { visibility: 'hidden' }, b + 0.21);
-  cue('pop', a - 0.05, 0.35);
-}));
+// (deux phrases qui s'enchaînent : la bulle ne se cache pas entre les deux, elle saute d'une tête à l'autre)
+{
+  const all = Object.entries(TALK).flatMap(([name, segs]) => segs.map(([a, b]) => ({ name, a, b }))).sort((x, y) => x.a - y.a);
+  all.forEach(({ name, a, b }, i) => {
+    const prev = all[i - 1], next = all[i + 1];
+    tl.set('#bub', { visibility: 'visible', attr: { 'data-m': name } }, a - 0.05);
+    if (!prev || prev.b < a - 0.3) tl.fromTo('#bub', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, a - 0.05);
+    else tl.fromTo('#bub', { scale: 0.5, opacity: 1 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2.4)' }, a - 0.05);
+    if (!next || next.a - 0.05 > b + 0.3) {
+      tl.to('#bub', { scale: 0, opacity: 0, duration: 0.2, ease: 'power2.in' }, b);
+      tl.set('#bub', { visibility: 'hidden' }, b + 0.21);
+    }
+    cue('pop', a - 0.05, 0.35);
+  });
+}
 
 // ====================================================== Mascotte 3D (WebGL)
 // Chaque pose est un maillage déformé par sa carte de profondeur, éclairé en direct.

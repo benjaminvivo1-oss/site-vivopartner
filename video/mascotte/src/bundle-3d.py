@@ -1,7 +1,7 @@
 import base64, io, json, sys, numpy as np, cv2
 from PIL import Image
 A = sys.argv[1]; out = {}
-for n in ['salue', 'explique', 'reflechit', 'pointe', 'chantier', 'bureau']:
+for n in ['salue', 'explique', 'bras', 'pointe', 'chantier', 'bureau']:
     c = Image.open(f'{A}/masc_{n}.png').convert('RGBA')
     a = np.array(c)[..., 3].astype(np.float32) / 255
     # ombre portée : silhouette floutée (dans une marge pour ne pas la couper)
