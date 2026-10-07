@@ -78,6 +78,7 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
   <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
   <symbol id="i-euro" viewBox="0 0 24 24"><path d="M18 7a7 7 0 1 0 0 10M4 10h10M4 14h10"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6.5 9-6.5"/></symbol>
   <symbol id="i-clip" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9zM9 12l2 2 4-4M9 18h6"/></symbol>
 </defs></svg>
 
@@ -355,7 +356,8 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
   <div class="t" id="s11a" style="top:860px;font-size:68px;color:#0B2F6B">Automatise aujourd’hui.</div>
   <div class="t" id="s11b" style="top:945px;font-size:68px"><span class="or">Accélère demain.</span></div>
   <div class="t" id="s11url" style="top:1100px;font-family:Inter;font-weight:500;font-size:40px;color:#0F1B33"><svg class="ic" style="width:38px;height:38px;vertical-align:-7px;margin-right:10px"><use href="#i-globe"/></svg>vivopartner.com</div>
-  <div class="t" id="s11cta" style="top:1200px">
+  <div class="t" id="s11contact" style="top:1160px;font-family:Inter;font-weight:600;font-size:34px;letter-spacing:0;color:#0F1B33"><span style="display:inline-flex;align-items:center;gap:12px"><svg class="ic" style="width:34px;height:34px;color:#F58220"><use href="#i-phone"/></svg>06&nbsp;40&nbsp;20&nbsp;22&nbsp;46</span><span style="display:inline-flex;align-items:center;gap:12px;margin-left:40px"><svg class="ic" style="width:36px;height:36px;color:#F58220"><use href="#i-mail"/></svg>benjamin@vivopartner.com</span></div>
+  <div class="t" id="s11cta" style="top:1245px">
     <span id="s11btn" style="position:relative;display:inline-flex;align-items:center;gap:16px;padding:30px 52px;border-radius:999px;background:#F58220;color:#fff;font-weight:700;font-size:46px;box-shadow:0 0 0 10px rgba(245,130,32,.15),0 20px 40px rgba(245,130,32,.35);overflow:hidden">Diagnostic gratuit · 30 min <svg class="ic" style="width:44px;height:44px;stroke-width:2.6"><use href="#i-arrow"/></svg>
     <span id="s11shine" style="position:absolute;top:-30px;left:-200px;width:120px;height:200px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:rotate(20deg)"></span></span>
   </div>
@@ -715,6 +717,7 @@ tl.fromTo('#s11wordw', { width: 0 }, { width: 550, duration: 0.8, ease: 'power2.
 say('#s11a', 47.10, 0.16);
 say('#s11b', 47.55, 0.16);
 tl.fromTo('#s11url', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 46.80);
+tl.fromTo('#s11contact', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 47.0);
 const CTA = at('cta', 48.1);
 tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, CTA);
 cue('pop', CTA, 0.8);
