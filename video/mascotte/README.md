@@ -24,4 +24,4 @@ Poses utiles pour les vidéos : salue de la main · pointe vers la caméra · po
 
 ## Photos de profil
 
-`profil/photo-profil-navy.png`, `photo-profil-orange.png` et `photo-profil-clair.png` : 1080 × 1080 px, mascotte bras croisés (logo VP visible) dans un anneau, aux couleurs de Vivo Partner. Le cadrage est prévu pour un recadrage rond (Instagram, Facebook, LinkedIn, TikTok, WhatsApp, Google) : la tête reste entière dans le cercle. Régénérer : `python3 src/profil.py ../src/assets/masc_bras.png profil`.
+`profil/photo-profil-navy.png`, `photo-profil-orange.png` et `photo-profil-clair.png` : 1080 × 1080 px, mascotte bras croisés (logo VP visible) dans un anneau, aux couleurs de Vivo Partner. Le cadrage est prévu pour un recadrage rond (Instagram, Facebook, LinkedIn, TikTok, WhatsApp, Google) : la tête reste entière dans le cercle. Le logo du sweat est remplacé par le vrai logo (net, incliné comme le sweat, ombré par les plis) : `src/relogo.py`. Régénérer : `python3 src/profil.py ../src/assets/masc_bras.png profil`.

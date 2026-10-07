@@ -1,5 +1,7 @@
 """Photos de profil 1080×1080 avec la mascotte (pose bras croisés), 3 fonds aux couleurs de Vivo Partner."""
-import sys, numpy as np
+import sys, os, numpy as np
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from relogo import relogo
 from PIL import Image, ImageDraw, ImageFilter
 SRC, OUT = sys.argv[1], sys.argv[2]
 S = 2160  # travail en 2× puis réduction, pour des bords nets
@@ -8,6 +10,9 @@ face = (417, 125, 206, 249)                      # boîte du visage dans l'image
 k = 0.30 * S / face[3]                           # hauteur du visage ≈ 30 % du cadre (tête entière dans le cercle)
 fx, fy = face[0] + face[2] / 2, face[1] + face[3] / 2
 m = m.resize((round(m.width * k), round(m.height * k)), Image.LANCZOS)
+# logo du sweat remplacé par le vrai logo, net
+HERE = os.path.dirname(os.path.abspath(__file__))
+m = relogo(m, k, os.path.join(HERE, 'vp-mark-navy.png'), os.path.join(HERE, 'vp-wordmark-navy.png'))
 # bord du détourage resserré d'un pixel : enlève le liseré sombre visible sur fond clair
 m.putalpha(m.split()[3].filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8)))
 ox, oy = round(S / 2 - fx * k), round(S * 0.47 - fy * k)
