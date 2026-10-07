@@ -359,7 +359,6 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
     <span id="s11btn" style="position:relative;display:inline-flex;align-items:center;gap:16px;padding:30px 52px;border-radius:999px;background:#F58220;color:#fff;font-weight:700;font-size:46px;box-shadow:0 0 0 10px rgba(245,130,32,.15),0 20px 40px rgba(245,130,32,.35);overflow:hidden">Diagnostic gratuit · 30 min <svg class="ic" style="width:44px;height:44px;stroke-width:2.6"><use href="#i-arrow"/></svg>
     <span id="s11shine" style="position:absolute;top:-30px;left:-200px;width:120px;height:200px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:rotate(20deg)"></span></span>
   </div>
-  <div class="t" id="s11who" style="top:1345px;font-family:Inter;font-weight:500;font-size:30px;color:#64748B;visibility:hidden">avec <b style="color:#0B2F6B;font-weight:700">Benjamin</b>, votre interlocuteur unique à Carcassonne</div>
 </div></section>
 
 <img class="masc" id="m_salue" src="assets/masc_salue.png" style="left:0;top:1490px;height:430px">
@@ -720,8 +719,6 @@ const CTA = at('cta', 48.1);
 tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, CTA);
 cue('pop', CTA, 0.8);
 tl.fromTo('#s11shine', { x: 0 }, { x: 1100, duration: 0.9, ease: 'power2.inOut' }, CTA + 0.6);
-tl.set('#s11who', { visibility: 'visible' }, CTA + 0.3);
-tl.fromTo('#s11who', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5 }, CTA + 0.3);
 tl.fromTo('#s11in', { scale: 1 }, { scale: 1.03, duration: 3.9, ease: 'none', immediateRender: false }, 46.10);
 tl.set({}, {}, DUR);
 
