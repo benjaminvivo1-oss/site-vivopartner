@@ -14,7 +14,7 @@ Le temps maximal indique combien de place la phrase a dans la vidéo. Si tu dép
 | 2 | Un partenaire de croissance digitale dédié aux entreprises du BTP, fondé par moi, Benjamin Vivo. | 5 s |
 | 3 | Notre objectif : développer votre activité, gagner du temps, et ne plus laisser passer d'opportunités. | 5 s |
 | 4 | Trois leviers : la visibilité, notre réceptionniste IA, et Aplomb, notre outil métier sur mesure. | 5,5 s |
-| 5 | Et surtout : pas une solution toute faite, la même pour tous. | 3 s |
+| 5 | Mais ce n'est pas un pack tout fait, copié-collé pour tout le monde. | 3,3 s |
 | 6 | On s'adapte à vous, à votre entreprise, à vos process. Et pas l'inverse. | 4,5 s |
 | 7 | On commence par comprendre votre entreprise, avec un audit. | 3 s |
 | 8 | Puis on construit ce dont vous avez réellement besoin. | 2,5 s |
@@ -26,7 +26,7 @@ Comment dire les phrases :
 - **1** : une vraie question, curieuse, qui monte à la fin.
 - **2** : « fondé par moi, Benjamin Vivo » doit sonner fier et souriant. C'est le moment où ton nom s'affiche en gros.
 - **4** : marque une petite pause après « Trois leviers ». « IA » se prononce « i-a ». Dans « Aplomb », on n'entend pas le b.
-- **5** : la phrase qui compte : « Et surtout… » plus lent, presque une confidence.
+- **5** : petite respiration après « sur mesure » (phrase 4), puis « Mais ce n'est pas… » un cran plus bas, comme une mise au point. Appuie un peu sur « copié-collé ».
 - **9** : trois phrases courtes, comme des coups de marteau. C'est la plus serrée en temps, donc dis-la vite.
 - **10** : chaleureux et clair, comme une invitation.
 

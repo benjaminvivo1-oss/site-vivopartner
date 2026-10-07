@@ -12,7 +12,7 @@ Les minutages correspondent à `vivopartner-cest-quoi-9x16.mp4` (40,6 s). Un éc
 | 0:03,6 | 0:08,4 | **À enregistrer** | Un partenaire de croissance digitale dédié aux entreprises du BTP, fondé par moi, Benjamin Vivo. |
 | 0:08,7 | 0:13,7 | **À enregistrer** | Notre objectif : développer votre activité, gagner du temps, et ne plus laisser passer d'opportunités. |
 | 0:13,9 | 0:19,5 | Enregistré | Trois leviers : la visibilité, notre réceptionniste IA, et Aplomb, notre outil métier sur mesure. |
-| 0:19,6 | 0:22,7 | Enregistré | Et surtout : pas une solution toute faite, la même pour tous. |
+| 0:19,6 | 0:22,7 | Enregistré | Mais ce n'est pas un pack tout fait, copié-collé pour tout le monde. *(à réenregistrer : nouveau texte)* |
 | 0:23,3 | 0:27,4 | **À enregistrer** | On s'adapte à vous, à votre entreprise, à vos process. Et pas l'inverse. |
 | 0:28,8 | 0:31,7 | Enregistré | On commence par comprendre votre entreprise, avec un audit. |
 | 0:32,0 | 0:34,5 | Enregistré | Puis on construit ce dont vous avez réellement besoin. |
