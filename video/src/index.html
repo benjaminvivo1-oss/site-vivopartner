@@ -163,7 +163,7 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
 
 <!-- S4 · navy : trois leviers -->
 <section class="scene navy" id="s4"><div class="in" id="s4in">
-  <div class="t" id="s4a" style="top:470px;font-size:62px;color:#CFDBF0">Pour ça, trois leviers :</div>
+  <div class="t" id="s4a" style="top:470px;font-size:56px;color:#CFDBF0">Tout ça grâce à trois leviers :</div>
   <div class="abs" id="s4k1" style="left:0;right:0;top:610px"><div class="check"><svg class="ic" style="width:32px;height:32px;stroke-width:3"><use href="#i-check"/></svg></div></div>
   <div class="t" id="s4b" style="top:685px;font-size:100px">La visibilité.</div>
   <div class="t" id="s4bs" style="top:800px;font-size:36px;font-weight:500;color:#9FB3D9">site · Google · avis · pub</div>
@@ -379,7 +379,13 @@ img.masc{position:absolute;visibility:hidden;opacity:0}
 <script src="assets/voice-env.js"></script>
 <script>
 const DUR = 50.75, K = 1.25;
-window.DURATION = DUR / K;
+// La voix off commande le tempo : WARP associe le temps vidéo au temps de l'animation (assets/voice-env.js).
+const WARP = window.WARP || [[0, 0], [DUR / K, DUR]];
+const lerp = (x, A, B) => { if (x <= A[0]) return B[0]; for (let i = 1; i < A.length; i++) if (x <= A[i]) return B[i - 1] + (B[i] - B[i - 1]) * (x - A[i - 1]) / (A[i] - A[i - 1]); return B[B.length - 1] + (x - A[A.length - 1]) * (B[B.length - 1] - B[B.length - 2]) / (A[A.length - 1] - A[A.length - 2]); };
+const WV = WARP.map((w) => w[0]), WS = WARP.map((w) => w[1]);
+const toAnim = (v) => lerp(v, WV, WS), toVideo = (s) => lerp(s, WS, WV);
+const VT = window.VOICE_T || {}, at = (k, d) => VT[k] ?? d; // moments calés sur les mots
+window.DURATION = WV[WV.length - 1];
 window.CUES = [];
 const cue = (type, t, v = 1) => window.CUES.push({ type, t: +t.toFixed(3), v });
 const $ = (s) => document.querySelector(s);
@@ -473,22 +479,23 @@ drift('#s2', 3.6, 10.9, 1.03);
 tl.fromTo('#s2mark', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 3.65);
 cue('pop', 3.65, 0.7);
 tl.fromTo('#s2wordw', { width: 0 }, { width: 480, duration: 0.8, ease: 'power2.inOut' }, 3.95);
+const H = at('hero', 8.7), NM = at('name', 9.15);
 let t2 = say('#s2a', 4.55, 0.16); t2 = say('#s2a2', t2 + 0.05, 0.18);
 t2 = say('#s2b', t2 + 0.15, 0.16);
 // « … fondé par moi, Benjamin Vivo » : temps fort du fondateur (avatar de la mascotte = Benjamin)
-unsay(['#s2a', '#s2a2', '#s2b'], 8.45);
-tl.to('#s2trades', { opacity: 0, y: -50, filter: 'blur(12px)', duration: 0.4, ease: 'power3.in' }, 8.45);
-cue('whoosh', 8.5, 0.5);
-tl.set('#s2hero', { visibility: 'visible' }, 8.65);
-tl.fromTo('#s2av', { opacity: 0, scale: 0.3, rotation: -12 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(1.8)' }, 8.7);
-tl.fromTo('#s2ring', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 8.75);
-tl.fromTo('#s2ring', { scale: 1 }, { scale: 1.12, duration: 0.55, ease: 'sine.inOut', yoyo: true, repeat: 2, immediateRender: false }, 9.4);
-cue('pop', 8.7, 0.9);
-say('#s2by', 8.95, 0.12);
-say('#s2name', 9.15, 0.22);
-cue('sparkle', 9.4, 0.7);
-tl.fromTo('#s2role', { opacity: 0, y: 30, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 9.6);
-cue('pop', 9.6, 0.5);
+unsay(['#s2a', '#s2a2', '#s2b'], H - 0.25);
+tl.to('#s2trades', { opacity: 0, y: -50, filter: 'blur(12px)', duration: 0.4, ease: 'power3.in' }, H - 0.25);
+cue('whoosh', H - 0.2, 0.5);
+tl.set('#s2hero', { visibility: 'visible' }, H - 0.05);
+tl.fromTo('#s2av', { opacity: 0, scale: 0.3, rotation: -12 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(1.8)' }, H);
+tl.fromTo('#s2ring', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, H + 0.05);
+tl.fromTo('#s2ring', { scale: 1 }, { scale: 1.12, duration: 0.55, ease: 'sine.inOut', yoyo: true, repeat: 2, immediateRender: false }, NM + 0.25);
+cue('pop', H, 0.9);
+say('#s2by', H + 0.15, 0.12);
+say('#s2name', NM, 0.22);
+cue('sparkle', NM + 0.25, 0.7);
+tl.fromTo('#s2role', { opacity: 0, y: 30, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(2)' }, NM + 0.45);
+cue('pop', NM + 0.45, 0.5);
 {
   const trades = [['wrench', 'Plombier'], ['plug', 'Électricien'], ['bricks', 'Maçon'], ['roof', 'Couvreur'], ['hammer', 'Menuisier'], ['flame', 'Chauffagiste'],
     ['roller', 'Peintre'], ['grid', 'Carreleur'], ['layers', 'Plaquiste'], ['house', 'Charpentier'], ['truck', 'Terrassier'], ['leaf', 'Paysagiste']];
@@ -498,30 +505,30 @@ cue('pop', 9.6, 0.5);
     c.style.cssText += `left:${(i % 3) * 310}px;top:${Math.floor(i / 3) * 128}px;width:280px;height:108px;display:flex;align-items:center;gap:14px;padding:0 18px;border-radius:22px`;
     c.innerHTML = `<div class="ico" style="width:64px;height:64px;border-radius:18px;background:${i % 4 === 1 ? '#0B2F6B' : '#FFF1E6'};color:${i % 4 === 1 ? '#fff' : '#F58220'}">${icon(tr[0], 'width:34px;height:34px')}</div><div style="font-weight:700;font-size:25px">${tr[1]}</div>`;
     wrap.appendChild(c);
-    up(c, 6.5 + i * 0.09, { y: 50, v: 0.3, cue: i % 3 === 0 });
+    up(c, Math.min(6.5, H - 1.95) + i * 0.09, { y: 50, v: 0.3, cue: i % 3 === 0 });
   });
   const all = document.createElement('div'); all.className = 'abs';
   all.style.cssText = 'left:0;top:540px;width:900px;text-align:center';
   all.innerHTML = '<span style="display:inline-flex;align-items:center;gap:14px;padding:20px 38px;border-radius:999px;background:#F58220;color:#fff;font-weight:700;font-size:36px;box-shadow:0 16px 36px rgba(245,130,32,.35)">… et tous les métiers du BTP</span>';
   wrap.appendChild(all);
-  tl.fromTo(all, { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: 'back.out(2)' }, 7.75);
-  cue('pop', 7.75, 0.9);
+  tl.fromTo(all, { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: 'back.out(2)' }, Math.min(7.75, H - 0.7));
+  cue('pop', Math.min(7.75, H - 0.7), 0.9);
 }
 blurTo('#s2', '#s3', 10.6);
 
 // ====================================================== S3 (10.20 → 17.80)
 drift('#s3', 10.35, 17.80, 1.03);
 tl.fromTo('#s3p', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 10.40);
-say('#s3l1', 11.00, 0.18);
-up('#s3c1', 11.00, { v: 0.6 });
+say('#s3l1', at('s3l1', 11.0), 0.18);
+up('#s3c1', Math.min(11.0, at('s3l1', 11.0)), { v: 0.6 });
 {
   const l = $('#s3line'), L = l.getTotalLength(); l.style.strokeDasharray = L;
   tl.fromTo(l, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, 11.40);
   tl.fromTo('#s3area', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 12.00);
   pop('#s3dot', 12.50, { v: 0.4 });
 }
-say('#s3l2', 12.80, 0.18);
-up('#s3c2', 12.70, { v: 0.6 });
+say('#s3l2', at('s3l2', 12.8), 0.18);
+up('#s3c2', at('s3l2', 12.8) - 0.1, { v: 0.6 });
 {
   const tk = $('#s3ticks');
   for (let i = 0; i < 12; i++) { const d = document.createElement('div'); d.className = 'abs'; d.style.cssText = `left:103px;top:6px;width:6px;height:${i % 3 ? 12 : 20}px;border-radius:3px;background:rgba(255,255,255,${i % 3 ? .35 : .8});transform-origin:3px 98px;transform:rotate(${i * 30}deg)`; tk.appendChild(d); }
@@ -529,9 +536,9 @@ up('#s3c2', 12.70, { v: 0.6 });
   tl.fromTo('#s3hh', { rotation: 150 }, { rotation: 240, duration: 2.2, ease: 'power1.inOut' }, 13.00);
   cue('tick', 13.00, 2.2);
 }
-say('#s3l3', 14.20, 0.18);
-say('#s3l4', 14.80, 0.2);
-up('#s3c3', 14.10, { v: 0.6 });
+say('#s3l3', at('s3l3', 14.2), 0.18);
+say('#s3l4', at('s3l4', 14.8), 0.2);
+up('#s3c3', at('s3l3', 14.2) - 0.1, { v: 0.6 });
 {
   const rows = [['phone', 'Nouveau client'], ['msg', 'Demande de devis'], ['cal', 'Visite chantier']];
   const wrap = $('#s3rows');
@@ -546,24 +553,25 @@ up('#s3c3', 14.10, { v: 0.6 });
   tl.to(b, { v: 0, duration: 0.75, ease: 'steps(3)', onUpdate: () => ($('#s3badge').textContent = Math.round(b.v)) }, 15.30);
   tl.to('#s3badge', { backgroundColor: '#16A34A', duration: 0.2 }, 16.05);
 }
-up('#s3c4', 15.00, { v: 0.6 });
-tl.fromTo('#s3stamp', { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power3.in' }, 16.10);
-cue('stamp', 16.35, 1);
+const C4 = Math.max(15.0, at('s3l4', 14.8) - 0.3);
+up('#s3c4', C4, { v: 0.6 });
+tl.fromTo('#s3stamp', { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power3.in' }, C4 + 0.75);
+cue('stamp', C4 + 1.0, 1);
 blurTo('#s3', '#s4', 17.60);
 
 // ====================================================== S4 (17.80 → 24.20)
 drift('#s4', 17.95, 24.70, 1.04);
-say('#s4a', 17.95, 0.16);
-pop('#s4k1', 18.30, { v: 0.6 }); say('#s4b', 18.35, 0.2); say('#s4bs', 18.85, 0.12);
-pop('#s4k2', 19.70, { v: 0.6 }); say('#s4c', 19.75, 0.2); say('#s4cs', 20.25, 0.12);
-pop('#s4k3', 21.60, { v: 0.6 }); say('#s4d', 21.65, 0.2); say('#s4ds', 22.50, 0.12);
+say('#s4a', at('s4a', 17.95), 0.16);
+pop('#s4k1', at('s4b', 18.35) - 0.05, { v: 0.6 }); say('#s4b', at('s4b', 18.35), 0.2); say('#s4bs', at('s4b', 18.35) + 0.5, 0.12);
+pop('#s4k2', at('s4c', 19.75) - 0.05, { v: 0.6 }); say('#s4c', at('s4c', 19.75), 0.2); say('#s4cs', at('s4c', 19.75) + 0.5, 0.12);
+pop('#s4k3', at('s4d', 21.65) - 0.05, { v: 0.6 }); say('#s4d', at('s4d', 21.65), 0.2); say('#s4ds', at('s4ds', 22.5), 0.12);
 tl.to('#s4in', { y: -420, opacity: 0, filter: 'blur(10px)', duration: 0.5, ease: 'power3.in' }, 24.15);
 show('#s8', 24.45); hide('#s4', 24.7);
 cue('whoosh', 24.2, 0.6);
 
 // ====================================================== S8 (23.80 → 27.00)
 drift('#s8', 24.45, 29.05, 1.05);
-say('#s8a', 24.55, 0.2);
+say('#s8a', at('s8a', 24.55), 0.2);
 {
   const names = ['Plombier', 'Maçon', 'Couvreur', 'Électricien', 'Votre entreprise', 'Peintre', 'Menuisier', 'Carreleur', 'Paysagiste'];
   const wrap = $('#s8grid'); const W = 270, Hc = 176, cx = 300, cy = 202;
@@ -587,19 +595,19 @@ say('#s8a', 24.55, 0.2);
   // …puis il est copié-collé, identique, sur toutes les autres entreprises
   const order = [1, 3, 5, 7, 0, 2, 6, 8];
   order.forEach((k, j) => {
-    const { c, dx, dy } = cards[k]; const t = 25.3 + j * 0.08;
+    const { c, dx, dy } = cards[k]; const t = at('s8b', 25.6) - 0.3 + j * 0.08;
     tl.fromTo(c, { opacity: 0, x: dx, y: dy, scale: 0.9 }, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.45, ease: 'expo.out' }, t);
     cue('tick1', t, 0.45);
   });
   // le déclic : les copies s'éteignent, votre entreprise s'allume
-  tl.to(order.map((k) => cards[k].c), { opacity: 0.22, scale: 0.94, duration: 0.45, ease: 'power2.out', stagger: 0.02 }, 27.6);
-  tl.to(cards[4].c.querySelector('.hi'), { opacity: 1, duration: 0.3 }, 27.65);
-  tl.to(cards[4].c, { scale: 1.14, boxShadow: '0 0 0 10px rgba(245,130,32,.25), 0 30px 70px rgba(245,130,32,.45)', duration: 0.5, ease: 'back.out(2)' }, 27.65);
-  cue('pop', 27.65, 1);
-  cue('sparkle', 27.75, 0.6);
+  tl.to(order.map((k) => cards[k].c), { opacity: 0.22, scale: 0.94, duration: 0.45, ease: 'power2.out', stagger: 0.02 }, at('flip', 27.6));
+  tl.to(cards[4].c.querySelector('.hi'), { opacity: 1, duration: 0.3 }, at('flip', 27.6) + 0.05);
+  tl.to(cards[4].c, { scale: 1.14, boxShadow: '0 0 0 10px rgba(245,130,32,.25), 0 30px 70px rgba(245,130,32,.45)', duration: 0.5, ease: 'back.out(2)' }, at('flip', 27.6) + 0.05);
+  cue('pop', at('flip', 27.6) + 0.05, 1);
+  cue('sparkle', at('flip', 27.6) + 0.15, 0.6);
 }
-say('#s8b', 25.6, 0.2);
-say('#s8c', 27.2, 0.2);
+say('#s8b', at('s8b', 25.6), 0.2);
+say('#s8c', at('s8c', 26.5), 0.2);
 // le cercle blanc s'ouvre depuis « votre entreprise »
 tl.set('#wipe', { top: 760 }, 28.3);
 tl.set('#wipe', { top: 960 }, 29.1);
@@ -608,9 +616,10 @@ circleTo('#sad', 28.35, '#s8');
 // ====================================================== S8b (28.9 → 35.5) : on s'adapte à vous
 drift('#sad', 28.9, 36.0, 1.03);
 tl.fromTo('#s8bp', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 28.95);
-let t8 = say('#s8ba', 29.1, 0.18);
-t8 = say('#s8bb', t8 + 0.05, 0.18);
-say('#s8bc', t8 + 0.25, 0.2);
+let t8 = say('#s8ba', at('s8ba', 29.1), 0.18);
+t8 = say('#s8bb', at('s8bb', t8 + 0.05), 0.18);
+say('#s8bc', at('s8bc', t8 + 0.25), 0.2);
+const CMP = Math.max(0, at('s8bc', 33.3) - 0.1 - 33.2); // la comparaison suit « et pas l'inverse »
 up('#s8bproc', 29.5, { y: 160, v: 0.6 });
 {
   const steps = [['phone', 'Appel client', 'bot', 'Réceptionniste IA'], ['house', 'Visite chantier', 'cal', 'Agenda'], ['doc', 'Devis', 'zap', 'Aplomb · devis'], ['hat', 'Travaux', 'clip', 'Suivi de chantier'], ['euro', 'Facture', 'refresh', 'Relance auto']];
@@ -631,12 +640,12 @@ up('#s8bproc', 29.5, { y: 160, v: 0.6 });
     cue('toggle', t + 0.5, 0.45);
   });
 }
-up('#s8bcmp', 32.4, { y: 120, v: 0.6 });
-tl.fromTo('#s8bx', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, 32.7);
-tl.fromTo('#s8bstrike', { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.inOut' }, 33.2);
-cue('swish', 33.2, 0.5);
-tl.fromTo('#s8bv', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, 33.5);
-pop('#s8bvk', 33.75, { v: 0.6 });
+up('#s8bcmp', 32.4 + CMP, { y: 120, v: 0.6 });
+tl.fromTo('#s8bx', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, 32.7 + CMP);
+tl.fromTo('#s8bstrike', { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.inOut' }, 33.2 + CMP);
+cue('swish', 33.2 + CMP, 0.5);
+tl.fromTo('#s8bv', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, 33.5 + CMP);
+pop('#s8bvk', 33.75 + CMP, { v: 0.6 });
 tl.to('#sadin', { opacity: 0, filter: 'blur(20px)', scale: 1.12, duration: 0.45, ease: 'power3.in' }, 35.55);
 show('#s9', 35.75); hide('#sad', 36.25);
 tl.fromTo('#s9in', { opacity: 0, filter: 'blur(20px)', scale: 0.88 }, { opacity: 1, filter: 'blur(0px)', scale: 1, duration: 0.6, ease: 'expo.out' }, 35.75);
@@ -646,8 +655,8 @@ cue('whoosh', 35.65, 0.6);
 drift('#s9', 34.80, 43.40, 1.025);
 tl.set(['#s9p2', '#s9c', '#s9d', '#s9plan'], { opacity: 0 }, 34.80);
 tl.fromTo('#s9p1', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 35.85);
-say('#s9a', 36.00, 0.18);
-say('#s9b', 36.70, 0.18);
+say('#s9a', at('s9a', 36.0), 0.18);
+say('#s9b', at('s9b', 36.7), 0.18);
 up('#s9audit', 36.20, { y: 160, v: 0.6 });
 {
   const rows = [['phone', 'Appels entrants', 'Priorité', '#FEE2E2', '#DC2626', 0.35], ['doc', 'Devis & relances', 'À améliorer', '#FFF1E6', '#E8741A', 0.55], ['pin', 'Visibilité locale', 'À améliorer', '#FFF1E6', '#E8741A', 0.5], ['users', 'Temps administratif', 'Priorité', '#FEE2E2', '#DC2626', 0.3], ['globe', 'Site internet', 'OK', '#E8F8EE', '#16A34A', 0.85]];
@@ -669,8 +678,8 @@ unsay(['#s9p1', '#s9a', '#s9b'], 39.50);
 tl.to('#s9audit', { opacity: 0, x: -200, duration: 0.45, ease: 'power3.in' }, 39.50);
 tl.set(['#s9p2', '#s9c', '#s9d'], { opacity: 1 }, 39.90);
 tl.fromTo('#s9p2', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5 }, 39.90);
-say('#s9c', 40.00, 0.17);
-say('#s9d', 40.90, 0.18);
+say('#s9c', at('s9c', 40.0), 0.17);
+say('#s9d', at('s9d', 40.9), 0.18);
 tl.fromTo('#s9plan', { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.7, ease: 'expo.out' }, 40.00);
 cue('whoosh', 39.90, 0.5);
 {
@@ -695,9 +704,9 @@ blurTo('#s9', '#s10', 43.20);
 
 // ====================================================== S10 (43.40 → 56)
 drift('#s10', 43.55, 46.00, 1.04);
-pop('#s10k1', 43.45, { v: 0.6 }); say('#s10a', 43.50, 0.15);
-pop('#s10k2', 43.95, { v: 0.6 }); say('#s10b', 44.00, 0.15);
-pop('#s10k3', 44.45, { v: 0.7 }); say('#s10c', 44.50, 0.15);
+pop('#s10k1', at('s10a', 43.5) - 0.05, { v: 0.6 }); say('#s10a', at('s10a', 43.5), 0.15);
+pop('#s10k2', at('s10b', 44.0) - 0.05, { v: 0.6 }); say('#s10b', at('s10b', 44.0), 0.15);
+pop('#s10k3', at('s10c', 44.5) - 0.05, { v: 0.7 }); say('#s10c', at('s10c', 44.5), 0.15);
 circleTo('#s11', 45.75, '#s10');
 
 // ====================================================== S11 (46.10 → 60)
@@ -707,11 +716,12 @@ tl.fromTo('#s11wordw', { width: 0 }, { width: 550, duration: 0.8, ease: 'power2.
 say('#s11a', 47.10, 0.16);
 say('#s11b', 47.55, 0.16);
 tl.fromTo('#s11url', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 46.80);
-tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, 48.10);
-cue('pop', 48.10, 0.8);
-tl.fromTo('#s11shine', { x: 0 }, { x: 1100, duration: 0.9, ease: 'power2.inOut' }, 48.70);
-tl.set('#s11who', { visibility: 'visible' }, 48.4);
-tl.fromTo('#s11who', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5 }, 48.4);
+const CTA = at('cta', 48.1);
+tl.fromTo('#s11cta', { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)' }, CTA);
+cue('pop', CTA, 0.8);
+tl.fromTo('#s11shine', { x: 0 }, { x: 1100, duration: 0.9, ease: 'power2.inOut' }, CTA + 0.6);
+tl.set('#s11who', { visibility: 'visible' }, CTA + 0.3);
+tl.fromTo('#s11who', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5 }, CTA + 0.3);
 tl.fromTo('#s11in', { scale: 1 }, { scale: 1.03, duration: 3.9, ease: 'none', immediateRender: false }, 46.10);
 tl.set({}, {}, DUR);
 
@@ -733,7 +743,7 @@ function mascOut(id, t) {
 // 1. intro : elle salue
 mascIn('#m_salue', 0.3);
 tl.to('#m_salue', { keyframes: [{ rotation: -3, duration: 0.18 }, { rotation: 2.5, duration: 0.18 }, { rotation: -3, duration: 0.18 }, { rotation: 2, duration: 0.18 }, { rotation: 0, duration: 0.2 }], ease: 'sine.inOut' }, 0.95);
-mascOut('#m_salue', 2.7);
+mascOut('#m_salue', 2.85);
 // 2. trois leviers : elle explique
 mascIn('#m_explique', 17.2);
 mascIdle('#m_explique', 17.85, 24.2);
@@ -743,8 +753,8 @@ mascIn('#m_bras', 24.3, { side: 'right' });
 mascIdle('#m_bras', 24.95, 28.3);
 mascOut('#m_bras', 28.4);
 // 1 bis. métiers du BTP : en tenue de chantier
-mascIn('#m_chantier', 7.9, { side: 'right' });
-mascIdle('#m_chantier', 8.55, 10.4);
+mascIn('#m_chantier', Math.min(7.9, H - 0.6), { side: 'right' });
+mascIdle('#m_chantier', Math.min(8.55, H + 0.05), 10.4);
 mascOut('#m_chantier', 10.5);
 // 3 bis. audit puis plan sur mesure : au bureau, devant l'ordinateur
 mascIn('#m_bureau', 35.9, { side: 'right' });
@@ -766,8 +776,8 @@ const MOUTH = {
   chantier: { L: [382, 318], R: [479, 314], M: [426, 323], face: [308, 125, 196, 263] },
 };
 // Quand la mascotte parle (temps de l'animation). Le reste du texte, c'est la voix du fondateur.
-// 'synth' : voix pas encore enregistrée, la bouche suit un rythme générique.
-const TALK = { salue: [[0.5, 2.3]], chantier: [[8.7, 10.5, 'synth']], explique: [[17.3, 24.4]], bras: [[24.5, 28.4]], bureau: [[35.95, 39.6], [39.95, 43.1]], pointe: [[46.45, 50.3]] };
+// Plages de parole (temps de l'animation) : calculées depuis la voix off (assets/voice-env.js). 'synth' : rythme générique.
+const TALK = window.VOICE_TALK || { salue: [[0.5, 2.3]], chantier: [[8.7, 10.5, 'synth']], explique: [[17.3, 24.4]], bras: [[24.5, 28.4]], bureau: [[35.95, 39.6], [39.95, 43.1]], pointe: [[46.45, 50.3]] };
 function talkAt(name, t) {
   const segs = TALK[name]; if (!segs) return 0;
   let env = 0, syn = false;
@@ -780,7 +790,7 @@ function talkAt(name, t) {
     return Math.max(0, Math.min(1, env * (syl * pause * 1.25 - 0.12)));
   }
   // ouverture de la bouche = volume de la voix enregistrée (assets/voice-env.js, 60 valeurs par seconde vidéo)
-  const f = (t / K) * 60, i = Math.floor(f), E = window.VOICE_ENV || [];
+  const f = toVideo(t) * 60, i = Math.floor(f), E = window.VOICE_ENV || [];
   const e = (E[i] || 0) * (1 - (f - i)) + (E[i + 1] || 0) * (f - i);
   return Math.max(0, Math.min(1, env * e * 1.1));
 }
@@ -910,8 +920,8 @@ const M3D = (() => {
 window.READY = M3D.ready.then(() => { M3D.render(); return 0; });
 
 tl.progress(1).progress(0);
-window.CUES = window.CUES.map((c) => ({ ...c, t: +(c.t / K).toFixed(3), v: ['count', 'tick', 'type'].includes(c.type) ? c.v / K : c.v })).sort((a, b) => a.t - b.t);
-window.seek = (t) => { tl.seek(t * K, false); M3D.render(); return 0; };
+window.CUES = window.CUES.map((c) => ({ ...c, t: +toVideo(c.t).toFixed(3), v: ['count', 'tick', 'type'].includes(c.type) ? toVideo(c.t + c.v) - toVideo(c.t) : c.v })).sort((a, b) => a.t - b.t);
+window.seek = (t) => { tl.seek(toAnim(t), false); M3D.render(); return 0; };
 </script>
 </body>
 </html>

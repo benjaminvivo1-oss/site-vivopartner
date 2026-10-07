@@ -1,28 +1,31 @@
 # Voix off : « Vivo Partner, c'est quoi ? »
 
-Une seule voix : **la mascotte**. Elle sera enregistrée par Benjamin lui-même : texte et conseils d'enregistrement dans [`TEXTE-A-LIRE.md`](TEXTE-A-LIRE.md). En attendant, la vidéo utilise une voix ElevenLabs provisoire (« confident Viv »). La mascotte, c'est Benjamin Vivo, le fondateur, en version cartoon : elle le dit elle-même (« … fondé par moi, Benjamin Vivo ») pendant le temps fort du fondateur : son avatar en grand, « Fondé par Benjamin Vivo » et « Fondateur · Carcassonne ».
+**Voix : Benjamin Vivo**, enregistrée au téléphone (`voix/benjamin-voix-off.m4a`). La mascotte, c'est Benjamin en version cartoon : quand elle est à l'écran et qu'elle parle, sa bouche suit sa voix et une bulle avec des ondes sonores apparaît à côté de sa tête. Quand elle n'est pas à l'écran, la voix continue comme une narration.
 
-Quand elle est à l'écran et qu'elle parle, sa bouche bouge et une bulle avec des ondes sonores apparaît à côté de sa tête. Quand elle n'est pas à l'écran, elle continue de raconter comme une narratrice.
+La vidéo suit la voix : chaque scène dure le temps de ce qui est dit, et les textes apparaissent sur les mots prononcés.
 
-Les minutages correspondent à `vivopartner-cest-quoi-9x16.mp4` (40,6 s). Un écart de ±0,3 s ne pose pas de problème. Débit : environ 3 mots par seconde.
+| Début | Texte dit (vidéo de 49,8 s) |
+| --- | --- |
+| 0:00,4 | Vivo Partner, c'est quoi ? |
+| 0:03,6 | Un partenaire de croissance digitale dédié aux entreprises du BTP, fondé par moi, Benjamin Vivo. *(« fondé par moi » à 0:07,3 : temps fort du fondateur)* |
+| 0:10,5 | Notre objectif : développer votre activité, vous faire gagner du temps, et ne plus laisser passer d'opportunités. |
+| 0:17,0 | Tout ça grâce à trois leviers : la visibilité, notre réceptionniste IA, et Aplomb, notre outil métier sur mesure. |
+| 0:24,6 | Mais ce n'est pas un pack tout fait, copié-collé pour tout le monde. |
+| 0:28,1 | Nous, on s'adapte à vous, votre entreprise, vos process, et pas l'inverse. |
+| 0:33,6 | On commence par comprendre votre entreprise, avec un audit gratuit, |
+| 0:37,5 | puis on construit ce dont vous avez réellement besoin. |
+| 0:40,6 | Plus de clients, plus de temps pour vous, zéro opportunité perdue. |
+| 0:45,1 | Vivo Partner. Réservez votre diagnostic gratuit. |
 
-| Début | Fin | État | Texte |
-| --- | --- | --- | --- |
-| 0:00,4 | 0:01,9 | Enregistré | Vivo Partner, c'est quoi ? |
-| 0:03,6 | 0:08,4 | **À enregistrer** | Un partenaire de croissance digitale dédié aux entreprises du BTP, fondé par moi, Benjamin Vivo. |
-| 0:08,7 | 0:13,7 | **À enregistrer** | Notre objectif : développer votre activité, gagner du temps, et ne plus laisser passer d'opportunités. |
-| 0:13,9 | 0:19,5 | Enregistré | Trois leviers : la visibilité, notre réceptionniste IA, et Aplomb, notre outil métier sur mesure. |
-| 0:19,6 | 0:22,7 | Enregistré | Mais ce n'est pas un pack tout fait, copié-collé pour tout le monde. *(à réenregistrer : nouveau texte)* |
-| 0:23,3 | 0:27,4 | **À enregistrer** | On s'adapte à vous, à votre entreprise, à vos process. Et pas l'inverse. |
-| 0:28,8 | 0:31,7 | Enregistré | On commence par comprendre votre entreprise, avec un audit. |
-| 0:32,0 | 0:34,5 | Enregistré | Puis on construit ce dont vous avez réellement besoin. |
-| 0:34,8 | 0:36,5 | **À enregistrer** | Plus de clients. Plus de temps. Zéro opportunité perdue. |
-| 0:37,2 | 0:40,2 | Enregistré | Vivo Partner. Réservez votre diagnostic gratuit. |
+## Comment la voix est montée
 
-« … fondé par moi, Benjamin Vivo » tombe vers 0:07,0 : la mascotte en tenue de chantier parle et l'écran passe au temps fort du fondateur (0:06,9 – 0:08,5).
+1. `voix/traitement.sh` : coupe-bas (75 Hz), moins de « boue » (−2,5 dB à 250 Hz), plus de présence (+2,5 dB à 3,2 kHz) et d'air, dé-esseur, compression douce, normalisation (−16 LUFS).
+2. `voix/placement.py` : l'enregistrement est découpé en un bloc continu par scène (les pauses naturelles sont gardées). Le script calcule :
+   - où placer chaque bloc ;
+   - la déformation du temps de l'animation (`WARP`), entre −14 % et +28 % de la vitesse d'origine ;
+   - les moments de l'animation calés sur les mots (`VOICE_T`) ;
+   - les plages où la mascotte parle (`VOICE_TALK`) → `src/layout.json`.
+3. `voix/build_track.py` : place les blocs sur la timeline et écrit la piste voix et `src/assets/voice-env.js` (enveloppe de la bouche, 60 valeurs par seconde, et les données ci-dessus).
+4. `voix/mix.py` : la musique baisse d'environ 14 dB pendant que la voix parle, puis le tout est normalisé à −14 LUFS.
 
-Les phrases enregistrées sont dans `voix/mascotte-elevenlabs.mp3`. Elles sont découpées et placées par `voix/build_voice.py` ; la phrase « Trois leviers… » est accélérée de 6 % pour tenir dans la scène. La bouche suit le volume réel de la voix et la musique baisse pendant qu'elle parle (`voix/mix.py`). Pour la mascotte en tenue de chantier, en attendant l'enregistrement, la bouche suit un rythme générique.
-
-Texte à générer dans ElevenLabs (même voix, mêmes réglages), d'un seul bloc :
-
-> Un partenaire de croissance digitale dédié aux entreprises du BTP, fondé par moi, Benjamin Vivo. … Notre objectif : développer votre activité, gagner du temps, et ne plus laisser passer d'opportunités. … On s'adapte à vous, à votre entreprise, à vos process. Et pas l'inverse. … Plus de clients. Plus de temps. Zéro opportunité perdue.
+Pour un nouvel enregistrement, relancer ces étapes. Si le texte ou le rythme change, mettre à jour dans `voix/placement.py` les temps de début et de fin des blocs et des mots repères (secondes dans l'enregistrement).

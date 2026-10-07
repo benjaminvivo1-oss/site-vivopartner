@@ -1,9 +1,9 @@
 # Vidéo « Vivo Partner, c'est quoi ? »
 
-`vivopartner-cest-quoi-9x16.mp4` : 40,6 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
+`vivopartner-cest-quoi-9x16.mp4` : 49,8 s, 1080 × 1920 (9:16), 60 i/s, H.264 + AAC, normalisée à −14 LUFS (Reels, TikTok, Shorts, stories).
 Même langage visuel que la VSL : alternance bleu marine / clair, transition en cercle blanc, texte qui apparaît mot par mot, maquettes d'interface, pastilles « Levier ».
 
-La vidéo est calée sur une voix off : texte et minutages dans [`VOIX-OFF.md`](VOIX-OFF.md).
+Voix off de Benjamin Vivo, montée sur l'animation : texte, minutages et traitement du son dans [`VOIX-OFF.md`](VOIX-OFF.md).
 
 Ce dossier n'est pas publié avec le site (hors de `public/`).
 
@@ -39,7 +39,7 @@ Les balises `<img class="masc">` restent dans la page comme repères invisibles 
 
 Les scènes détaillées des leviers (`#s5`, `#s6`, `#s7`) restent dans `src/index.html` mais ne sont plus jouées : elles serviront de base aux vidéos dédiées.
 
-L'animation est écrite sur 50,75 s dans `src/index.html` puis jouée 25 % plus vite (constante `K`). La musique est générée sur 50 s puis accélérée de la même façon (`asetrate`), ce qui la passe à 150 BPM.
+L'animation est écrite sur 50,75 s dans `src/index.html`. C'est la voix off qui fixe le tempo : `WARP` (dans `src/assets/voice-env.js`) associe le temps vidéo au temps de l'animation, scène par scène. La musique est générée à tempo constant (`music.py` lit `layout.json` pour caler ses sections et ses impacts sur les scènes), puis accélérée de 25 % (`asetrate`), soit 150 BPM.
 
 ## Régénérer la vidéo
 
@@ -49,24 +49,23 @@ Tout est dans `src/` : l'animation est une page HTML pilotée par une timeline G
 cd video/src
 npm install
 pip install numpy scipy
-node render.mjs cues cues.json                  # repères son
-python3 music.py                                # -> music.wav (50 s)
-ffmpeg -i music.wav -af "asetrate=44100*1.25,aresample=44100" -t 40.6 music_fast.wav
-for i in 0 1 2 3; do node render.mjs 60 $((i*609)) $(((i+1)*609)) frames & done; wait
-ffmpeg -framerate 60 -i frames/f%05d.jpg -i music_fast.wav -c:v libx264 -preset slow -crf 18 \
-  -pix_fmt yuv420p -movflags +faststart -af "loudnorm=I=-14:TP=-1:LRA=7" \
+# 1. voix off : traitement, placement (layout.json + assets/voice-env.js), piste voix
+sh ../voix/traitement.sh ../voix/benjamin-voix-off.m4a voix_traitee.wav
+python3 ../voix/placement.py layout.json
+python3 ../voix/build_track.py layout.json voix_traitee.wav voix.wav assets/voice-env.js
+# 2. musique calée sur les scènes
+node render.mjs cues cues.json
+python3 music.py                                         # -> music.wav
+D=$(python3 -c "import json;print(json.load(open('layout.json'))['duration'])")
+ffmpeg -i music.wav -af "asetrate=44100*1.25,aresample=44100" -t $D music_fast.wav
+python3 ../voix/mix.py music_fast.wav voix.wav mix.wav     # musique baissée sous la voix
+# 3. images (60 i/s) puis encodage
+N=$(python3 -c "import math;print(math.ceil($D*60))")
+for i in 0 1 2 3; do node render.mjs 60 $((i*N/4)) $(((i+1)*N/4)) frames & done; wait
+ffmpeg -framerate 60 -i frames/f%05d.jpg -i mix.wav -c:v libx264 -preset slow -crf 18 \
+  -pix_fmt yuv420p -movflags +faststart -af "loudnorm=I=-14:TP=-1:LRA=11" \
   -c:a aac -b:a 192k -shortest ../vivopartner-cest-quoi-9x16.mp4
 ```
-
-Avec la voix de la mascotte (dossier `voix/`) :
-
-```bash
-python3 ../voix/build_voice.py ../voix/mascotte-elevenlabs.mp3 voix.wav env.json 40.6   # place les phrases
-python3 -c "import json;open('assets/voice-env.js','w').write('window.VOICE_ENV='+open('env.json').read()+';')"
-python3 ../voix/mix.py music_fast.wav voix.wav mix.wav                                  # musique baissée sous la voix
-```
-
-puis encoder avec `-i mix.wav` à la place de `music_fast.wav` (la durée est de 40,6 s : `-t 40.6` pour la musique, 2 436 images).
 
 Aperçu de quelques instants : `node render.mjs shots 2,26,38 shots`.
 Les textes se modifient directement dans `src/index.html`.
