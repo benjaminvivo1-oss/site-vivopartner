@@ -17,7 +17,7 @@ Vidéo « qui je suis » : les trois leviers sont seulement annoncés ; chacun a
 | 2,9 – 8,2 s | Logo, partenaire de croissance digitale du BTP, 12 métiers « … et tous les métiers du BTP », puis temps fort du fondateur : avatar de la mascotte en grand, « Fondé par Benjamin Vivo », « Fondateur · Carcassonne » |
 | 8,2 – 14,4 s | Notre objectif : activité, temps, opportunités (4 cartes) |
 | 14,4 – 19,1 s | Trois leviers : la visibilité, notre réceptionniste IA, Aplomb notre outil métier sur mesure |
-| 19,1 – 23,1 s | Et surtout : le même « pack standard » copié-collé sur toutes les entreprises, puis « votre entreprise » s'allume |
+| 19,1 – 23,1 s | « Mais ce n'est pas un pack tout fait » : le même « pack standard » copié-collé sur toutes les entreprises, puis « votre entreprise » s'allume |
 | 23,1 – 28,6 s | Notre approche : on s'adapte à vous, votre entreprise, vos process, et pas l'inverse |
 | 28,6 – 34,9 s | Audit, puis plan sur mesure |
 | 34,9 – 37,2 s | + de clients, + de temps, zéro opportunité perdue |
