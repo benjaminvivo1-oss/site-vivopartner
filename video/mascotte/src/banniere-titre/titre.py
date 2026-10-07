@@ -3,7 +3,7 @@ import subprocess, sys, numpy as np, scipy.ndimage as nd
 from PIL import Image
 SRC, OUT = sys.argv[1], sys.argv[2]
 L1 = "J’aide les entreprises du BTP"
-L2 = 'à attirer <span class="o">plus de clients</span> et <span class="o">gagner du temps.</span>'
+L2 = 'à décrocher <span class="o">plus de chantiers</span> et à <span class="o">gagner du temps.</span>'
 X0, MAXW = 810, 1950 - 810
 im = np.array(Image.open(SRC).convert('RGB')).astype(np.float32); H, W = im.shape[:2]
 lum = im.mean(2)
