@@ -21,3 +21,7 @@ Poses utiles pour les vidéos : salue de la main · pointe vers la caméra · po
 ## Poses détourées
 
 `poses/` : salue, explique, réfléchit, pointe vers la caméra, chantier (casque, dôme reconstruit car coupé par la vignette) et bureau (ordinateur) — extraites de la planche 2, agrandies ×4 (EDSR) et détourées sur fond transparent. Elles servent dans la vidéo de présentation ; pour un usage en grand (affiche, site), mieux vaut générer les poses en haute définition avec le prompt ci-dessus.
+
+## Photos de profil
+
+`profil/photo-profil-navy.png`, `photo-profil-orange.png` et `photo-profil-clair.png` : 1080 × 1080 px, mascotte bras croisés (logo VP visible) dans un anneau, aux couleurs de Vivo Partner. Le cadrage est prévu pour un recadrage rond (Instagram, Facebook, LinkedIn, TikTok, WhatsApp, Google) : la tête reste entière dans le cercle. Régénérer : `python3 src/profil.py ../src/assets/masc_bras.png profil`.
