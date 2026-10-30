@@ -1,0 +1,75 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://vivopartner.com/aplomb/#webpage",
+      "url": "https://vivopartner.com/aplomb/",
+      "name": "Logiciel de gestion BTP sur mesure : Aplomb | Vivo Partner",
+      "description": "Aplomb centralise demandes, devis, factures, chantiers et relances dans un outil sur mesure pour votre entreprise du BTP. Démo gratuite de 30 min en visio.",
+      "inLanguage": "fr-FR",
+      "isPartOf": {
+        "@id": "https://vivopartner.com/#site"
+      },
+      "about": {
+        "@id": "https://vivopartner.com/#org"
+      },
+      "dateModified": "2026-10-28",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "breadcrumb": {
+        "@id": "https://vivopartner.com/aplomb/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://vivopartner.com/aplomb/#service"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://vivopartner.com/aplomb/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://vivopartner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Aplomb",
+          "item": "https://vivopartner.com/aplomb/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://vivopartner.com/aplomb/#service",
+      "name": "Aplomb, application de gestion sur mesure pour le BTP",
+      "serviceType": "Logiciel de gestion sur mesure pour entreprise du BTP",
+      "description": "Demandes, devis, factures, chantiers, relances : tout est centralisé dans un outil construit pour votre façon de travailler, et relié à vos autres outils.",
+      "url": "https://vivopartner.com/aplomb/",
+      "provider": {
+        "@id": "https://vivopartner.com/#org"
+      },
+      "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "Entreprises du BTP"
+      },
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "France"
+        },
+        {
+          "@type": "City",
+          "name": "Carcassonne"
+        }
+      ]
+    }
+  ]
+}

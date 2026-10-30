@@ -1,18 +1,17 @@
 /**
- * Formulaire de demande d'audit : validation accessible (erreur sous le champ, aria-invalid,
- * focus sur le premier champ en erreur), bouton d'envoi bloqué tant que la case de consentement n'est
- * pas cochée, anti-spam (champ piège + délai entre deux envois), envoi JSON vers PUBLIC_CONTACT_ENDPOINT,
- * confirmation annoncée (role="status").
+ * Formulaires de demande d'audit (accueil et /contact/) : mêmes règles que la maquette v3
+ * (nom et téléphone obligatoires), erreur sous le champ concerné (aria-describedby, aria-invalid,
+ * focus sur le premier champ en erreur), anti-spam (champ piège + délai entre deux envois),
+ * envoi JSON vers PUBLIC_CONTACT_ENDPOINT (par défaut /api/contact), confirmation annoncée.
+ * Sans JavaScript, le formulaire est envoyé normalement à /api/contact.
  */
 import { track } from './track';
+import { bindAll } from './bind';
 
 const COOLDOWN_MS = 30_000;
 const STORAGE_KEY = 'vp-audit-sent-at';
-// Même règle que api/contact.js : une seule « @ », pas d'espace ni de caractère de liste d'adresses.
-const EMAIL_RE = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:".]{2,}$/;
 
-const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
-if (form) initForm(form);
+document.querySelectorAll<HTMLFormElement>('form[data-contact-form]').forEach(initForm);
 
 function initForm(form: HTMLFormElement) {
   form.noValidate = true; // la validation native reste active sans JavaScript
@@ -20,47 +19,31 @@ function initForm(form: HTMLFormElement) {
   const inbox = form.dataset.email || '';
   const phone = form.dataset.phone || '';
   const alertBox = form.querySelector<HTMLElement>('[data-form-error]');
-  const status = form.querySelector<HTMLElement>('[data-form-status]');
-  const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
   const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
   const el = (name: string) => form.elements.namedItem(name) as HTMLInputElement | null;
 
-  const rules: { name: string; error: string; test: (v: string, input: HTMLInputElement) => boolean }[] = [
-    { name: 'nom', error: 'err-nom', test: (v) => v.length > 0 },
-    { name: 'tel', error: 'err-tel', test: (v) => v.replace(/[^0-9+]/g, '').length >= 9 },
-    { name: 'email', error: 'err-email', test: (v) => !v || EMAIL_RE.test(v) },
-    { name: 'consentement', error: 'err-consent', test: (_v, input) => input.checked },
+  const rules: { name: string; test: (v: string) => boolean }[] = [
+    { name: 'nom', test: (v) => v.length > 0 },
+    { name: 'tel', test: (v) => v.replace(/[^0-9+]/g, '').length >= 9 },
   ];
 
-  const setError = (input: HTMLInputElement, errorId: string, invalid: boolean) => {
-    const msg = document.getElementById(errorId);
+  const errorOf = (input: HTMLInputElement) => document.getElementById(input.getAttribute('aria-describedby') || '');
+  const setError = (input: HTMLInputElement, invalid: boolean) => {
+    const msg = errorOf(input);
     if (msg) msg.hidden = !invalid;
     if (invalid) input.setAttribute('aria-invalid', 'true');
     else input.removeAttribute('aria-invalid');
   };
 
   // L'erreur disparaît dès que le champ est corrigé.
-  rules.forEach(({ name, error, test }) => {
+  rules.forEach(({ name, test }) => {
     const input = el(name);
-    input?.addEventListener(input.type === 'checkbox' ? 'change' : 'input', () => {
-      if (input.getAttribute('aria-invalid') === 'true') setError(input, error, !test(input.value.trim(), input));
+    input?.addEventListener('input', () => {
+      if (input.getAttribute('aria-invalid') === 'true') setError(input, !test(input.value.trim()));
     });
   });
 
-  // Bouton d'envoi signalé indisponible tant que la case de consentement n'est pas cochée (le CSS le grise).
-  // Un clic reste possible : il affiche l'erreur sous la case et place le focus dessus.
-  const consent = el('consentement');
-  const syncSubmit = () => {
-    const blocked = !consent?.checked;
-    submitBtn?.setAttribute('aria-disabled', String(blocked));
-    if (blocked) submitBtn?.setAttribute('aria-describedby', 'consent-hint');
-    else submitBtn?.removeAttribute('aria-describedby');
-  };
-  consent?.addEventListener('change', syncSubmit);
-  form.addEventListener('reset', () => setTimeout(syncSubmit)); // la case n'est décochée qu'après l'événement
-  syncSubmit();
-
-  // Message d'erreur, avec en option un lien de secours vers la messagerie (demande pré-remplie).
+  // Message d'erreur général, avec en option un lien de secours vers la messagerie (demande pré-remplie).
   const showAlert = (text: string, mailto?: string) => {
     if (!alertBox) return;
     alertBox.textContent = text;
@@ -74,26 +57,23 @@ function initForm(form: HTMLFormElement) {
     alertBox.hidden = !text;
   };
 
-  const showSuccess = (firstName: string, text?: string) => {
-    if (!status) return;
-    const title = status.querySelector<HTMLElement>('[data-status-title]');
-    const body = status.querySelector<HTMLElement>('[data-status-text]');
-    if (title) title.textContent = firstName ? `Demande reçue, merci ${firstName}.` : 'Demande reçue, merci.';
-    if (body && text) body.textContent = text;
-    status.hidden = false;
+  // Confirmation de la maquette : « Merci {prénom}, c'est noté. » à la place du formulaire.
+  const showSuccess = (firstName: string) => {
+    bindAll(form, { formOpen: false, formSent: true, formName: firstName });
+    const done = form.querySelector<HTMLElement>('[data-form-success]');
+    done?.focus();
   };
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     showAlert('');
-    if (status) status.hidden = true;
 
     let firstInvalid: HTMLInputElement | null = null;
-    for (const { name, error, test } of rules) {
+    for (const { name, test } of rules) {
       const input = el(name);
       if (!input) continue;
-      const ok = test(input.value.trim(), input);
-      setError(input, error, !ok);
+      const ok = test(input.value.trim());
+      setError(input, !ok);
       if (!ok && !firstInvalid) firstInvalid = input;
     }
     if (firstInvalid) {
@@ -104,12 +84,16 @@ function initForm(form: HTMLFormElement) {
     const data = Object.fromEntries(
       Array.from(new FormData(form).entries()).map(([k, v]) => [k, String(v).trim()]),
     ) as Record<string, string>;
+    // Services : un seul (page de service) ou plusieurs cases cochées (formulaire général).
+    const services = new FormData(form).getAll('service').map(String).filter(Boolean);
+    if (services.length) data.service = services.join(', ');
+    else delete data.service;
     const firstName = (data.nom || '').split(/\s+/)[0] || '';
 
     // Champ piège rempli : on simule un succès sans rien envoyer.
     if (data.site_web) {
-      showSuccess(firstName);
       form.reset();
+      showSuccess(firstName);
       return;
     }
     delete data.site_web;
@@ -125,14 +109,13 @@ function initForm(form: HTMLFormElement) {
       return;
     }
 
-    const subject = `Demande d’audit — ${data.nom}${data.entreprise ? ` (${data.entreprise})` : ''}`;
-
+    const subject = `Demande d’audit${data.service ? ` (${data.service})` : ''} — ${data.nom}${data.entreprise ? ` (${data.entreprise})` : ''}`;
     const lines = [
+      ...(data.service ? [`Service : ${data.service}`] : []),
       `Nom : ${data.nom}`,
-      `Entreprise : ${data.entreprise || '-'}`,
-      `Secteur : ${data.secteur || '-'}`,
       `Téléphone : ${data.tel}`,
-      `E-mail : ${data.email || '-'}`,
+      `Entreprise : ${data.entreprise || '-'}`,
+      `Métier : ${data.metier || '-'}`,
       '',
       data.message || '',
     ];
@@ -141,31 +124,26 @@ function initForm(form: HTMLFormElement) {
     // Envoi désactivé (PUBLIC_CONTACT_ENDPOINT vide) : la messagerie du visiteur s'ouvre, demande pré-remplie.
     if (!endpoint) {
       window.location.href = mailto;
-      showSuccess(
-        firstName,
-        `Votre messagerie s’ouvre avec votre demande pré-remplie : il ne reste qu’à l’envoyer. Sinon, écrivez directement à ${inbox}.`,
-      );
+      showSuccess(firstName);
       return;
     }
 
     submitBtn?.setAttribute('disabled', '');
     submitBtn?.setAttribute('aria-busy', 'true');
-    const label = submitLabel?.textContent;
-    if (submitLabel) submitLabel.textContent = 'Envoi en cours…';
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...data, _subject: subject, page: window.location.href }),
+        body: JSON.stringify({ ...data, page: window.location.href }),
       });
       if (res.status === 400) {
         // Champ refusé par le serveur (filet de sécurité, mêmes règles) : erreur sous le champ concerné.
         const body = await res.json().catch(() => ({}));
         const refused = rules.filter(({ name }) => body?.errors?.[name]);
         if (refused.length) {
-          refused.forEach(({ name, error }) => {
+          refused.forEach(({ name }) => {
             const input = el(name);
-            if (input) setError(input, error, true);
+            if (input) setError(input, true);
           });
           el(refused[0].name)?.focus();
           return;
@@ -179,7 +157,7 @@ function initForm(form: HTMLFormElement) {
       }
       form.reset();
       showSuccess(firstName);
-      track('form_submit', { page: window.location.pathname });
+      track('form_submit', { page: window.location.pathname, ...(data.service ? { service: data.service } : {}) });
     } catch {
       showAlert(
         `L’envoi n’a pas abouti. Réessayez dans un instant, appelez le ${phone}, ou envoyez-la par e-mail :`,
@@ -188,7 +166,6 @@ function initForm(form: HTMLFormElement) {
     } finally {
       submitBtn?.removeAttribute('disabled');
       submitBtn?.removeAttribute('aria-busy');
-      if (submitLabel && label) submitLabel.textContent = label;
     }
   });
 }

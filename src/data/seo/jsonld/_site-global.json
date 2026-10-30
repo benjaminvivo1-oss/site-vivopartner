@@ -1,0 +1,173 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://vivopartner.com/#org",
+      "name": "Vivo Partner",
+      "alternateName": "VivoPartner",
+      "url": "https://vivopartner.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://vivopartner.com/assets/vp-mark-navy.png",
+        "width": 344,
+        "height": 242
+      },
+      "image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+      "slogan": "Automatise aujourd’hui. Accélère demain.",
+      "description": "Partenaire digital des entreprises du BTP : application sur mesure Aplomb, réceptionniste IA, site internet et référencement local. Basé à Carcassonne, intervient à distance en France et dans les pays francophones.",
+      "founder": {
+        "@id": "https://vivopartner.com/#founder"
+      },
+      "email": "benjamin@vivopartner.com",
+      "telephone": "+33640202246",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "SIRET",
+        "value": "10153879100019"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "telephone": "+33640202246",
+          "email": "benjamin@vivopartner.com",
+          "areaServed": "FR",
+          "availableLanguage": "fr"
+        }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Carcassonne",
+        "postalCode": "11000",
+        "addressRegion": "Occitanie",
+        "addressCountry": "FR"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Carcassonne"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Aude"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Occitanie"
+        },
+        {
+          "@type": "Country",
+          "name": "France"
+        },
+        {
+          "@type": "Country",
+          "name": "Belgique"
+        },
+        {
+          "@type": "Country",
+          "name": "Suisse"
+        },
+        {
+          "@type": "Country",
+          "name": "Luxembourg"
+        },
+        {
+          "@type": "Country",
+          "name": "Canada"
+        }
+      ],
+      "knowsLanguage": "fr",
+      "knowsAbout": [
+        "BTP",
+        "Logiciel de gestion sur mesure",
+        "Réceptionniste IA",
+        "Référencement local",
+        "Création de site internet",
+        "Google Business Profile"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Leviers Vivo Partner",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Audit digital gratuit",
+              "description": "Audit de 30 minutes en visio, sans engagement.",
+              "url": "https://vivopartner.com/contact/"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@id": "https://vivopartner.com/aplomb/#service"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@id": "https://vivopartner.com/receptionniste-ia/#service"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@id": "https://vivopartner.com/visibilite-locale/#service"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://vivopartner.com/#founder",
+      "name": "Benjamin Vivo",
+      "jobTitle": "Fondateur de Vivo Partner",
+      "worksFor": {
+        "@id": "https://vivopartner.com/#org"
+      },
+      "url": "https://vivopartner.com/a-propos/"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://vivopartner.com/#site",
+      "url": "https://vivopartner.com/",
+      "name": "Vivo Partner",
+      "inLanguage": "fr-FR",
+      "publisher": {
+        "@id": "https://vivopartner.com/#org"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://vivopartner.com/aplomb/#service",
+      "name": "Aplomb, application de gestion sur mesure pour le BTP",
+      "url": "https://vivopartner.com/aplomb/",
+      "provider": {
+        "@id": "https://vivopartner.com/#org"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://vivopartner.com/receptionniste-ia/#service",
+      "name": "Réceptionniste IA pour le BTP",
+      "url": "https://vivopartner.com/receptionniste-ia/",
+      "provider": {
+        "@id": "https://vivopartner.com/#org"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://vivopartner.com/visibilite-locale/#service",
+      "name": "Visibilité locale pour le BTP",
+      "url": "https://vivopartner.com/visibilite-locale/",
+      "provider": {
+        "@id": "https://vivopartner.com/#org"
+      }
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 Site vitrine de **Vivo Partner**, partenaire digital des entreprises du BTP (Carcassonne, France entière, pays francophones). Objectif : faire réserver un **audit gratuit de 30 minutes**.
 
-Site statique **Astro 7**, reproduit à partir de la maquette haute fidélité `Site Vivo Partner v2.dc.html` (dossier de handoff `design_handoff_site_vivo_partner`), en appliquant les consignes P1 de [`docs/SEO-LOCAL-IA-UX.md`](docs/SEO-LOCAL-IA-UX.md).
+Site statique **Astro 7**, reproduction fidèle de la maquette haute fidélité **v3** (dossier de handoff `design_handoff_vivo_partner_v3` : `Site Vivo Partner v3.dc.html` et les 6 fichiers `Page*.dc.html`), avec les fichiers SEO du handoff (`seo/pages.json`, `seo/jsonld/`, `public/`). Consignes appliquées : [`docs/SEO-LOCAL-IA-UX.md`](docs/SEO-LOCAL-IA-UX.md) et [`docs/SEO-AUDIT-2026-10-28.md`](docs/SEO-AUDIT-2026-10-28.md).
 
 ## Démarrage
 
@@ -11,7 +11,7 @@ Prérequis : Node.js 22.12 ou plus récent.
 ```bash
 npm install
 npm run dev       # développement : http://localhost:4321
-npm run build     # site statique dans dist/
+npm run build     # site statique dans dist/ (+ contrôle de la CSP)
 npm run preview   # sert dist/ en local
 npm run check     # vérification TypeScript et Astro
 npm run format    # mise en forme (Prettier)
@@ -19,74 +19,67 @@ npm run format    # mise en forme (Prettier)
 
 ## Pages
 
-| URL                   | Fichier                                      |
-| --------------------- | -------------------------------------------- |
-| `/`                   | `src/pages/index.astro`                      |
-| `/aplomb/`            | `src/pages/aplomb.astro`                     |
-| `/receptionniste-ia/` | `src/pages/receptionniste-ia.astro`          |
-| `/visibilite-locale/` | `src/pages/visibilite-locale.astro`          |
-| `/a-propos/`          | `src/pages/a-propos.astro`                   |
-| `/contact/`           | `src/pages/contact.astro`                    |
-| `/faq/`               | `src/pages/faq.astro`                        |
-| `/mentions-legales/`  | `src/pages/mentions-legales.astro`           |
-| `/confidentialite/`   | `src/pages/confidentialite.astro`            |
-| `/sitemap.xml`        | `src/pages/sitemap.xml.ts` (généré au build) |
-| page 404              | `src/pages/404.astro` (non indexée)          |
+Une URL et un HTML complet par page (la maquette était une application d'une seule page).
 
-`/robots.txt` et `/llms.txt` sont dans `public/` (fournis avec la maquette).
+| URL                   | Page                      | Maquette                              | Contenu                                      |
+| --------------------- | ------------------------- | ------------------------------------- | -------------------------------------------- |
+| `/`                   | `src/pages/index.astro`   | `Site Vivo Partner v3.dc.html`        | `src/components/home/*.astro`                |
+| `/visibilite-locale/` | `visibilite-locale.astro` | `PageVisibilite.dc.html`              | `src/components/pages/Visibilite.astro`      |
+| `/receptionniste-ia/` | `receptionniste-ia.astro` | `PageReceptionniste.dc.html`          | `src/components/pages/Receptionniste.astro`  |
+| `/aplomb/`            | `aplomb.astro`            | `PageAplomb.dc.html`                  | `src/components/pages/Aplomb.astro`          |
+| `/faq/`               | `faq.astro`               | `PageFaq.dc.html`                     | `src/components/pages/Faq.astro`             |
+| `/a-propos/`          | `a-propos.astro`          | `PageAPropos.dc.html`                 | `src/components/pages/APropos.astro`         |
+| `/contact/`           | `contact.astro`           | `PageContact.dc.html`                 | `src/components/pages/Contact.astro`         |
+| `/mentions-legales/`  | `mentions-legales.astro`  | dans `Site Vivo Partner v3.dc.html`   | `src/components/legal/MentionsLegales.astro` |
+| `/confidentialite/`   | `confidentialite.astro`   | dans `Site Vivo Partner v3.dc.html`   | `src/components/legal/Confidentialite.astro` |
+| page 404              | `404.astro`               | (non prévue, style des pages légales) | non indexée                                  |
+
+`public/robots.txt`, `public/sitemap.xml` et `public/llms.txt` sont ceux du handoff, servis à la racine.
 
 ## Organisation
 
 ```
 api/contact.js              fonction Vercel : envoi des demandes d'audit (Brevo)
-docs/                       consignes du handoff (SEO local et IA, charte, checklist)
-public/                     polices, logos des intégrations, icônes, images de partage (og/), robots.txt, llms.txt
-scripts/og-images.mjs       régénère les images de partage public/og/*.png
+docs/                       consignes du handoff v3 (SEO local et IA, audit SEO, checklist, charte)
+public/assets/              images de la maquette (mascotte, photos, image de partage, logo navy du JSON-LD)
+public/fonts/               polices auto-hébergées (Satoshi, Inter, JetBrains Mono)
 src/
-  assets/brand/             logos (optimisés au build)
-  assets/hero/              photo de fond du hero (facultative, voir plus bas)
-  components/               en-tête, pied de page, CTA, formulaire, sections de l'accueil, démos
-  data/site.ts              NAP, URL, titres et descriptions SEO, dates de mise à jour
-  data/faq.ts               les 9 questions et réponses (page FAQ + JSON-LD)
-  data/schema.ts            JSON-LD : ProfessionalService, WebSite, WebPage/FAQPage, Service, BreadcrumbList, Person
-  layouts/BaseLayout.astro  <head> (SEO, Open Graph, JSON-LD, polices), en-tête, <main>, pied de page
-  pages/                    une page par URL
-  scripts/                  comportements : menu, apparitions, démos, formulaire, mesure d'audience
-  styles/global.css         polices auto-hébergées, animations, états :hover, focus
+  assets/brand/             logos clairs de l'en-tête et du pied de page (optimisés au build)
+  components/Header.astro   en-tête (ordinateur et mobile), menu Services
+  components/Footer.astro   pied de page et barre « Appeler / Audit gratuit » (mobile)
+  components/home/          sections de l'accueil
+  components/pages/         contenu des pages secondaires
+  components/legal/         mentions légales et confidentialité
+  data/seo/                 pages.json et jsonld/ du handoff (copiés tels quels)
+  data/site.ts              lecture de pages.json et des JSON-LD, NAP
+  data/form.ts              adresse d'envoi des formulaires
+  layouts/BaseLayout.astro  <head> (titre, description, canonical, og, JSON-LD), en-tête, pied de page
+  scripts/                  comportements : menus, simulateurs, démo de la réceptionniste, formulaires
+  styles/base.css           styles globaux de la maquette (keyframes, survols, requêtes de conteneur)
+  styles/hover.css          survols et focus de la maquette (attributs style-hover / style-focus)
+  styles/pages/*.css        styles propres à chaque page secondaire (balise <style> de sa maquette)
 ```
 
-Les valeurs de style viennent de la maquette, dont les styles en ligne sont la source de vérité : ils sont conservés tels quels dans les composants. Les états `:hover`, les animations et le passage en mobile (requêtes de conteneur sous 900 px, comme la maquette) sont dans `src/styles/global.css` et dans les composants. Les attributs `data-screen-label` de la maquette sont conservés pour retrouver chaque section.
+**Fidélité** : le balisage des sections a été converti automatiquement depuis les maquettes, styles en ligne compris (source de vérité des valeurs), avec les mêmes règles d'espacement que le moteur de la maquette. Seuls changent : les `role="button"` devenus de vrais `<a href>` (navigation) ou `<button>`, les états interactifs (`{{ … }}`) reliés au JavaScript par des attributs `data-bind` / `data-on-*`, et les chemins d'images. Le balisage converti est exclu de Prettier (`.prettierignore`) : le reformater pourrait changer les espaces affichés.
 
-Tout le texte est dans le HTML généré : le JavaScript ne sert qu'aux démos, au menu mobile, aux apparitions au défilement et au formulaire.
+Tout le texte est dans le HTML généré, y compris les 6 réponses de la FAQ de l'accueil (`<details>`) et les 13 de `/faq/`. Le JavaScript ne sert qu'aux menus, aux simulateurs, au carrousel et à la démo d'appel de la réceptionniste, et aux formulaires.
 
 ## Modifier le contenu
 
-- **Coordonnées (NAP), titres et descriptions des pages** : `src/data/site.ts`. Le NAP doit rester identique partout (site, JSON-LD, fiche Google, annuaires).
-- **Date « Mis à jour le »** (pages de service et FAQ) : `UPDATED` dans `src/data/site.ts`. Elle alimente aussi `dateModified` (JSON-LD) et `lastmod` (sitemap). À changer à chaque modification de contenu.
-- **FAQ** : `src/data/faq.ts`, source unique du texte affiché et du JSON-LD `FAQPage`.
-- **Données structurées** : `src/data/schema.ts` ; profils (`sameAs`) et pays servis dans `src/data/site.ts`.
-- **Démos** (textes et rythmes) : `src/scripts/demo-data.ts` et `src/components/demos/`.
+- **Titres, descriptions, canonical, image de partage** : `src/data/seo/pages.json`.
+- **JSON-LD** : `src/data/seo/jsonld/<page>.json` (une par page) et `_site-global.json` (sur toutes les pages). La FAQPage de `faq.json` doit rester identique aux questions et réponses visibles sur `/faq/`. Changer `dateModified` à chaque modification de contenu, et `lastmod` dans `public/sitemap.xml`.
+- **Textes** : directement dans les composants (`src/components/home/`, `pages/`, `legal/`).
+- **Simulateurs** : formules dans `src/scripts/home-sim.ts`, `aplomb.ts`, `receptionniste.ts` (les mêmes que la maquette), valeurs de départ dans le HTML.
+- **Captures des maquettes de sites** (portfolio de `/visibilite-locale/` et éventail de la carte « Être trouvé » de l'accueil) : déposer `climatisation`, `renovation` et `electricite` (png, jpg, webp ou avif, format 4:3, haut de la page d'accueil du site) dans `src/assets/maquettes/`. Elles remplacent automatiquement les dessins provisoires, optimisées au build. En place : climatisation, électricité et rénovation, anonymisées (logos, noms d'entreprise, téléphones, e-mail et noms des auteurs d'avis floutés) : ce sont des projets ou des sites réalisés pour d'autres, pas des clients de Vivo Partner.
 - **llms.txt** : `public/llms.txt`, à tenir à jour à chaque changement d'offre.
-
-### Photo du hero
-
-Déposer une photo (jpg, png, webp ou avif ; droits libres, sans visage, idéalement 2560 px de large) dans `src/assets/hero/`. Elle est utilisée automatiquement, convertie en AVIF et WebP en plusieurs tailles et chargée en priorité, sous le voile navy de la maquette. Sans photo, le fond reste navy.
-
-### Images de partage (Open Graph)
-
-Une image 1200 × 630 par page dans `public/og/`. À régénérer si un titre change :
-
-```bash
-npm install --no-save playwright && npx playwright install chromium
-node scripts/og-images.mjs
-```
+- **Profils (`sameAs`)** : à ajouter dans `_site-global.json` dès que la fiche Google, LinkedIn, etc. existent.
 
 ## Formulaire de contact
 
-Le formulaire (`src/components/ContactForm.astro`, logique dans `src/scripts/contact.ts`) :
+Mêmes champs partout (nom et téléphone obligatoires, entreprise, métier, besoin) : en bas de l'accueil (`src/components/home/Contact.astro`), sur `/contact/` et en bas de chaque page de service (`src/components/ContactSection.astro`). Logique commune dans `src/scripts/contact.ts` :
 
-- libellés visibles, erreur sous chaque champ reliée par `aria-describedby`, confirmation annoncée (`role="status"`) ;
-- case de consentement RGPD avec lien vers `/confidentialite/` : tant qu'elle n'est pas cochée, le bouton d'envoi est grisé (`aria-disabled`) avec une phrase d'explication dessous, et un appui affiche l'erreur sous la case ;
+- libellés visibles, erreur sous chaque champ reliée par `aria-describedby`, confirmation « Merci {prénom}, c’est noté. » affichée à la place du formulaire, qui reçoit le focus (lue par les lecteurs d’écran) ;
+- pas de case à cocher (la maquette v3 l'a remplacée par la mention « Vos informations ne servent qu'à vous recontacter… ») : une demande de rappel n'a pas besoin de consentement, la mention d'information suffit ;
 - anti-spam invisible : champ piège, 30 s minimum entre deux envois dans le navigateur, 5 envois par IP et par tranche de 10 min côté serveur. Le champ piège est masqué (`hidden`) : placé hors de l'écran, il était rempli par la saisie automatique des navigateurs, et la demande d'un vrai visiteur était alors ignorée comme celle d'un robot ;
 - envoi en JSON vers `/api/contact` ; sans JavaScript, envoi classique vers la même adresse, qui répond par une page simple ;
 - en cas d'échec : message avec le numéro de téléphone et un lien « Envoyer ma demande par e-mail » pré-rempli ; si le serveur refuse un champ, l'erreur s'affiche sous ce champ.
@@ -101,7 +94,7 @@ Protections côté serveur (`api/contact.js`), pour que le formulaire ne serve n
 `api/contact.js` (fonction Vercel) valide les champs, puis envoie avec [Brevo](https://www.brevo.com/fr/), service français d'e-mails transactionnels (interface en français, données en Europe, gratuit jusqu'à 300 e-mails par jour) :
 
 1. la demande à Vivo Partner, avec l'adresse du prospect en `Reply-To` ;
-2. un accusé de réception au prospect, s'il a indiqué son e-mail.
+2. un accusé de réception au prospect, s'il a indiqué son e-mail (les formulaires v3 ne le demandent pas : l'accusé ne part que si un autre formulaire envoie un champ `email`).
 
 | Variable d'environnement (Vercel) | Rôle                                                                                                     |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -112,7 +105,7 @@ Protections côté serveur (`api/contact.js`), pour que le formulaire ne serve n
 Côté Brevo :
 
 1. Authentifier le domaine `vivopartner.com` (Expéditeurs, domaines et IP dédiées > Domaines) et publier chez Squarespace les enregistrements DNS demandés. S'il faut toucher au SPF, fusionner avec celui de Google : il ne doit exister qu'un seul enregistrement SPF. **Fait** : domaine authentifié, avec le sous-domaine de marque `mail.vivopartner.com` (liens et images des e-mails). Enregistrements publiés : TXT `@` (`brevo-code:…`), CNAME `brevo1._domainkey` et `brevo2._domainkey` (DKIM), TXT `_dmarc` (`v=DMARC1; p=none`, rapports envoyés à Brevo), CNAME `mail`, `r.mail` et `img.mail`. Le SPF de Google n'a pas changé.
-2. Créer une clé API (SMTP et API > Clés API) et la coller dans la variable `BREVO_API_KEY` de Vercel, puis redéployer.
+2. Créer une clé API (SMTP et API > Clés API) et la coller dans la variable `BREVO_API_KEY` de Vercel, en cochant **Production** et **Preview** (sans Preview, le formulaire échoue sur les prévisualisations), puis redéployer : une variable ne s'applique qu'aux déploiements suivants.
 3. Désactiver le blocage des adresses IP inconnues (Sécurité > IP autorisées) : les fonctions Vercel n'ont pas d'adresse IP fixe.
 
 Autres possibilités, réglées au build :
@@ -127,7 +120,7 @@ Avec un autre service, ajouter son adresse à `connect-src` et `form-action` de 
 ```bash
 curl -i -X POST https://vivopartner.com/api/contact \
   -H 'Content-Type: application/json' -H 'Accept: application/json' \
-  -d '{"nom":"Test","tel":"06 00 00 00 00","email":"vous@exemple.fr","consentement":"oui"}'
+  -d '{"nom":"Test","tel":"06 00 00 00 00","metier":"Plombier"}'
 ```
 
 ## Mesure d'audience (facultatif)
@@ -146,7 +139,7 @@ La CSP autorise déjà `https://plausible.io` et le petit script d'attente de Pl
 1. Importer le dépôt dans Vercel : le préréglage **Astro** est détecté (build `npm run build`, sortie `dist/`) et le dossier `api/` devient une fonction serverless.
 2. Renseigner les variables d'environnement ci-dessus, puis redéployer.
 3. Ajouter `vivopartner.com` et `www.vivopartner.com` dans Domains, avec redirection de `www` vers le domaine principal. HTTPS est automatique.
-4. `vercel.json` gère la redirection `/visibilite` → `/visibilite-locale/`, les en-têtes de sécurité (voir Sécurité) et le cache long des polices et des fichiers `/_astro/`.
+4. `vercel.json` gère les redirections de `seo/vercel.json.example` (`/visibilite` → `/visibilite-locale/`, `www` → domaine principal, `trailingSlash: true` : `/aplomb` → `/aplomb/`), les en-têtes de sécurité (voir Sécurité) et le cache long des polices et des fichiers `/_astro/`.
 
 Les URL canoniques se terminent par `/` (`trailingSlash: 'always'`).
 
@@ -177,72 +170,60 @@ En-têtes envoyés avec chaque page (`vercel.json`) :
 
 Audit du 1er octobre 2026 : `npm audit` sans vulnérabilité ; aucun secret dans tout l'historique git (le dépôt est public) ; fonction de contact testée sur 53 cas, dont des tentatives d'abus (autre site, JSON mal formé, retours à la ligne injectés, adresses multiples, liens dans le nom, envois répétés).
 
-## Écarts volontaires avec la maquette
+## Écarts avec la maquette
 
-Le rendu reprend la maquette à l'identique (comparaison des captures à 1440 px et 390 px, textes comparés mot à mot), sauf :
+Le rendu reprend la maquette au pixel près (captures comparées à 1 440 px et 390 px sur les 9 pages avant les ajustements validés ci-dessous : mêmes hauteurs, différences limitées aux animations en boucle et au lissage des logos). Écarts :
 
-- **Accueil** : sous-titre visible « Carcassonne, Aude et partout en France » sous le H1, avec un repère orange (consignes SEO local, validé). Le H1 ne change pas.
-- **Pages de service** : bloc de réponse de 40 à 60 mots sous le H1 et mention « Mis à jour le … » (consignes SEO IA) ; « Mis à jour le … » aussi sur la FAQ.
-- **Titres `<title>`** d'Aplomb et de la réceptionniste IA : ajout du métier et de la zone (« … pour le BTP à Carcassonne »).
-- **Mobile** : bouton « Appeler » (`tel:`) dans la barre collante, à côté de « Audit gratuit ». Sous 375 px de large, le bouton « Audit gratuit » de l'en-tête est masqué (il reste dans la barre du bas) pour que le logo et le menu tiennent sur une ligne.
-- **Écrans tactiles** : champs du formulaire en 16 px au lieu de 15, sinon Safari zoome sur l'iPhone dès qu'on touche un champ.
-- **Démos** : bouton pause visible ; la lecture automatique s'arrête au survol, au focus et au premier clic, et ne démarre pas si le visiteur a demandé à réduire les animations.
-- **Formulaire** : case de consentement, message d'erreur sous chaque champ, champ piège invisible.
-- **Qonto** (bandeau des intégrations) : pastille « Q » à la place du favicon que la maquette chargeait depuis un service Google. Déposer le logo officiel dans `public/integrations/` si besoin.
-- **Orange sur fond clair** : les petits textes orange posés sur fond blanc (numéros des cartes, astérisques et liens du formulaire, contours outline) passent en orange foncé `#B45309` (jeton `--vp-orange-ink`, contraste 5 : 1). Même chose pour la case à cocher et le contour de focus clavier sur les surfaces claires (`.vp-light`). Sur fond marine, l'orange de la charte `#F58220` ne change pas.
-- Invisibles : vrais liens `<a href>` et boutons `<button>` à la place des `role="button"`, lien d'évitement « Aller au contenu », polices auto-hébergées, page 404.
+- **Pages séparées** : une URL par page, avec ses balises et son JSON-LD, au lieu d'une seule page qui change de contenu.
+- **FAQ de l'accueil** : en `<details>` pour que les 6 réponses soient dans le HTML (la maquette n'affichait que la réponse ouverte). Même rendu, une seule question ouverte à la fois.
+- **Formulaires** : envoi réel (Brevo), message d'erreur sous chaque champ obligatoire (mêmes textes que la maquette), champ piège invisible contre les robots.
+- **Mobile** : plus de défilement horizontal (la maquette débordait de quelques pixels sur l'accueil et la page Visibilité à 390 px).
+- **Numéro de téléphone** : espaces insécables dans les liens `tel:`, le numéro ne se coupe plus sur deux lignes.
+- **Accessibilité** (invisible) : vrais liens et boutons, menus annoncés (`aria-expanded`), menu fermé par Échap, lien d'évitement « Aller au contenu », bandeaux d'outils d'Aplomb atteignables au clavier quand les animations sont réduites.
+- **Polices** : auto-hébergées, celles de la charte partout (titres Satoshi, texte Inter, étiquettes JetBrains Mono). Les maquettes des pages secondaires utilisaient Plus Jakarta Sans, hors charte (signalé par l'audit) : remplacée, validé le 28/10/2026.
+- **Orange foncé** des petits textes sur fond clair : `#B45309` au lieu de `#B85A00` (contraste 5 : 1 au lieu de 4,3 : 1), validé le 28/10/2026.
+- **Textes corrigés** (propositions de l'audit, validées le 28/10/2026) : H1 de l'accueil (« … venaient à vous, pendant que vos demandes et votre administratif se gèrent tout seuls ? »), « Des projets en cours », « Google Business Profile » au lieu de « Google My Business ».
 
-La FAQ s'ouvre sur la première question, comme la maquette (son état `faqOpen: 1` compte à partir de 1, alors que le README du handoff parle de la 2e).
+Non repris volontairement : les variantes du hero que la maquette n'affiche pas (démo, photo, post-its), et les éléments d'édition de la maquette (`support.js`, `image-slot.js`).
+
+## Ajouts à la maquette (validés le 28/10/2026)
+
+- **Accueil, services** : chaque carte entière est cliquable vers sa page ; au survol de la carte « Être trouvé », les 3 sites s'ouvrent en éventail (ouvert d'office sur écran tactile).
+- **Page Visibilité** : la photo du haut est remplacée par un visuel codé (recherche locale où l'entreprise sort en premier), comme les visuels d'Aplomb et de la réceptionniste (`src/components/pages/VisibiliteVisuel.astro`).
+- **Démo de la réceptionniste** : simulation de la maquette (questions écrites à l'avance, réponses du visiteur reprises dans le résumé), suivie d'un appel à l'action « Tester ma réceptionniste » vers le formulaire en bas de la page (sous la démo et dans le résumé final).
+- **« Voir l'appel »** : ouvre le récapitulatif complet (fiche, besoin entier, action à faire, conversation complète).
+- **Confidentialité** : Brevo (envoi des e-mails) ajouté aux destinataires.
+- **Formulaire dédié sur chaque page de service** : en bas d'Aplomb, de Réceptionniste IA et de Visibilité (à la place du bandeau d'appel à l'action de fin de page), le formulaire reprend des points propres au service ; le service est fixé (pas de liste à choisir) et repris dans l'objet de l'e-mail reçu ; l'événement `form_submit` porte le service. Sur ces pages, tous les boutons d'action (dont « Audit gratuit » de l'en-tête et de la barre mobile) descendent jusqu'à ce formulaire (`#contact`) ; sur les autres pages, ils mènent à `/contact/`, dont le formulaire, comme celui de l'accueil, propose les 3 services à cocher (plusieurs possibles, `src/components/ServiceChoices.astro`). Textes dans `src/data/services.ts`.
+- **Éventail des sites** (carte « Être trouvé ») : les sites pivotent comme des cartes en main au survol ; sur écran tactile, l'éventail s'ouvre quand la carte arrive à l'écran.
 
 ## Animations
 
-Une couche de mouvement s'ajoute aux animations de la maquette. Au repos, chaque page est identique au pixel près à la version sans ces ajouts. Principes :
+En plus de celles de la maquette (entrée du premier écran, démos en boucle, survols), une couche discrète (`src/scripts/motion.ts` et fin de `src/styles/base.css`) :
 
-- **Un seul vocabulaire** : montée de 12 à 14 px avec la courbe de la maquette (`--vp-ease`), jamais de rebond, une seule fois par élément. Durées dans `src/styles/global.css` (`--vp-t-fast`, `--vp-t-state`, `--vp-t-enter`).
-- **Un geste par écran** : l'en-tête d'une section, puis son contenu, avec un léger décalage entre éléments voisins.
-- **Sens** : chaque animation raconte quelque chose (une étape qui suit l'autre, une case cochée, un chiffre qui se construit).
-- **Accessibilité** : avec « réduire les animations », tout s'affiche directement ; la lecture automatique des démos est désactivée.
+- **Apparition au défilement** : chaque bloc de section arrive en fondu avec une montée de 14 px, les cartes en cascade (90 ms d'écart). Le premier écran n'est jamais masqué (pas d'effet sur le chargement) ; seules l'opacité et la position changent (CLS 0).
+- **Chiffres des simulateurs** : ils se construisent de 0 à leur valeur à leur apparition, et rebondissent légèrement quand on bouge un curseur.
+- **Barre de lecture** orange sous l'en-tête, qui suit le défilement (navigateurs compatibles, sans JavaScript).
+- **FAQ** : la réponse se déplie en douceur (navigateurs compatibles).
+- **Changement de page** : fondu de 0,25 s, l'en-tête et la barre mobile restent en place (navigateurs compatibles).
+- **Écrans tactiles** : les boutons s'enfoncent légèrement à l'appui.
 
-Ce qui bouge :
-
-- **Ouverture de chaque page** : les éléments du premier écran arrivent l'un après l'autre (classe `vp-intro`).
-- **Accueil** : la carte « Diagnostic digital » se pose et se cale, son ruban se déroule, les 3 priorités s'écrivent, puis la pastille « 30 min » est tamponnée.
-- **Au défilement** (`data-vp-reveal`) : les sections apparaissent. Les cartes « papier » (`vp-paper`) se posent un peu plus inclinées puis se calent. Les critères « C'est pour vous si… » se cochent un à un. Le filet de la méthode se trace sous les 4 étapes. Les étapes du flux IA s'enchaînent.
-- **Chiffres clés** (≈5 h, +30 %, +50 %) : décompte à l'apparition (`data-vp-count`) ; la valeur finale reste écrite dans le HTML.
-- **Démos** : elles démarrent quand elles sont à l'écran. Sur l'accueil, l'onglet actif se remplit d'un filet orange pendant la lecture automatique ; le filet se fige au survol ou au focus.
-- **Interactions** :
-  - flèches « → » qui avancent au survol ;
-  - filet sous les liens du menu ;
-  - burger qui devient une croix ;
-  - boutons qui s'enfoncent à la pression ;
-  - réponses de la FAQ qui se déplient en douceur, avec l'icône + qui devient − ;
-  - messages d'erreur du formulaire qui apparaissent en fondu.
-- **Navigation** : fondu entre les pages, avec l'en-tête et la barre mobile qui restent en place (navigateurs compatibles). Filet de lecture orange sous l'en-tête, qui suit le défilement.
+Avec « réduire les animations » (réglage du système), tout s'affiche directement, sans mouvement. Sur les navigateurs qui ne gèrent pas un effet, la page s'affiche simplement sans lui.
 
 ## Vérifications
 
-Audit complet du 1er octobre 2026, sur une copie locale qui reproduit Vercel (mêmes en-têtes, compression brotli, vraie fonction de contact avec Brevo simulé) :
+Faites le 28 octobre 2026 sur la version construite :
 
-- **Lighthouse** (performance / accessibilité / bonnes pratiques / SEO) : ordinateur 100 / 100 / 100 / 100 sur les 9 pages (LCP 0,4 à 0,5 s) ; mobile 98–99 / 100 / 100 / 100 (LCP 1,9 à 2,3 s). CLS 0 et temps de blocage 0 ms partout.
-- **Accessibilité** (axe-core, WCAG 2.2 AA et bonnes pratiques) : 0 violation sur les 10 pages, en mobile et sur ordinateur.
-- **Écrans** : 10 pages × 13 largeurs, de 280 à 2560 px : aucun défilement horizontal, aucun élément hors de l'écran, aucune erreur JavaScript, aucune violation de la CSP, aucune ressource en échec.
-- **Fonctions** : 43 tests de bout en bout (menu mobile et touche Échap, sous-menu Services, clavier et lien d'évitement, démos avec onglets, flèches, pause et lecture automatique, compteurs, apparitions, FAQ, formulaire avec erreurs, envoi, anti-doublon, panne d'envoi et envoi sans JavaScript, animations réduites, redirection, 404).
-- **Fonction de contact** : 53 cas, dont des tentatives d'abus (voir Sécurité).
-- **Code** : HTML sans erreur (html-validate, règles recommandées), `astro check` 0 erreur, aucun lien interne cassé, sitemap complet, JSON-LD valide, `npm audit` sans vulnérabilité.
-- **Navigateurs** : tests faits avec Chromium (moteur de Chrome, Edge, Samsung Internet). Safari et Firefox n'ont pas pu être lancés ; chaque effet récent (barre de progression au défilement, FAQ qui se déplie, transitions entre pages) a un repli prévu (`@supports`).
-- **Animations** : rendu au repos identique à la version sans animations (captures comparées sur les 9 pages, à 1440 et 390 px) ; CLS 0 à 0,0003 ; Lighthouse mobile de l'accueil inchangé (98, blocage 0 à 10 ms).
+- **Fidélité** : comparaison pixel à pixel avec la maquette sur les 9 pages, à 1 440 et 390 px (voir ci-dessus).
+- **SEO** : sur les 9 pages, titre, description, canonical et og:image identiques à `seo/pages.json` ; les 2 blocs JSON-LD identiques aux fichiers du handoff ; un seul `<h1>`, pas de saut de niveau ; aucun lien interne cassé ; FAQ de `/faq/` = FAQPage (13 questions).
+- **Code** : HTML sans erreur (html-validate, règles recommandées), `astro check` 0 erreur, CSP conforme.
+- **Fonctions** : 37 tests de bout en bout (menu Services et menu mobile, Échap, page en cours, défilement vers les leviers, FAQ, 3 simulateurs, carrousel et démo d'appel complète, formulaires : erreurs, envoi, confirmation, panne d'envoi, sans JavaScript) ; fonction de contact testée avec Brevo simulé.
+- **Lighthouse mobile** (serveur local sans compression) : performance 94 à 97, bonnes pratiques 100, SEO 100. CLS 0, temps de blocage 0 ms.
+- **Accessibilité** (axe-core) : seuls restent quelques mots en orange vif sur fond clair dans les grands titres, les petits textes verts de l'aperçu Aplomb et les points de 10 px du carrousel de la réceptionniste (dessin de la maquette).
 
-## À faire avant la mise en ligne
+## À faire
 
-- [x] **Domaine** : `vivopartner.com` est branché sur Vercel. Reste à mettre à jour les valeurs DNS recommandées par Vercel (voir Domains dans Vercel).
-- [x] **Formulaire** : Brevo configuré (domaine authentifié, clé `BREVO_API_KEY` dans Vercel), testé de bout en bout sur vivopartner.com : demande reçue sur benjamin@vivopartner.com et accusé de réception envoyé au prospect.
-- [x] **Mentions légales** : hébergeur complété (Vercel Inc., adresse et téléphone, obligatoires au titre de la LCEN). L'adresse est celle de la politique de confidentialité de Vercel ; le téléphone est celui publié habituellement pour Vercel, à recouper si Vercel en publie un autre. Brevo est déjà cité parmi les prestataires de la page Confidentialité.
-- [x] **Pays servis** dans le JSON-LD : Belgique, Suisse, Luxembourg, Canada, validés (`SITE.countries`).
-- [x] **Textes ajoutés** (blocs de réponse des pages de service, titres d'Aplomb et de la réceptionniste IA) : validés.
-- [x] **Photo du hero** : pas pour le lancement, l'accueil garde son fond marine. Pour en ajouter une plus tard : déposer le fichier dans `src/assets/hero/`.
-- [x] **Contraste** : orange foncé `#B45309` pour les petits éléments sur fond clair (accessibilité 100).
-- [x] **Google Search Console** et **Bing Webmaster Tools** : domaine vérifié dans Search Console (propriété « Domaine », enregistrement TXT `google-site-verification` chez Squarespace), sitemap `https://vivopartner.com/sitemap.xml` envoyé ; site importé dans Bing depuis Search Console.
-- [x] **Données structurées** : JSON-LD valide sur les 9 pages (contrôle sur `dist/`). Seul le fil d'Ariane peut donner un résultat enrichi : Google réserve les FAQ enrichies aux sites officiels (santé, administration). Contrôle officiel facultatif avec le [test des résultats enrichis](https://search.google.com/test/rich-results).
-- [ ] **Fiche Google Business Profile** : créée (prestataire de services, adresse masquée, catégorie « Consultant en marketing », zones Carcassonne et Aude, services et description repris du site). Reste la validation par vidéo, puis Bing Places (import depuis Google), Apple Business Connect, annuaires ; ajouter le lien de chaque profil dans `SITE.sameAs`.
+- [ ] **Pays servis** : le JSON-LD cite Belgique, Suisse, Luxembourg, Canada ; le pied de page dit « pays francophones » ; la FAQ dit « partout en France ». Choisir une version.
+- [ ] **Blocs de réponse** sous le H1 des 3 pages de service et **liens entre pages de service** : proposés par l'audit, non ajoutés (nouveaux textes).
+- [ ] **« Mis à jour le … »** visible sur les pages de service et la FAQ (consigne SEO IA) : absent de la maquette v3, non ajouté ; `dateModified` est dans le JSON-LD.
+- [ ] **Fiche Google Business Profile** : validation par vidéo, puis Bing Places, Apple Business Connect, annuaires ; ajouter chaque profil dans `sameAs`.
 - [ ] **Avis clients** : les afficher dès qu'il y en a 5 ou plus ; pas d'`aggregateRating` avant.
-- [x] **Sous-titre de l'accueil** « Carcassonne, Aude et partout en France » sous le H1 : validé et ajouté (Lighthouse mobile inchangé : 98 / 100 / 100 / 100, CLS 0).

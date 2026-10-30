@@ -1,0 +1,205 @@
+---
+/**
+ * Bloc « Laissez-moi vos coordonnées » + formulaire (maquette PageContact).
+ * Sans `service` : formulaire général de /contact/, avec les services à cocher (plusieurs possibles).
+ * Avec `service` : formulaire dédié en bas de la page du service (textes de src/data/services.ts),
+ * service fixé et transmis dans l'e-mail.
+ * Les boutons de la page du service y mènent (#contact). Comportement : src/scripts/contact.ts.
+ */
+import { formAttrs } from '../data/form';
+import { SERVICES, type ServiceKey } from '../data/services';
+import ServiceChoices from './ServiceChoices.astro';
+
+interface Props {
+  service?: ServiceKey;
+  /** La section précédente a le même fond et finit déjà par une marge : pas de marge en haut. */
+  joined?: boolean;
+}
+const svc = Astro.props.service ? SERVICES[Astro.props.service] : undefined;
+const padTop = Astro.props.joined ? '0' : '104px';
+const check =
+  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>';
+const points = svc
+  ? svc.points
+  : ['30 min en visio, gratuit', 'On regarde vos vrais chiffres ensemble', 'Vous repartez avec des pistes concrètes'];
+---
+
+<section
+  id="contact"
+  class="vp-cf"
+  style={`font-family: Inter, system-ui, sans-serif; box-sizing: border-box; padding: ${padTop} clamp(20px, 4vw, 48px) 104px; scroll-margin-top: 72px; color: #06255A; background: #F3F6FC`}
+>
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 56px 72px; align-items: flex-start">
+    <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309; border: 1px solid #B45309; border-radius: 999px; padding: 8px 16px">
+        {svc ? svc.eyebrow : 'Écrivez-moi ou appelez-moi'}
+      </span>
+      <h2 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: clamp(32px, 4.6vw, 52px); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em">
+        Laissez-moi vos{' '}
+        <span style="background: linear-gradient(transparent 62%, #F58220 62%, #F58220 92%, transparent 92%)">
+          coordonnées.
+        </span>
+      </h2>
+      <p style="margin: 0; font-size: 19px; line-height: 1.65; color: #3E4F73; max-width: 520px">
+        Je vous rappelle sous 24h pour fixer un créneau de 30 minutes en visio.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 14px; font-size: 17px; font-weight: 600">
+        {points.map((p) => (
+          <span style="display: inline-flex; align-items: center; gap: 10px">
+            <Fragment set:html={check} />
+            {p}
+          </span>
+        ))}
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid #DCE3F0; width: 100%; max-width: 520px">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6B8F; padding-top: 12px">
+          Vous préférez m'appeler ?
+        </span>
+        <a
+          class="ct"
+          href="tel:+33640202246"
+          style="display: inline-flex; align-items: center; min-height: 44px; font-size: 24px"
+        >
+          06 40 20 22 46
+        </a>
+        <a
+          class="ct"
+          href="mailto:benjamin@vivopartner.com"
+          style="display: inline-flex; align-items: center; min-height: 44px; font-size: 18px"
+        >
+          benjamin@vivopartner.com
+        </a>
+        <span style="font-size: 15px; color: #5B6B8F; padding-top: 4px">
+          Basé à Carcassonne (Aude), je travaille en visio avec toute la France.
+        </span>
+      </div>
+    </div>
+    <form
+      {...formAttrs}
+      style="flex: 1 1 440px; min-width: 0; box-sizing: border-box; padding: clamp(24px, 3vw, 40px); border-radius: 28px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 24px 48px rgba(6,37,90,0.1); display: flex; flex-direction: column; gap: 22px"
+    >
+      <div
+        style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start; padding: 24px 0; animation: vpRise .5s cubic-bezier(.16,1,.3,1) both"
+        data-bind="if:formSent"
+        data-form-success
+        tabindex="-1"
+        hidden
+      >
+        <div style="width: 52px; height: 52px; border-radius: 16px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12.5l4.5 4.5L19 7.5" />
+          </svg>
+        </div>
+        <h3 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: 26px; line-height: 1.2; font-weight: 800">
+          Merci <span data-bind="text:formName"></span>, c'est noté.
+        </h3>
+        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #3E4F73">
+          Je vous rappelle sous 24h pour fixer le créneau.
+        </p>
+      </div>
+      <h3
+        style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: 26px; line-height: 1.2; font-weight: 800"
+        data-bind="if:formOpen"
+      >
+        Je vous rappelle sous 24h
+      </h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 22px" data-bind="if:formOpen">
+        <div class="fl">
+          <label for="nom">Prénom et nom</label>
+          <input
+            id="nom"
+            name="nom"
+            type="text"
+            autocomplete="name"
+            placeholder="Jean Dupont"
+            required
+            aria-describedby="err-nom"
+          />
+          <p id="err-nom" data-field-error hidden style="margin: 0; font-size: 15px; font-weight: 600; color: #C0392B">
+            Indiquez votre nom.
+          </p>
+        </div>
+        <div class="fl">
+          <label for="tel">Téléphone</label>
+          <input
+            id="tel"
+            name="tel"
+            type="tel"
+            autocomplete="tel"
+            placeholder="06 00 00 00 00"
+            required
+            aria-describedby="err-tel"
+          />
+          <p id="err-tel" data-field-error hidden style="margin: 0; font-size: 15px; font-weight: 600; color: #C0392B">
+            Indiquez un numéro de téléphone valide pour être rappelé.
+          </p>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 22px" data-bind="if:formOpen">
+        <div class="fl">
+          <label for="ent">Entreprise</label>
+          <input
+            id="ent"
+            name="entreprise"
+            type="text"
+            autocomplete="organization"
+            placeholder="Nom de votre entreprise"
+          />
+        </div>
+        <div class="fl">
+          <label for="metier">Votre métier</label>
+          <input id="metier" name="metier" type="text" placeholder="Plombier, maçon, électricien…" />
+        </div>
+      </div>
+      {svc ? <input type="hidden" name="service" value={svc.label} /> : <ServiceChoices />}
+      <div class="fl" data-bind="if:formOpen">
+        <label for="msg">
+          Votre besoin <span style="font-weight: 500; color: #5B6B8F">(facultatif)</span>
+        </label>
+        <textarea
+          id="msg"
+          name="message"
+          placeholder={
+            svc ? svc.placeholder : 'Ex. : je rate des appels sur les chantiers, je perds du temps sur mes devis…'
+          }
+        ></textarea>
+      </div>
+      <p
+        role="alert"
+        data-form-error
+        data-bind="if:formOpen"
+        hidden
+        style="margin: 0; font-size: 15px; font-weight: 600; color: #C0392B"
+      ></p>
+      <div hidden>
+        <label for="site-web">Ne pas remplir</label>
+        <input id="site-web" name="site_web" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <button
+        class="btn"
+        type="submit"
+        data-cta="1"
+        data-bind="if:formOpen"
+        style="box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 14px 40px; border-radius: 999px; background: #F58220; font-size: 20px; font-weight: 700"
+      >
+        <span>Envoyer ma demande</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase">
+          Réponse sous 24h
+        </span>
+      </button>
+      <p style="margin: 0; font-size: 13px; line-height: 1.55; color: #5B6B8F" data-bind="if:formOpen">
+        Vos informations ne servent qu'à vous recontacter. Elles ne sont ni revendues ni partagées.
+      </p>
+    </form>
+  </div>
+</section>

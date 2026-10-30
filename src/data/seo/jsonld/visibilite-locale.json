@@ -1,0 +1,75 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://vivopartner.com/visibilite-locale/#webpage",
+      "url": "https://vivopartner.com/visibilite-locale/",
+      "name": "Site internet et SEO local BTP à Carcassonne | Vivo Partner",
+      "description": "Site internet, fiche Google et référencement local pour que les clients de votre zone vous appellent. Pour le BTP, de Carcassonne à toute la France.",
+      "inLanguage": "fr-FR",
+      "isPartOf": {
+        "@id": "https://vivopartner.com/#site"
+      },
+      "about": {
+        "@id": "https://vivopartner.com/#org"
+      },
+      "dateModified": "2026-10-28",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "breadcrumb": {
+        "@id": "https://vivopartner.com/visibilite-locale/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://vivopartner.com/visibilite-locale/#service"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://vivopartner.com/visibilite-locale/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://vivopartner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Visibilité locale",
+          "item": "https://vivopartner.com/visibilite-locale/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://vivopartner.com/visibilite-locale/#service",
+      "name": "Visibilité locale pour le BTP",
+      "serviceType": "Site internet et référencement local",
+      "description": "Un site clair, une fiche Google soignée et du référencement local, pour que les clients de votre zone vous appellent.",
+      "url": "https://vivopartner.com/visibilite-locale/",
+      "provider": {
+        "@id": "https://vivopartner.com/#org"
+      },
+      "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "Entreprises du BTP"
+      },
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "France"
+        },
+        {
+          "@type": "City",
+          "name": "Carcassonne"
+        }
+      ]
+    }
+  ]
+}

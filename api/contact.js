@@ -1,5 +1,5 @@
 /**
- * Fonction serverless Vercel : réception des demandes d'audit du formulaire /contact/.
+ * Fonction serverless Vercel : réception des demandes d'audit (formulaires de l'accueil et de /contact/).
  *
  * - refuse les envois faits depuis un autre site (en-tête Origin) ;
  * - valide les champs (mêmes règles que le formulaire) ;
@@ -32,6 +32,8 @@ const acks = new Map();
 
 // Même règle que src/scripts/contact.ts : une seule « @ », pas d'espace ni de caractère de liste d'adresses.
 export const EMAIL_RE = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:".]{2,}$/;
+// Services demandés : fixé sur une page de service, cases à cocher sur /contact/ (liste fermée : rien d'autre n'est repris).
+const SERVICES = ['Aplomb', 'Réceptionniste IA', 'Visibilité'];
 const LINK_RE = /https?:\/\/|www\.|[<>]/i;
 
 // Texte libre (message) : retours à la ligne conservés, autres caractères de contrôle retirés.
@@ -47,6 +49,12 @@ const line = (v, max) =>
     .slice(0, max)
     .trim();
 
+// Reçus en liste (« Aplomb, Visibilité ») ou, sans JavaScript, en tableau (une valeur par case cochée).
+const services = (v) =>
+  [...new Set((Array.isArray(v) ? v : String(v ?? '').split(',')).map((x) => line(x, 40)))]
+    .filter((x) => SERVICES.includes(x))
+    .join(', ');
+
 const escapeHtml = (s) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -54,11 +62,12 @@ export function validate(body) {
   const data = {
     nom: line(body.nom, 120),
     entreprise: line(body.entreprise, 160),
+    metier: line(body.metier, 160),
+    service: services(body.service),
     secteur: line(body.secteur, 160),
     tel: line(body.tel, 40),
     email: line(body.email, 254),
     message: clean(body.message, 5000),
-    consentement: line(body.consentement, 10),
     site_web: line(body.site_web, 200),
   };
   const errors = {};
@@ -66,7 +75,6 @@ export function validate(body) {
   if (data.tel.replace(/[^0-9+]/g, '').length < 9)
     errors.tel = 'Indiquez un numéro de téléphone valide pour être rappelé.';
   if (data.email && !EMAIL_RE.test(data.email)) errors.email = 'L’adresse e-mail semble incomplète.';
-  if (!data.consentement) errors.consentement = 'Cochez la case pour que votre demande puisse être traitée.';
   return { data, errors };
 }
 
@@ -155,7 +163,8 @@ function readBody(req) {
     try {
       body = JSON.parse(body);
     } catch {
-      return Object.fromEntries(new URLSearchParams(body));
+      const params = new URLSearchParams(body);
+      return { ...Object.fromEntries(params), service: params.getAll('service') };
     }
   }
   return body && typeof body === 'object' && !Array.isArray(body) ? body : {};
@@ -205,9 +214,10 @@ export default async function handler(req, res) {
   }
 
   const rows = [
+    ...(data.service ? [['Service', data.service]] : []),
     ['Nom', data.nom],
     ['Entreprise', data.entreprise || '—'],
-    ['Secteur', data.secteur || '—'],
+    ['Métier', data.metier || data.secteur || '—'],
     ['Téléphone', data.tel],
     ['E-mail', data.email || '—'],
   ];
@@ -215,7 +225,7 @@ export default async function handler(req, res) {
   const html = `<table cellpadding="6">${rows
     .map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${escapeHtml(v)}</td></tr>`)
     .join('')}</table><p style="white-space:pre-line">${escapeHtml(data.message || '(pas de message)')}</p>`;
-  const subject = `Demande d’audit — ${data.nom}${data.entreprise ? ` (${data.entreprise})` : ''}`;
+  const subject = `Demande d’audit${data.service ? ` (${data.service})` : ''} — ${data.nom}${data.entreprise ? ` (${data.entreprise})` : ''}`;
 
   try {
     await sendMail(apiKey, { from, to, subject, text, html, ...(data.email ? { replyTo: data.email } : {}) });

@@ -1,0 +1,156 @@
+/*
+ * Styles globaux de la maquette v3 (balise <style> du fichier principal), repris tels quels,
+ * plus le strict nécessaire pour la production : vrais <a>/<button>, menus.
+ * Les valeurs de mise en forme restent dans les styles en ligne des composants (source de vérité).
+ */
+
+/* ---------- Maquette : <style> du fichier principal ---------- */
+body{margin:0;background:#0F172A}
+a{color:#F58220;text-decoration:none}
+a:hover{color:#F8FAFC}
+button{font-family:inherit}
+:focus-visible{outline:2px solid #F58220;outline-offset:3px}
+@container (max-width:760px){[data-vp-mascot]{position:relative!important;right:auto!important;bottom:auto!important;height:auto!important;width:min(78%,340px)!important;margin:12px auto calc(-1 * clamp(18px,2.2cqi,30px))!important}[data-vp-mascot] img{height:auto!important;width:100%!important}[data-vp-herotext]{max-width:none!important}}
+@container (max-width:900px){[data-vp-link],[data-vp-hd]{display:none!important}}
+@keyframes vpRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes vpMarq{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 7px))}}
+@keyframes vpFade{from{opacity:0}to{opacity:1}}
+@keyframes vpFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes vpRule{from{width:0;opacity:0}to{width:26px;opacity:1}}
+@keyframes vpBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes vpCard{from{opacity:0;transform:translateY(34px) rotate(-5deg)}to{opacity:1;transform:translateY(0) rotate(-1.6deg)}}
+@keyframes vpFloat{from{transform:translateY(0) rotate(-1.6deg)}to{transform:translateY(-12px) rotate(-.9deg)}}
+@keyframes vpPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(245,130,32,.45)}50%{opacity:.5;box-shadow:0 0 0 7px rgba(245,130,32,0)}}
+@keyframes vpWave{from{transform:scaleY(.22)}to{transform:scaleY(1)}}
+@keyframes vpLift{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+@keyframes vpTrace{from{background-position:-45% 0}to{background-position:145% 0}}
+[data-s]{transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+[data-s="1"]{transform:rotate(-3deg);z-index:1}[data-s="2"]{transform:none;z-index:3}[data-s="3"]{transform:rotate(3deg);z-index:2}
+[data-fan]:hover [data-s="1"]{transform:rotate(-11deg)}[data-fan]:hover [data-s="2"]{transform:translateY(-10px)}[data-fan]:hover [data-s="3"]{transform:rotate(11deg)}
+[data-hh]{display:none}
+@media (hover:hover){[data-hh]{display:inline}}
+@media (hover:none){[data-s="1"]{transform:rotate(-11deg)}[data-s="2"]{transform:translateY(-10px)}[data-s="3"]{transform:rotate(11deg)}}
+@keyframes vpM1{0%,3%{max-height:0;opacity:0}5%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM2{0%,13%{max-height:0;opacity:0}15%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM3{0%,23%{max-height:0;opacity:0}25%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM4{0%,33%{max-height:0;opacity:0}35%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM5{0%,43%{max-height:0;opacity:0}45%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM6{0%,52%{max-height:0;opacity:0}54%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM7{0%,61%{max-height:0;opacity:0}63%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM8{0%,70%{max-height:0;opacity:0}72%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpM9{0%,78%{max-height:0;opacity:0}80%,94%{max-height:80px;opacity:1}100%{max-height:0;opacity:0}}
+@keyframes vpMs{0%,86%{opacity:0;transform:translateY(8px)}89%,94%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes vpToast{0%,18%{opacity:0;transform:translateY(10px)}24%,78%{opacity:1;transform:none}86%,100%{opacity:0;transform:translateY(10px)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important}}
+
+/* ---------- Production ---------- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+[hidden]{display:none !important}
+/* Racine de la maquette : conteneur des requêtes @container (largeur utile, comme l'aperçu de la maquette). */
+.vp-root{container-type:inline-size;background:#0F172A;font-family:Inter,system-ui,sans-serif;color:#F8FAFC;-webkit-font-smoothing:antialiased;overflow-x:clip}
+
+/* Les role="button" de la maquette deviennent de vrais <button> ou <a> : on retire l'apparence par défaut. */
+button.rb{appearance:none;-webkit-appearance:none;background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:inherit;letter-spacing:inherit;text-transform:inherit;line-height:inherit;cursor:pointer}
+/* <button> devenus des liens : on garde le rendu d'un bouton (texte centré, interligne normal). */
+a.rb{text-align:center;line-height:normal}
+
+/* En-tête : version ordinateur ou mobile selon la largeur (moins de 900 px : mobile, comme la maquette). */
+@container (max-width:899.98px){[data-desktop-only]{display:none !important}}
+@container (min-width:900px){[data-mobile-only]{display:none !important}}
+
+/* Lien d'évitement */
+.skip-link{position:absolute;left:12px;top:-60px;z-index:100;background:#F58220;color:#0F172A;padding:10px 16px;border-radius:2px;font-family:Inter,system-ui,sans-serif;font-size:14px;font-weight:600;transition:top .2s ease}
+.skip-link:focus{top:12px;color:#0F172A}
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* FAQ en <details> (accueil) : même rendu que l'accordéon de la maquette. */
+details.hq > summary{list-style:none}
+details.hq > summary::-webkit-details-marker{display:none}
+details.hq[open]{border-color:#F58220 !important}
+details.hq[open] .hq-pl{transform:rotate(45deg) !important}
+
+/* Formulaire de contact (src/components/ContactSection.astro), aussi en bas des pages de service */
+.vp-cf .fl{display:flex;flex-direction:column;gap:8px;flex:1 1 220px;min-width:0}
+/* Champ seul sur sa ligne (formulaire en colonne) : hauteur de son contenu, sans le vide de 220 px de la maquette */
+.vp-cf form > .fl{flex:none}
+.vp-cf .fl label{font-size:15px;font-weight:700;color:#06255A}
+.vp-cf .fl input,.vp-cf .fl textarea{box-sizing:border-box;width:100%;min-height:52px;padding:14px 16px;border:1.5px solid #C9D4EC;border-radius:14px;background:#ffffff;font-family:inherit;font-size:17px;color:#06255A}
+.vp-cf .fl textarea{min-height:104px;resize:vertical}
+.vp-cf .fl input:focus,.vp-cf .fl textarea:focus{outline:3px solid rgba(245,130,32,0.45);border-color:#F58220}
+.vp-cf a.ct{color:#06255A;text-decoration:none;font-weight:700}
+.vp-cf a.ct:hover{color:#B45309}
+.vp-cf a.ct:focus-visible{outline:3px solid #F58220;outline-offset:3px}
+.vp-cf button.btn{color:#06255A;border:0;cursor:pointer;font-family:inherit}
+/* Services à cocher (formulaire général) : pastilles, orange une fois cochées */
+.vp-svc{border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:10px}
+.vp-svc legend{padding:0;margin-bottom:10px;font-size:15px;font-weight:700;color:#06255A}
+.vp-svc > div{display:flex;flex-wrap:wrap;gap:10px}
+.vp-svc label{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 18px 0 14px;border:1.5px solid #C9D4EC;border-radius:999px;background:#ffffff;font-size:16px;font-weight:600;color:#06255A;cursor:pointer;transition:border-color .2s ease,background .2s ease}
+.vp-svc input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;margin:0;border:1.5px solid #9AA9C7;border-radius:6px;background:#ffffff center/14px no-repeat;cursor:pointer;transition:background-color .2s ease,border-color .2s ease}
+.vp-svc input:checked{border-color:#F58220;background-color:#F58220;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306255A' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+.vp-svc label:has(input:checked){border-color:#F58220;background:#FFF4E8}
+@media (hover:hover){.vp-svc label:hover{border-color:#F58220}}
+.vp-svc input:focus-visible{outline:3px solid rgba(245,130,32,0.45);outline-offset:2px}
+.vp-cf button.btn:hover{background:#FF9A3D}
+/* Les boutons d'une page de service descendent en douceur jusqu'à son formulaire (#contact) */
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+/* Formulaire : erreur sous le champ */
+[data-field-error]{animation:vpFade .3s ease both}
+
+/* ---------- Animations ajoutées (src/scripts/motion.ts) : discrètes, désactivées si mouvement réduit ---------- */
+/* Apparition au défilement : seules opacity et translate changent (aucun décalage de mise en page). */
+.vp-rv{opacity:0;translate:0 14px;transition:opacity .8s cubic-bezier(.16,1,.3,1) var(--vp-d,0ms),translate .8s cubic-bezier(.16,1,.3,1) var(--vp-d,0ms) !important}
+.vp-rv.vp-in{opacity:1;translate:none}
+/* Résultat de simulateur qui change */
+@keyframes vpTick{from{opacity:.45;translate:0 3px}to{opacity:1;translate:none}}
+.vp-tick{animation:vpTick .35s cubic-bezier(.16,1,.3,1)}
+/* Barre de progression de lecture sous l'en-tête (navigateurs compatibles, sans JavaScript) */
+[data-progress]{display:none}
+@supports (animation-timeline: scroll()){
+  @keyframes vpProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  [data-progress]{display:block;position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#F58220;transform-origin:left;transform:scaleX(0);animation:vpProgress linear both;animation-timeline:scroll(root)}
+}
+/* FAQ : la réponse se déplie en douceur (navigateurs compatibles) */
+@supports (interpolate-size: allow-keywords){
+  :root{interpolate-size:allow-keywords}
+  details.hq::details-content,details.q::details-content{height:0;overflow:clip;transition:height .35s cubic-bezier(.16,1,.3,1),content-visibility .35s allow-discrete}
+  details.hq[open]::details-content,details.q[open]::details-content{height:auto}
+}
+/* Écrans tactiles : les boutons s'enfoncent légèrement à l'appui */
+@media (hover:none){
+  [data-cta],button,a.btn,a.ab1{transition:scale .12s ease}
+  [data-cta]:active,button:active,a.btn:active,a.ab1:active{scale:.97}
+}
+/* Changement de page : fondu, l'en-tête et la barre mobile restent en place */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+  [data-header]{view-transition-name:vp-header}
+  nav[aria-label="Contact rapide"]{view-transition-name:vp-mbar}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.25s}
+}
+@media (prefers-reduced-motion:reduce){.vp-rv{opacity:1;translate:none}.vp-tick{animation:none}}
+
+/* ---------- Services de l'accueil ---------- */
+/* Carte entière cliquable (lien qui couvre la carte, sous le bouton « Voir plus ») */
+.vp-card-link{position:absolute;inset:0;z-index:5;border-radius:28px}
+.vp-card{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
+@media (hover:hover){.vp-card:hover{transform:translateY(-4px);box-shadow:0 22px 46px rgba(2,8,22,.28) !important}}
+/* Éventail des 3 sites : au survol (ordinateur) ou à l'arrivée à l'écran (tactile, classe is-open posée
+   par src/scripts/motion.ts), les sites pivotent autour d'un point commun, comme des cartes en main. */
+[data-fan] [data-s]{transform-origin:50% 190% !important;transition:transform .7s cubic-bezier(.34,1.45,.64,1),box-shadow .5s ease}
+[data-fan] [data-s="1"]{transform:rotate(-3deg)}
+[data-fan] [data-s="2"]{transform:none}
+[data-fan] [data-s="3"]{transform:rotate(3deg)}
+[data-fan] [data-s="1"],[data-fan] [data-s="3"]{transition-delay:.08s}
+[data-fan]:is(:hover,:focus-within,.is-open) [data-s="1"]{transform:translateX(-34px) rotate(-17deg) scale(.9)}
+[data-fan]:is(:hover,:focus-within,.is-open) [data-s="2"]{transform:translateY(-30px) scale(1.04);box-shadow:0 22px 40px rgba(0,0,0,.45) !important}
+[data-fan]:is(:hover,:focus-within,.is-open) [data-s="3"]{transform:translateX(34px) rotate(17deg) scale(.9)}
+[data-fan]:is(:hover,:focus-within,.is-open) [data-s="2"]{transition-delay:0s}
+@media (max-width:480px){
+  [data-fan]:is(:hover,:focus-within,.is-open) [data-s="1"]{transform:translateX(-16px) rotate(-14deg) scale(.82)}
+  [data-fan]:is(:hover,:focus-within,.is-open) [data-s="3"]{transform:translateX(16px) rotate(14deg) scale(.82)}
+}
+/* La carte de l'éventail ne se soulève pas (le pointeur resterait au bord et l'effet clignoterait). */
+@media (hover:hover){.vp-card[data-fan]:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){[data-fan] [data-s]{transition:none}}

@@ -1,0 +1,26 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://vivopartner.com/#webpage",
+      "url": "https://vivopartner.com/",
+      "name": "Partenaire digital du BTP à Carcassonne | Vivo Partner",
+      "description": "Vivo Partner accompagne le BTP, de Carcassonne à toute la France : application sur mesure, réceptionniste IA, référencement local. Audit gratuit.",
+      "inLanguage": "fr-FR",
+      "isPartOf": {
+        "@id": "https://vivopartner.com/#site"
+      },
+      "about": {
+        "@id": "https://vivopartner.com/#org"
+      },
+      "dateModified": "2026-10-28",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+        "width": 1200,
+        "height": 630
+      }
+    }
+  ]
+}

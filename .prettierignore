@@ -4,3 +4,10 @@ node_modules
 public
 package-lock.json
 docs
+
+# Balisage converti depuis les maquettes v3 (styles en ligne, espaces significatifs) : ne pas reformater.
+src/components/home
+src/components/pages
+src/components/legal
+src/styles
+src/data/seo

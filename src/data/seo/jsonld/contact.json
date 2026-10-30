@@ -1,0 +1,50 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "@id": "https://vivopartner.com/contact/#webpage",
+      "url": "https://vivopartner.com/contact/",
+      "name": "Audit digital gratuit pour le BTP · Contact | Vivo Partner",
+      "description": "Réservez un audit gratuit de 30 minutes en visio avec Benjamin Vivo, ou appelez le 06 40 20 22 46. Sans engagement, réponse sous 24h.",
+      "inLanguage": "fr-FR",
+      "isPartOf": {
+        "@id": "https://vivopartner.com/#site"
+      },
+      "about": {
+        "@id": "https://vivopartner.com/#org"
+      },
+      "dateModified": "2026-10-28",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "breadcrumb": {
+        "@id": "https://vivopartner.com/contact/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://vivopartner.com/#org"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://vivopartner.com/contact/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://vivopartner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Contact",
+          "item": "https://vivopartner.com/contact/"
+        }
+      ]
+    }
+  ]
+}

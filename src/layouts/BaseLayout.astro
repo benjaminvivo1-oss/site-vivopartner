@@ -1,25 +1,35 @@
 ---
-import '../styles/global.css';
+/**
+ * Mise en page commune : <head> (seo/pages.json + JSON-LD de la page et _site-global.json),
+ * en-tête, contenu, pied de page. Les styles sont écrits dans la page, dans l'ordre de la maquette :
+ * styles du fichier principal, puis ceux de la page secondaire (balise <style> de son <helmet>).
+ */
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SEO, ROUTES, SITE, absoluteUrl, type PageKey } from '../data/site';
-import { graphFor } from '../data/schema';
+import { SEO, JSONLD, JSONLD_GLOBAL, SITE, type PageKey } from '../data/site';
+import fontsCss from '../styles/fonts.css?raw';
+import baseCss from '../styles/base.css?raw';
+import hoverCss from '../styles/hover.css?raw';
 
 interface Props {
-  /** Page du site (métadonnées, canonique, JSON-LD). Absente pour la page 404. */
+  /** Page du site (clé de seo/pages.json). Absente pour la page 404. */
   page?: PageKey;
-  /** Titre et description des pages hors plan du site (404). */
+  /** Titre et description de la page 404. */
   title?: string;
   description?: string;
+  /** Styles propres à la page (balise <style> de la maquette de la page). */
+  pageCss?: string;
+  /** Police à précharger en plus d'Inter. */
+  preloadFont?: string;
 }
 
-const { page, title, description } = Astro.props;
-const seo = page ? SEO[page] : { title: title ?? SITE.name, description: description ?? '' };
-const canonical = page ? absoluteUrl(ROUTES[page]) : undefined;
-const ogImage = absoluteUrl(`/og/${page ?? 'home'}.png`);
-const jsonLd = page ? JSON.stringify(graphFor(page)).replace(/</g, '\\u003c') : undefined;
-const ogTitle = ('ogTitle' in seo && seo.ogTitle) || seo.title;
-const ogDescription = ('ogDescription' in seo && seo.ogDescription) || seo.description;
+const { page, title, description, pageCss = '', preloadFont = '/fonts/Satoshi-Bold.woff2' } = Astro.props;
+const seo = page ? SEO[page] : undefined;
+const pageTitle = seo?.title ?? title ?? SITE.name;
+const pageDescription = seo?.meta_description ?? description ?? '';
+const ogImage = seo?.og_image ?? 'https://vivopartner.com/assets/og-vivo-partner.jpg';
+const ld = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
+const css = (fontsCss + baseCss + hoverCss + pageCss).replace(/\/\*[\s\S]*?\*\//g, '').replace(/\n\s*\n/g, '\n');
 
 // Mesure d'audience sans cookies (Plausible), activée seulement si le domaine est configuré.
 const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
@@ -31,39 +41,45 @@ const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{seo.title}</title>
-    <meta name="description" content={seo.description} />
-    {canonical && <link rel="canonical" href={canonical} />}
-    <meta name="robots" content={page ? 'index,follow' : 'noindex,follow'} />
-    <meta name="author" content={SITE.founder} />
-    <meta name="geo.region" content="FR-11" />
-    <meta name="geo.placename" content={SITE.city} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    {seo && <link rel="canonical" href={seo.url} />}
+    {seo && <meta property="og:url" content={seo.url} />}
+    <meta name="author" content="Benjamin Vivo" />
+    <meta
+      name="robots"
+      content={seo ? 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' : 'noindex,follow'}
+    />
     <meta name="theme-color" content="#0B2F6B" />
-
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="geo.region" content="FR-11" />
+    <meta name="geo.placename" content="Carcassonne" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:title" content={ogTitle} />
-    <meta property="og:description" content={ogDescription} />
-    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:site_name" content="Vivo Partner" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={ogTitle} />
+    <meta property="og:image:alt" content="Vivo Partner, le partenaire digital des entreprises du BTP, Carcassonne" />
     <meta name="twitter:card" content="summary_large_image" />
-
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
-    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="preload" href="/fonts/Inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/Satoshi-Medium.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={preloadFont} as="font" type="font/woff2" crossorigin />
 
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
-    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+    <script type="application/ld+json" set:html={ld(JSONLD_GLOBAL)} />
+    {page && <script type="application/ld+json" set:html={ld(JSONLD[page])} />}
+    <style is:inline set:html={css}></style>
     {plausibleDomain && (
       <>
         <script is:inline defer data-domain={plausibleDomain} src={plausibleSrc} />
@@ -86,7 +102,7 @@ const plausibleSrc = import.meta.env.PUBLIC_PLAUSIBLE_SRC || 'https://plausible.
       <main id="contenu" tabindex="-1">
         <slot />
       </main>
-      <Footer />
+      <Footer current={page} />
     </div>
     <script>
       import '../scripts/site';

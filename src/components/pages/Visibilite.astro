@@ -1,0 +1,204 @@
+---
+import ContactSection from '../ContactSection.astro';
+import { Image } from 'astro:assets';
+import { maquette } from '../../data/maquettes';
+import VisibiliteVisuel from './VisibiliteVisuel.astro';
+
+const shots = { climatisation: maquette('climatisation'), renovation: maquette('renovation'), electricite: maquette('electricite') };
+---
+
+<section id="accueil-sites" style="font-family: Inter, system-ui, sans-serif; box-sizing: border-box; padding: 104px clamp(20px, 4vw, 48px); color: #ffffff; background: linear-gradient(180deg, #0A2F6E 0%, #06255A 55%, #051F4C 100%)">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+    <div style="display: flex; flex-wrap: wrap; gap: 48px 64px; align-items: center">
+      <div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 26px; align-items: flex-start">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #F58220; border: 1px solid #F58220; border-radius: 999px; padding: 8px 16px">Levier 01 · Être trouvé</span>
+        <h1 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: clamp(34px, 5.2vw, 60px); line-height: 1.08; font-weight: 800; letter-spacing: -0.02em">Soyez l'entreprise que l'on trouve <span style="color: #F58220">en premier</span>.</h1>
+        <p style="margin: 0; font-size: 20px; line-height: 1.6; color: #C3D0EA; max-width: 560px">Un site clair, une fiche Google soignée et du référencement local, pour que les clients de votre zone vous appellent, vous.</p>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px">
+          <a class="btn" href="#contact" style="box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 14px 40px; border-radius: 999px; background: #F58220; text-decoration: none; font-size: 20px; font-weight: 700">
+            <span>Faire le point sur ma visibilité</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase">30 min · gratuit</span>
+          </a>
+          <a class="lk" href="#details" style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 18px; font-weight: 600; text-decoration: none; border-bottom: 2px solid #F58220; padding-bottom: 4px">Voir le détail</a>
+        </div>
+      </div>
+      <div style="flex: 1.3 1 560px; min-width: 0; display: flex; justify-content: center">
+        <VisibiliteVisuel />
+      </div>
+    </div>
+  </div>
+</section>
+<section id="details" style="font-family: Inter, system-ui, sans-serif; box-sizing: border-box; padding: 104px clamp(20px, 4vw, 48px); color: #06255A; background: #F3F6FC">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+    <div style="display: flex; flex-direction: column; gap: 22px; align-items: flex-start">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309; border: 1px solid #B45309; border-radius: 999px; padding: 8px 16px">Ce que je mets en place</span>
+      <h2 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; max-width: 900px">Quatre briques pour <span style="color: #F58220">être trouvé</span>.</h2>
+      <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #3E4F73; max-width: 700px">Vous gardez ce dont vous avez besoin. Je vous conseille après avoir regardé où vous en êtes.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+      <div style="flex: 1 1 420px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 12px 32px rgba(6,37,90,0.06); display: flex; flex-direction: column; gap: 14px">
+        <div style="width: 52px; height: 52px; border-radius: 16px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" />
+          </svg>
+        </div>
+        <h3 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800; color: #06255A">Site internet</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Un site rapide, lisible sur téléphone, avec vos réalisations, vos zones d'intervention et un bouton d'appel bien visible.</p>
+      </div>
+      <div style="flex: 1 1 420px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 12px 32px rgba(6,37,90,0.06); display: flex; flex-direction: column; gap: 14px">
+        <div style="width: 52px; height: 52px; border-radius: 16px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
+            <circle cx="12" cy="10" r="2.5" />
+          </svg>
+        </div>
+        <h3 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800; color: #06255A">Référencement local (géo / SEO)</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Votre site est construit pour apparaître quand on cherche votre métier dans votre ville et les communes autour.</p>
+      </div>
+      <div style="flex: 1 1 420px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 12px 32px rgba(6,37,90,0.06); display: flex; flex-direction: column; gap: 14px">
+        <div style="width: 52px; height: 52px; border-radius: 16px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="M16 16l4.5 4.5" />
+          </svg>
+        </div>
+        <h3 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800; color: #06255A">Fiche Google Business Profile</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Horaires, photos, services, zone d'intervention, avis : une fiche complète et à jour, qui rassure avant même l'appel.</p>
+      </div>
+      <div style="flex: 1 1 420px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 12px 32px rgba(6,37,90,0.06); display: flex; flex-direction: column; gap: 14px">
+        <div style="width: 52px; height: 52px; border-radius: 16px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 10v4h3l7 4V6L7 10H4z" />
+            <path d="M17 9.5a4 4 0 0 1 0 5" />
+          </svg>
+        </div>
+        <h3 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800; color: #06255A">Publicité Google</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Pour aller plus vite, des annonces ciblées sur votre métier et votre secteur, avec un budget que vous fixez.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="portfolio-sites" style="font-family: Inter, system-ui, sans-serif; box-sizing: border-box; padding: 104px clamp(20px, 4vw, 48px); color: #ffffff; background: linear-gradient(180deg, #0A2F6E 0%, #06255A 55%, #051F4C 100%)">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+    <div style="display: flex; flex-direction: column; gap: 22px; align-items: flex-start">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #F58220; border: 1px solid #F58220; border-radius: 999px; padding: 8px 16px">Portfolio</span>
+      <h2 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; max-width: 900px">Des projets en cours, <span style="color: rgb(245, 130, 32)">pour y voir clair</span>.</h2>
+      <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #C3D0EA; max-width: 700px">Des exemples de sites pour des métiers du BTP. Ce sont des maquettes, pas des clients : elles montrent ce que je peux faire pour vous.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px">
+      <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <div style="aspect-ratio: 4 / 3; border-radius: 22px; background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; box-sizing: border-box; position: relative; overflow: hidden">
+          {shots.climatisation ? (
+            <Image src={shots.climatisation} alt="Maquette de site internet pour une entreprise de climatisation" widths={[400, 800]} sizes="(max-width: 700px) 92vw, 384px" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top" />
+          ) : (
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #C3D0EA">[ Capture maquette Climatisation ]</span>
+          )}
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 20px; font-weight: 800">Climatisation</span>
+          <span style="font-size: 15px; color: #C3D0EA">Maquette de site · exemple de travail</span>
+        </div>
+      </div>
+      <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <div style="aspect-ratio: 4 / 3; border-radius: 22px; background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; box-sizing: border-box; position: relative; overflow: hidden">
+          {shots.electricite ? (
+            <Image src={shots.electricite} alt="Maquette de site internet pour une entreprise d’électricité" widths={[400, 800]} sizes="(max-width: 700px) 92vw, 384px" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top" />
+          ) : (
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #C3D0EA">[ Capture maquette Électricité ]</span>
+          )}
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 20px; font-weight: 800">Électricité</span>
+          <span style="font-size: 15px; color: #C3D0EA">Maquette de site · exemple de travail</span>
+        </div>
+      </div>
+      <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <div style="aspect-ratio: 4 / 3; border-radius: 22px; background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; box-sizing: border-box; position: relative; overflow: hidden">
+          {shots.renovation ? (
+            <Image src={shots.renovation} alt="Maquette de site internet pour une entreprise de rénovation" widths={[400, 800]} sizes="(max-width: 700px) 92vw, 384px" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top" />
+          ) : (
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #C3D0EA">[ Capture maquette Rénovation ]</span>
+          )}
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 20px; font-weight: 800">Rénovation</span>
+          <span style="font-size: 15px; color: #C3D0EA">Maquette de site · exemple de travail</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="font-family: Inter, system-ui, sans-serif; box-sizing: border-box; padding: 104px clamp(20px, 4vw, 48px); color: #06255A; background: #F3F6FC">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+    <div style="display: flex; flex-direction: column; gap: 22px; align-items: flex-start">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309; border: 1px solid #B45309; border-radius: 999px; padding: 8px 16px">Comment ça se passe</span>
+      <h2 style="font-family: Satoshi,Inter,sans-serif; margin: 0; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; max-width: 900px">En 4 étapes, sans rien gérer de votre côté.</h2>
+    </div>
+    <div class="wv4" role="group" aria-label="Les 4 étapes">
+      <svg class="wsvg" viewBox="0 0 1200 470" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,300 C60,320 90,330 150,330 C300,330 300,150 450,150 C600,150 600,330 750,330 C900,330 900,150 1050,150 C1110,150 1160,170 1200,200" transform="translate(0 16)" fill="none" stroke="rgba(6,37,90,0.08)" stroke-width="10" stroke-linecap="round" />
+        <path class="wline" pathLength="1" d="M0,300 C60,320 90,330 150,330 C300,330 300,150 450,150 C600,150 600,330 750,330 C900,330 900,150 1050,150 C1110,150 1160,170 1200,200" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" />
+      </svg>
+      <div class="wrow">
+        <div class="wnode n1">
+          <div class="hex">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="M16 16l4.5 4.5" />
+            </svg>
+          </div>
+        </div>
+        <div class="wtxt t1">
+          <span class="wbig" aria-hidden="true">1</span>
+          <h3 style="font-family: Satoshi,Inter,sans-serif; font-size: 21px; line-height: 1.25; font-weight: 800; color: #06255A">Audit de votre présence</h3>
+          <p style="font-size: 16px; line-height: 1.55; color: #3E4F73">Je regarde ce que vos clients voient aujourd'hui quand ils vous cherchent.</p>
+        </div>
+      </div>
+      <div class="wrow">
+        <div class="wnode n2">
+          <div class="hex">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2.5" />
+              <path d="M3 9h18M9 9v11" />
+            </svg>
+          </div>
+        </div>
+        <div class="wtxt t2">
+          <span class="wbig" aria-hidden="true">2</span>
+          <h3 style="font-family: Satoshi,Inter,sans-serif; font-size: 21px; line-height: 1.25; font-weight: 800; color: #06255A">Maquette de votre site</h3>
+          <p style="font-size: 16px; line-height: 1.55; color: #3E4F73">Je vous montre le site à votre image avant de me lancer.</p>
+        </div>
+      </div>
+      <div class="wrow">
+        <div class="wnode n3">
+          <div class="hex">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 21V4M5 5h11l-2 4 2 4H5" />
+            </svg>
+          </div>
+        </div>
+        <div class="wtxt t3">
+          <span class="wbig" aria-hidden="true">3</span>
+          <h3 style="font-family: Satoshi,Inter,sans-serif; font-size: 21px; line-height: 1.25; font-weight: 800; color: #06255A">Mise en ligne</h3>
+          <p style="font-size: 16px; line-height: 1.55; color: #3E4F73">Site en ligne, fiche Google complétée, tout est relié.</p>
+        </div>
+      </div>
+      <div class="wrow">
+        <div class="wnode n4">
+          <div class="hex">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 20V10M12 20V4M19 20v-7" />
+            </svg>
+          </div>
+        </div>
+        <div class="wtxt t4">
+          <span class="wbig" aria-hidden="true">4</span>
+          <h3 style="font-family: Satoshi,Inter,sans-serif; font-size: 21px; line-height: 1.25; font-weight: 800; color: #06255A">Suivi</h3>
+          <p style="font-size: 16px; line-height: 1.55; color: #3E4F73">Je regarde les résultats avec vous et j'ajuste.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ContactSection service="visibilite-locale" joined />

@@ -1,45 +1,32 @@
-# SEO & référencement local — à faire à la publication
+# SEO et référencement local — checklist de publication (mise à jour 28/10/2026)
 
-## Déjà intégré dans le site
-- Titre et description uniques par page, langue `fr`
-- Un seul H1 par page, contenant le mot-clé principal
-- Données structurées Schema.org (ProfessionalService) : nom, fondateur, e-mail, téléphone, Carcassonne, zone desservie (Aude, Occitanie, France)
-- Balises Open Graph (partage réseaux sociaux), balises géographiques FR-11
-- Textes alternatifs sur le logo
+Remplace la version précédente (URLs sans slash final, `/visibilite`, conseil de publier une adresse postale : tout cela est périmé). Détails et justifications : `SEO-AUDIT-2026-10-28.md` et `SEO-LOCAL-IA-UX.md`.
 
-## À faire par vous (indispensable pour le local)
-1. **Fiche Google Business Profile** : catégorie « Consultant en marketing » ou « Service de conception de sites Web », adresse ou zone desservie Carcassonne/Aude, lien vers le site, photos (locaux, logo), demander des avis clients dès les premiers projets.
-2. **Même NAP partout** : nom, adresse, téléphone identiques au caractère près sur le site, Google, Pages Jaunes, LinkedIn, Facebook, Instagram (@vivopartner).
-3. **Ajouter l'adresse postale complète** (rue) dans le pied de page et dans les données structurées si vous recevez des clients.
-4. **Ajouter les liens réseaux sociaux** dans le champ `sameAs` des données structurées.
-5. **Google Search Console** : vérifier le domaine, soumettre le sitemap.
-6. **Image de partage** (1200×630) : ajouter `og:image`.
+## Déjà intégré dans la maquette
+- [x] Titre (≤ 60 car.), description (≤ 160 car.), canonical, og et twitter propres à chaque page — `seo/pages.json`
+- [x] JSON-LD par page : Organisation, Person, WebSite (global) + WebPage, BreadcrumbList, Service, AboutPage, ContactPage, FAQPage — `seo/jsonld/`
+- [x] FAQPage = exactement les 13 questions et réponses visibles sur `/faq/`
+- [x] NAP identique et cliquable (`tel:`, `mailto:`) dans le pied de page ; bouton « Appeler » mobile
+- [x] Liens de navigation en `<a href>` vers les URL finales
+- [x] Images : WebP, dimensions, lazy-loading ; og-image 1200 × 630 ; favicon et apple-touch-icon
+- [x] `public/robots.txt`, `public/sitemap.xml`, `public/llms.txt`
 
 ## À faire par le développeur à l'intégration
-- Une vraie URL par page (`/aplomb`, `/receptionniste-ia`, `/visibilite`, `/a-propos`, `/contact`, `/faq`, `/mentions-legales`) avec rendu côté serveur ou pré-rendu : aujourd'hui les pages changent sans changer d'URL, Google ne verrait que l'accueil.
-- Balise `<link rel="canonical">` par page
-- `robots.txt` + `sitemap.xml` (modèles ci-dessous)
-- Schéma FAQPage sur la page FAQ
-- HTTPS, compression des images en WebP, score PageSpeed mobile > 90
+- [ ] **Une URL et un HTML complet par page** (Astro / Next SSG), `trailingSlash: true`
+- [ ] URL finales : `/`, `/aplomb/`, `/receptionniste-ia/`, `/visibilite-locale/`, `/a-propos/`, `/faq/`, `/contact/`, `/mentions-legales/`, `/confidentialite/`
+- [ ] Coller `seo/jsonld/<page>.json` + `_site-global.json` dans chaque page ; valider avec le Test des résultats enrichis
+- [ ] Toutes les réponses de la FAQ de l'accueil dans le HTML (`<details>`)
+- [ ] Un seul `<h1>` par page, pas de saut de niveau (h2 avant les h3 de l'accueil)
+- [ ] Redirections (`seo/vercel.json.example`) : www → domaine principal, http → https, anciennes URL → nouvelles
+- [ ] Polices auto-hébergées, `font-display: swap`
+- [ ] Lighthouse mobile ≥ 90 (performance, accessibilité, SEO)
 
-### robots.txt
-```
-User-agent: *
-Allow: /
-Sitemap: https://vivopartner.com/sitemap.xml
-```
-
-### sitemap.xml
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://vivopartner.com/</loc></url>
-  <url><loc>https://vivopartner.com/aplomb</loc></url>
-  <url><loc>https://vivopartner.com/receptionniste-ia</loc></url>
-  <url><loc>https://vivopartner.com/visibilite</loc></url>
-  <url><loc>https://vivopartner.com/a-propos</loc></url>
-  <url><loc>https://vivopartner.com/contact</loc></url>
-  <url><loc>https://vivopartner.com/faq</loc></url>
-  <url><loc>https://vivopartner.com/mentions-legales</loc></url>
-</urlset>
-```
+## À faire par vous
+- [ ] Corriger les fautes du H1 de l'accueil et « Des projet en cours » (voir l'audit)
+- [ ] Confirmer le domaine `vivopartner.com` et la liste des pays servis
+- [ ] **Google Business Profile** en zone de service (adresse masquée), puis **Bing Places** et **Apple Business Connect**
+- [ ] Search Console et Bing Webmaster Tools : vérifier le domaine, envoyer le sitemap
+- [ ] Même NAP partout : « Vivo Partner · Carcassonne (Aude) · 06 40 20 22 46 · benjamin@vivopartner.com »
+- [ ] Annuaires : PagesJaunes, CCI de l'Aude, LinkedIn Entreprise
+- [ ] Premiers avis Google réels (sans filtrage), réponse à chacun ; `aggregateRating` seulement à partir de 5 avis affichés
+- [ ] Remplir `sameAs` dans `_site-global.json` quand les profils existent

@@ -1,183 +1,121 @@
 /**
- * Comportements communs à toutes les pages (repris de la logique de la maquette) :
- * en-tête qui se densifie au défilement, menus, apparitions au défilement, filets de section,
- * décompte des chiffres clés, événements de mesure d'audience.
+ * Comportements communs à toutes les pages, repris de la logique de la maquette v3 :
+ * en-tête qui change de fond au défilement, menu Services, menu mobile,
+ * défilement vers les leviers, événements de mesure d'audience.
  */
 import { track } from './track';
+import './motion';
 
-const root = document.querySelector<HTMLElement>('.vp-root');
+/* ---------- En-tête : fond translucide après 6 px de défilement (valeurs de la maquette) ---------- */
 const header = document.querySelector<HTMLElement>('[data-header]');
-
-/* ---------- En-tête : fond densifié après 6 px de défilement ---------- */
 if (header) {
-  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 6);
+  let scrolled: boolean | null = null;
+  const onScroll = () => {
+    const next = window.scrollY > 6;
+    if (next === scrolled) return;
+    scrolled = next;
+    header.style.background = next ? 'rgba(15,23,42,.68)' : '#0B2F6B';
+    const blur = next ? 'saturate(180%) blur(22px)' : 'none';
+    header.style.backdropFilter = blur;
+    header.style.setProperty('-webkit-backdrop-filter', blur);
+    header.style.borderBottomColor = next ? 'rgba(248,250,252,.14)' : 'rgba(248,250,252,0)';
+    header.style.boxShadow = next ? '0 12px 30px rgba(6,20,48,.28)' : 'none';
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 }
 
-/* ---------- Menus (burger mobile, sous-menu Services) ---------- */
-const setOpen = (btn: HTMLElement, panel: HTMLElement | null, open: boolean) => {
+/* ---------- Menu Services (ordinateur) et menu mobile ---------- */
+const panelOf = (btn: HTMLElement) => document.getElementById(btn.getAttribute('aria-controls') || '');
+const setOpen = (btn: HTMLElement, open: boolean) => {
   btn.setAttribute('aria-expanded', String(open));
+  const panel = panelOf(btn);
   if (panel) panel.hidden = !open;
+  // Ordinateur : le mot « Services » passe en orange et la flèche se retourne.
+  const caret = btn.querySelector<HTMLElement>('[data-svc-caret]');
+  if (caret) {
+    btn.style.color = open ? '#F58220' : 'inherit';
+    caret.style.transform = open ? 'rotate(225deg) translate(-1px,-1px)' : 'rotate(45deg) translate(-1px,-1px)';
+  }
 };
-
-const menuBtn = document.querySelector<HTMLElement>('[data-menu-toggle]');
-const menu = document.getElementById('menu-mobile');
-// Le bouton burger devient une croix : son libellé suit (« Ouvrir » / « Fermer le menu »).
-const setMenu = (open: boolean) => {
-  if (!menuBtn) return;
-  setOpen(menuBtn, menu, open);
-  menuBtn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
-};
-menuBtn?.addEventListener('click', () => {
-  const open = menuBtn.getAttribute('aria-expanded') !== 'true';
-  setMenu(open);
-  if (!open) closeServices();
-});
 
 const svcButtons = Array.from(document.querySelectorAll<HTMLElement>('[data-svc-toggle]'));
-const panelOf = (btn: HTMLElement) => document.getElementById(btn.getAttribute('aria-controls') || '');
-function closeServices() {
-  svcButtons.forEach((b) => setOpen(b, panelOf(b), false));
-}
 svcButtons.forEach((btn) =>
-  btn.addEventListener('click', () => setOpen(btn, panelOf(btn), btn.getAttribute('aria-expanded') !== 'true')),
+  btn.addEventListener('click', () => setOpen(btn, btn.getAttribute('aria-expanded') !== 'true')),
 );
 
-// Sous-menu desktop : fermeture au clic extérieur, à Échap et quand le focus en sort.
 const svcWrap = document.querySelector<HTMLElement>('[data-svc]');
-document.addEventListener(
-  'mousedown',
-  (e) => {
-    if (svcWrap && !svcWrap.contains(e.target as Node)) {
-      const btn = svcWrap.querySelector<HTMLElement>('[data-svc-toggle]');
-      if (btn) setOpen(btn, panelOf(btn), false);
-    }
-  },
-  true,
-);
-svcWrap?.addEventListener('focusout', (e) => {
-  if (!svcWrap.contains(e.relatedTarget as Node | null)) {
-    const btn = svcWrap.querySelector<HTMLElement>('[data-svc-toggle]');
-    if (btn) setOpen(btn, panelOf(btn), false);
-  }
-});
+const svcDesktop = svcWrap?.querySelector<HTMLElement>('[data-svc-toggle]');
+if (svcWrap && svcDesktop) {
+  // Fermeture au clic en dehors (comme la maquette), à Échap et quand le focus sort du menu.
+  document.addEventListener(
+    'mousedown',
+    (e) => {
+      if (svcDesktop.getAttribute('aria-expanded') === 'true' && !svcWrap.contains(e.target as Node))
+        setOpen(svcDesktop, false);
+    },
+    true,
+  );
+  svcWrap.addEventListener('focusout', (e) => {
+    if (!svcWrap.contains(e.relatedTarget as Node | null)) setOpen(svcDesktop, false);
+  });
+}
+
+const menuBtn = document.querySelector<HTMLElement>('[data-menu-toggle]');
+const setMenu = (open: boolean) => {
+  if (!menuBtn) return;
+  setOpen(menuBtn, open);
+  menuBtn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  if (!open) svcButtons.forEach((b) => b !== svcDesktop && setOpen(b, false));
+};
+menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  // Menu mobile ouvert : le focus revient au burger (le bouton Services du menu va être masqué).
-  const openBtn = [...(menuBtn ? [menuBtn] : []), ...svcButtons].find(
-    (b) => b.getAttribute('aria-expanded') === 'true',
-  );
-  if (!openBtn) return;
-  closeServices();
-  setMenu(false);
-  openBtn.focus();
+  if (svcDesktop?.getAttribute('aria-expanded') === 'true') {
+    setOpen(svcDesktop, false);
+    svcDesktop.focus();
+  } else if (menuBtn?.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    menuBtn.focus();
+  }
 });
 
-// Passage mobile <-> desktop : on referme tout, comme la maquette.
+// Au passage en version ordinateur, le menu mobile se referme (comme la maquette au redimensionnement).
+const root = document.querySelector<HTMLElement>('.vp-root');
 if (root && 'ResizeObserver' in window) {
   let narrow: boolean | null = null;
   new ResizeObserver(([entry]) => {
-    const w = entry.contentRect.width;
-    const next = w > 0 && w < 900;
+    const next = entry.contentRect.width < 900;
     if (narrow !== null && next !== narrow) {
-      closeServices();
       setMenu(false);
+      if (svcDesktop) setOpen(svcDesktop, false);
     }
     narrow = next;
   }).observe(root);
 }
 
-/* ---------- Apparitions au défilement ---------- */
-// data-vp-reveal="n" : délai de n × 110 ms, écrit en CSS (maquette). data-vp-reveal sans valeur : les éléments
-// qui arrivent ensemble à l'écran sont décalés de 90 ms chacun. data-vp-inview : le bloc reçoit seulement la
-// classe is-in (ses enfants s'animent en CSS), dès que son haut entre dans l'écran.
-const STAGGER_MS = 90;
-if ('IntersectionObserver' in window) {
-  const revealIo = new IntersectionObserver(
-    (entries) => {
-      let k = 0;
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const el = e.target as HTMLElement;
-        if (el.dataset.vpReveal === '') el.style.setProperty('--vp-delay', `${Math.min(k++, 5) * STAGGER_MS}ms`);
-        el.classList.add('is-in');
-        revealIo.unobserve(el);
-      });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
-  );
-  document.querySelectorAll('[data-vp-reveal]').forEach((el) => revealIo.observe(el));
-
-  const inviewIo = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('is-in');
-        inviewIo.unobserve(e.target);
-      }),
-    { threshold: 0, rootMargin: '0px 0px -12% 0px' },
-  );
-  document.querySelectorAll('[data-vp-inview]').forEach((el) => inviewIo.observe(el));
-
-  const sepIo = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        el.classList.add('is-in');
-        window.setTimeout(() => el.classList.add('is-done'), 1100);
-        sepIo.unobserve(el);
-      }),
-    { threshold: 0, rootMargin: '0px 0px -30% 0px' },
-  );
-  document.querySelectorAll('[data-vp-sep]').forEach((el) => sepIo.observe(el));
-} else {
-  document
-    .querySelectorAll('[data-vp-reveal], [data-vp-inview], [data-vp-sep]')
-    .forEach((el) => el.classList.add('is-in', 'is-done'));
-}
-
-/* ---------- Chiffres clés : décompte à l'apparition ---------- */
-// <span data-vp-count="30">30</span> : le chiffre final reste écrit dans le HTML (lecture sans JS, référencement).
-const counters = Array.from(document.querySelectorAll<HTMLElement>('[data-vp-count]'));
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (counters.length && !reduceMotion && 'IntersectionObserver' in window) {
-  const easeOut = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
-  const count = (el: HTMLElement) => {
-    const target = Number(el.dataset.vpCount) || 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min((now - start) / 1400, 1);
-      el.textContent = String(Math.round(target * easeOut(p)));
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-  const countIo = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        countIo.unobserve(e.target);
-        count(e.target as HTMLElement);
-      }),
-    { threshold: 0.6 },
-  );
-  counters.forEach((el) => {
-    // Largeur réservée à la valeur finale : le décompte ne décale pas le texte voisin.
-    el.style.display = 'inline-block';
-    el.style.minWidth = `${el.getBoundingClientRect().width}px`;
-    el.style.textAlign = 'right';
-    el.textContent = '0';
-    countIo.observe(el);
-  });
-}
+/* ---------- « Découvrir les 3 leviers » : défilement doux, 64 px sous l'en-tête ---------- */
+document.querySelectorAll<HTMLAnchorElement>('[data-on-click="scrollLevers"]').forEach((a) =>
+  a.addEventListener('click', (e) => {
+    const target = document.getElementById('leviers');
+    if (!target) return;
+    e.preventDefault();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({
+      top: window.scrollY + target.getBoundingClientRect().top - 64,
+      behavior: reduce ? 'auto' : 'smooth',
+    });
+    history.replaceState(null, '', '#leviers');
+  }),
+);
 
 /* ---------- Mesure d'audience ---------- */
 document.addEventListener('click', (e) => {
-  const el = (e.target as Element | null)?.closest?.('a, button');
-  if (!el) return;
-  if (el.hasAttribute('data-cta')) track('audit_cta_click', { page: location.pathname });
-  const href = el.getAttribute('href') || '';
-  if (href.startsWith('tel:')) track('tel_click', { page: location.pathname });
+  const link = (e.target as Element | null)?.closest?.('a');
+  if (!link) return;
+  const href = link.getAttribute('href') || '';
+  if (href.startsWith('tel:')) track('tel_click');
+  else if (href.startsWith('/contact/') || href === '#contact' || link.hasAttribute('data-cta'))
+    track('audit_cta_click');
 });

@@ -1,129 +1,51 @@
 /**
- * Données de référence du site : NAP, routes et métadonnées SEO par page.
+ * Données de référence du site : NAP, routes, métadonnées SEO et JSON-LD par page.
+ * Titres, descriptions, canonical et og:image viennent de seo/pages.json (handoff v3) ;
+ * le JSON-LD de chaque page vient de seo/jsonld/<page>.json, plus _site-global.json sur toutes les pages.
  * Le NAP doit rester identique partout (pied de page, Contact, JSON-LD, fiche Google, annuaires).
  */
+import pages from './seo/pages.json';
+import siteGlobal from './seo/jsonld/_site-global.json';
+import accueil from './seo/jsonld/accueil.json';
+import aplomb from './seo/jsonld/aplomb.json';
+import receptionnisteIa from './seo/jsonld/receptionniste-ia.json';
+import visibiliteLocale from './seo/jsonld/visibilite-locale.json';
+import aPropos from './seo/jsonld/a-propos.json';
+import contact from './seo/jsonld/contact.json';
+import faq from './seo/jsonld/faq.json';
+import mentionsLegales from './seo/jsonld/mentions-legales.json';
+import confidentialite from './seo/jsonld/confidentialite.json';
 
 export const SITE = {
   name: 'Vivo Partner',
   url: 'https://vivopartner.com',
   founder: 'Benjamin Vivo',
-  founderRole: 'Fondateur',
   email: 'benjamin@vivopartner.com',
   phone: {
-    display: '06\u00a040\u00a020\u00a022\u00a046', // espaces insécables : le numéro ne se coupe jamais
+    display: '06 40 20 22 46',
     href: 'tel:+33640202246',
-    e164: '+33640202246',
   },
   city: 'Carcassonne',
-  locality: 'Carcassonne (Aude)',
-  area: 'France et pays francophones',
-  postalCode: '11000',
-  region: 'Occitanie',
-  department: 'Aude',
-  siret: '101 538 791 00019',
-  siretRaw: '10153879100019',
-  /** Pays francophones servis (à valider par le client). */
-  countries: ['Belgique', 'Suisse', 'Luxembourg', 'Canada'],
-  /** Profils à ajouter dès qu'ils existent : Google Business Profile, LinkedIn, Facebook… */
-  sameAs: [] as string[],
 } as const;
 
-export type PageKey = 'home' | 'aplomb' | 'ia' | 'visibilite' | 'apropos' | 'contact' | 'faq' | 'legal' | 'rgpd';
+/** Clés de seo/pages.json. */
+export type PageKey = keyof typeof pages;
 
-export const ROUTES: Record<PageKey, string> = {
-  home: '/',
-  aplomb: '/aplomb/',
-  ia: '/receptionniste-ia/',
-  visibilite: '/visibilite-locale/',
-  apropos: '/a-propos/',
-  contact: '/contact/',
-  faq: '/faq/',
-  legal: '/mentions-legales/',
-  rgpd: '/confidentialite/',
+export const SEO = pages;
+
+export const JSONLD: Record<PageKey, object> = {
+  accueil,
+  aplomb,
+  'receptionniste-ia': receptionnisteIa,
+  'visibilite-locale': visibiliteLocale,
+  'a-propos': aPropos,
+  contact,
+  faq,
+  'mentions-legales': mentionsLegales,
+  confidentialite,
 };
 
-/** Date de dernière mise à jour du contenu, affichée sur les pages de service et la FAQ. */
-export const UPDATED: Partial<Record<PageKey, string>> = {
-  aplomb: '2026-09-29',
-  ia: '2026-09-29',
-  visibilite: '2026-09-29',
-  faq: '2026-09-29',
-};
+export const JSONLD_GLOBAL = siteGlobal;
 
-interface PageSeo {
-  title: string;
-  description: string;
-  /** Libellé court (fil d'Ariane, liens). */
-  label: string;
-  ogTitle?: string;
-  ogDescription?: string;
-}
-
-/** Textes repris de la maquette (<helmet> et setSeo()). */
-export const SEO: Record<PageKey, PageSeo> = {
-  home: {
-    title: 'Vivo Partner — Partenaire digital du BTP · Carcassonne et toute la France',
-    description:
-      'Basé à Carcassonne, Vivo Partner accompagne les entreprises du BTP partout en France et dans les pays francophones : application sur mesure Aplomb, réceptionniste IA, site internet et référencement local. Audit gratuit de 30 min.',
-    label: 'Accueil',
-    ogTitle: 'Vivo Partner — Partenaire digital des entreprises du BTP',
-    ogDescription:
-      'Application sur mesure, réceptionniste IA et visibilité locale pour les entreprises du BTP. Audit gratuit.',
-  },
-  aplomb: {
-    // Zone ajoutée au titre de la maquette (docs/SEO-LOCAL-IA-UX.md : métier + zone sur chaque page de service).
-    title: 'Aplomb — Application sur mesure pour le BTP à Carcassonne | Vivo Partner',
-    description:
-      'Aplomb, l’application sur mesure pour gérer devis, factures, chantiers, équipes et relances de votre entreprise du BTP.',
-    label: 'Aplomb',
-  },
-  ia: {
-    // Zone ajoutée au titre de la maquette (docs/SEO-LOCAL-IA-UX.md : métier + zone sur chaque page de service).
-    title: 'Réceptionniste IA pour artisans du BTP à Carcassonne | Vivo Partner',
-    description:
-      'Un réceptionniste IA qui répond aux appels, messages et mails de votre entreprise du BTP 24h/24, qualifie la demande et pose le rendez-vous. Sans changer de numéro.',
-    label: 'Réceptionniste IA',
-  },
-  visibilite: {
-    title: 'Site internet et référencement local BTP à Carcassonne | Vivo Partner',
-    description:
-      'Site internet, référencement local et IA (SEO/GEO), fiche Google et publicité pour les entreprises du BTP, partout en France.',
-    label: 'Visibilité locale',
-  },
-  apropos: {
-    title: 'À propos — Benjamin Vivo, Carcassonne | Vivo Partner',
-    description:
-      'Benjamin Vivo, fondateur de Vivo Partner à Carcassonne, accompagne le développement digital des entreprises du BTP.',
-    label: 'À propos',
-  },
-  contact: {
-    title: 'Audit digital gratuit pour le BTP — Contact Vivo Partner',
-    description:
-      'Réservez un audit gratuit de 30 minutes en visio avec Benjamin Vivo. Sans engagement, réponse sous 24h ouvrées.',
-    label: 'Contact',
-  },
-  faq: {
-    title: 'FAQ — Vivo Partner, digital pour le BTP',
-    description:
-      'Les réponses aux questions fréquentes sur Vivo Partner : Aplomb, réceptionniste IA, site et référencement local.',
-    label: 'FAQ',
-  },
-  legal: {
-    title: 'Mentions légales — Vivo Partner',
-    description: 'Mentions légales du site Vivo Partner.',
-    label: 'Mentions légales',
-  },
-  rgpd: {
-    title: 'Politique de confidentialité — Vivo Partner',
-    description: 'Politique de confidentialité et protection des données personnelles — Vivo Partner.',
-    label: 'Confidentialité',
-  },
-};
-
-export const absoluteUrl = (path: string) => new URL(path, SITE.url).href;
-
-/** « 29 septembre 2026 » à partir d'une date ISO. */
-export const formatDateFr = (iso: string) =>
-  new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(`${iso}T00:00:00Z`),
-  );
+/** Chemin de la page (« /aplomb/ ») à partir de son URL canonique. */
+export const pathOf = (key: PageKey) => new URL(SEO[key].url).pathname;

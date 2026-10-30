@@ -1,5 +1,7 @@
 # Consignes de développement : SEO local, SEO IA, UX
 
+> Mise à jour 28/10/2026 : la maquette applique maintenant les points P1 de la section 2 (NAP cliquable, JSON-LD par page, FAQPage alignée sur la page FAQ). Les fichiers prêts à l'emploi sont dans `seo/` et `public/`. Voir `SEO-AUDIT-2026-10-28.md`.
+
 Document destiné à Claude Code. À appliquer en plus du `README.md`. Priorités : **P1** obligatoire au lancement, **P2** dans le mois, **P3** ensuite.
 
 ## Profil

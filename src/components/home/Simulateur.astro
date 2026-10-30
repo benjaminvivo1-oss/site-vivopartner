@@ -1,0 +1,104 @@
+<section id="simulateur" data-screen-label="Home — simulateur" style="font-family: Inter, system-ui, sans-serif; color: #06255A; box-sizing: border-box; padding: clamp(72px,7.8cqi,112px) clamp(18px,4cqi,64px); background: #F3F6FC">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+    <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309; border: 1px solid #F58220; border-radius: 999px; padding: 8px 16px">Le simulateur</span>
+      <h2 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: clamp(34px, 5vw, 56px); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; max-width: 960px">Combien vous coûtent les demandes qui <span style="background: linear-gradient(transparent 62%, #F58220 62%, #F58220 92%, transparent 92%)">passent à la trappe</span> ?</h2>
+      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #3E4F73; max-width: 620px">Cinq curseurs, 30 secondes. Vos chiffres, pas les miens.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+      <div style="flex: 1 1 440px; min-width: 0; box-sizing: border-box; padding: 32px; border-radius: 28px; background: #ffffff; border: 1px solid #DCE3F0; display: flex; flex-direction: column; gap: 24px">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6B8F">Vos chiffres</span>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+            <label for="calls" style="font-size: 17px; font-weight: 600">Appels reçus par semaine</label>
+            <span style="font-size: 22px; font-weight: 800; color: #B45309; font-variant-numeric: tabular-nums; white-space: nowrap" data-bind="text:simCallsLabel">20 appels</span>
+          </div>
+          <input id="calls" type="range" style="width: 100%; height: 44px; margin: 0; background: transparent; accent-color: #F58220; cursor: pointer" min="0" max="100" step="1" value="20" data-on-change="simOnCalls" data-bind="value:simCalls" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+            <label for="miss" style="font-size: 17px; font-weight: 600">Appels que vous ne décrochez pas</label>
+            <span style="font-size: 22px; font-weight: 800; color: #B45309; font-variant-numeric: tabular-nums; white-space: nowrap" data-bind="text:simMissLabel">35 %</span>
+          </div>
+          <input id="miss" type="range" style="width: 100%; height: 44px; margin: 0; background: transparent; accent-color: #F58220; cursor: pointer" min="0" max="100" step="1" value="35" data-on-change="simOnMiss" data-bind="value:simMiss" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+            <label for="value" style="font-size: 17px; font-weight: 600">Montant moyen d'un chantier</label>
+            <span style="font-size: 22px; font-weight: 800; color: #B45309; font-variant-numeric: tabular-nums; white-space: nowrap" data-bind="text:simValueLabel">4 000 €</span>
+          </div>
+          <input id="value" type="range" style="width: 100%; height: 44px; margin: 0; background: transparent; accent-color: #F58220; cursor: pointer" min="500" max="20000" step="250" value="4000" data-on-change="simOnValue" data-bind="value:simValue" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+            <label for="quotes" style="font-size: 17px; font-weight: 600">Devis envoyés sans relance par mois</label>
+            <span style="font-size: 22px; font-weight: 800; color: #B45309; font-variant-numeric: tabular-nums; white-space: nowrap" data-bind="text:simQuotesLabel">6 devis</span>
+          </div>
+          <input id="quotes" type="range" style="width: 100%; height: 44px; margin: 0; background: transparent; accent-color: #F58220; cursor: pointer" min="0" max="40" step="1" value="6" data-on-change="simOnQuotes" data-bind="value:simQuotes" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+            <label for="hours" style="font-size: 17px; font-weight: 600">Heures de paperasse par semaine</label>
+            <span style="font-size: 22px; font-weight: 800; color: #B45309; font-variant-numeric: tabular-nums; white-space: nowrap" data-bind="text:simHoursLabel">10 h</span>
+          </div>
+          <input id="hours" type="range" style="width: 100%; height: 44px; margin: 0; background: transparent; accent-color: #F58220; cursor: pointer" min="0" max="30" step="1" value="10" data-on-change="simOnHours" data-bind="value:simHours" />
+        </div>
+      </div>
+      <div style="flex: 1 1 440px; min-width: 0; box-sizing: border-box; padding: 32px; border-radius: 28px; background-color: #ffffff; background-image: radial-gradient(360px 240px at 100% 0%, rgba(255,100,89,0.2), transparent); border: 1px solid rgba(255,100,89,0.5); display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #C0392B">Ce que vous perdez</span>
+          <div aria-live="polite" style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: clamp(48px, 7vw, 84px); line-height: 1; font-weight: 800; letter-spacing: -0.03em; color: #D93A2F; font-variant-numeric: tabular-nums" data-count data-bind="text:simMonthly">20 076 €</span>
+            <span style="font-size: 18px; color: #C0392B">par mois</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid #DCE3F0">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 16px">
+              <span style="color: #3E4F73">Soit par an</span>
+              <span style="font-size: 22px; font-weight: 800; color: #D93A2F; font-variant-numeric: tabular-nums" data-count data-bind="text:simYearly">240 915 €</span>
+            </div>
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 16px">
+              <span style="color: #3E4F73">Chantiers perdus par an</span>
+              <span style="font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums" data-count data-bind="text:simJobsYear">60 chantiers</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px; padding-left: 16px; border-left: 2px solid #DCE3F0">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 15px">
+                <span style="color: #3E4F73">dont appels manqués</span>
+                <span style="font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums" data-bind="text:simCallsYear">46 chantiers</span>
+              </div>
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 15px">
+                <span style="color: #3E4F73">dont devis non relancés</span>
+                <span style="font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums" data-bind="text:simQuotesYear">14 chantiers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px; padding-top: 24px; border-top: 1px solid #DCE3F0">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309">Votre temps perdu en paperasse</span>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 16px">
+            <span style="color: #3E4F73">Par mois</span>
+            <span style="font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums" data-count data-bind="text:simPaperHours">43 h</span>
+          </div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 16px">
+            <span style="color: #3E4F73">Valeur de ce temps, à 40 € de l'heure</span>
+            <span style="font-size: 22px; font-weight: 800; color: #B45309; font-variant-numeric: tabular-nums" data-count data-bind="text:simPaperValue">1 732 €</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="box-sizing: border-box; padding: 44px clamp(24px, 4vw, 56px); border-radius: 28px; background: #ffffff; border: 1px solid #DCE3F0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px">
+      <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: 30px; line-height: 1.2; font-weight: 800; letter-spacing: -0.01em">Récupérez ces chantiers et ce temps.</h3>
+        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #3E4F73; max-width: 560px">On regarde vos vrais chiffres ensemble et je vous montre ce qu'on peut automatiser chez vous.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 15px; font-weight: 600; color: #3E4F73">
+          <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>30 min en visio</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Sans engagement</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Réponse sous 24h</span>
+        </div>
+      </div>
+      <a class="h-f073a7 rb" href="/contact/" style="flex: none; border: none; cursor: pointer; font-family: inherit; color: #06255A; transition: background .2s; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 14px 40px; border-radius: 999px; background: #F58220; text-decoration: none; font-size: 20px; font-weight: 700">
+        <span>Je veux récupérer ça</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase">30 min · gratuit</span>
+      </a>
+    </div>
+  </div>
+</section>

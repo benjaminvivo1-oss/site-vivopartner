@@ -1,0 +1,258 @@
+---
+import { Image } from 'astro:assets';
+import { maquette } from '../../data/maquettes';
+
+const shots = { climatisation: maquette('climatisation'), renovation: maquette('renovation'), electricite: maquette('electricite') };
+---
+
+<section id="leviers" data-screen-label="Home — leviers" style="font-family: Inter, system-ui, sans-serif; color: #ffffff; box-sizing: border-box; padding: clamp(72px,7.8cqi,112px) clamp(18px,4cqi,64px); background: #06255A">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px">
+    <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #F58220; border: 1px solid #B45309; border-radius: 999px; padding: 8px 16px">La solution</span>
+      <h2 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: clamp(34px, 5vw, 56px); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; max-width: 900px">3 problématiques, <span style="color: #F58220">3 leviers.</span></h2>
+      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #C3D0EA; max-width: 620px">Un problème, un levier, un aperçu de ce que vous aurez.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+      <div class="vp-card" data-fan="1" style="position: relative; flex: 1 1 320px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; padding: 12px 12px 28px; border-radius: 28px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 12px 32px rgba(6,37,90,0.06); color: #06255A">
+          <a class="vp-card-link" href="/visibilite-locale/" tabindex="-1" aria-hidden="true"></a>
+        <div style="position: relative; height: 380px; overflow: hidden; border-radius: 20px; background-color: #06255A; background-image: radial-gradient(360px 240px at 80% 100%, rgba(245,130,32,0.22), transparent)">
+          <a class="h-f073a7 rb" href="/visibilite-locale/" aria-label="Voir plus de maquettes de sites" style="position: absolute; z-index: 10; top: 14px; left: 14px; border: none; cursor: pointer; font-family: inherit; transition: background .2s; display: inline-flex; align-items: center; gap: 8px; box-sizing: border-box; min-height: 44px; padding: 0 18px; border-radius: 999px; background: #F58220; color: #06255A; font-size: 14px; font-weight: 700; text-decoration: none">Voir plus<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          <span data-hh="1" style="position: absolute; z-index: 10; top: 26px; right: 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #A9B8D6">Survolez</span>
+          <div role="img" aria-label="Trois maquettes de sites internet pour le BTP qui s'ouvrent en éventail au survol" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0">
+            <div data-s="1" aria-hidden="true" style="position: absolute; left: 50%; top: 116px; width: 180px; height: 126px; margin-left: -90px; box-sizing: border-box; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 10px 24px rgba(0,0,0,0.35); transform-origin: 50% 240%; color: #06255A">
+              <div style="height: 16px; background: #E8ECF4; display: flex; align-items: center; gap: 4px; padding: 0 8px">
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #B9C3D8"></span>
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #B9C3D8"></span>
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #B9C3D8"></span>
+              </div>
+              {shots.renovation ? (
+                <Image src={shots.renovation} alt="" width={360} widths={[180, 360]} sizes="180px" style="display: block; width: 100%; height: calc(100% - 16px); object-fit: cover; object-position: top" />
+              ) : (
+                <Fragment>
+              <div style="height: 58px; box-sizing: border-box; background: #F4E9D8; padding: 10px; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 12px; font-weight: 800; color: #7A2E16">Rénovation</span>
+                <span style="height: 4px; width: 66%; border-radius: 3px; background: rgba(122,46,22,0.45)"></span>
+                <span style="height: 12px; width: 44px; border-radius: 6px; background: #B5482A; margin-top: 2px"></span>
+              </div>
+              <div style="display: flex; gap: 6px; padding: 8px 10px; background: #FBF6EC">
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #EFE3CC"></span>
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #EFE3CC"></span>
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #EFE3CC"></span>
+              </div>
+              </Fragment>
+              )}
+            </div>
+            <div data-s="3" aria-hidden="true" style="position: absolute; left: 50%; top: 116px; width: 180px; height: 126px; margin-left: -90px; box-sizing: border-box; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 10px 24px rgba(0,0,0,0.35); transform-origin: 50% 240%; color: #06255A">
+              <div style="height: 16px; background: #E8ECF4; display: flex; align-items: center; gap: 4px; padding: 0 8px">
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #B9C3D8"></span>
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #B9C3D8"></span>
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #B9C3D8"></span>
+              </div>
+              {shots.electricite ? (
+                <Image src={shots.electricite} alt="" width={360} widths={[180, 360]} sizes="180px" style="display: block; width: 100%; height: calc(100% - 16px); object-fit: cover; object-position: top" />
+              ) : (
+                <Fragment>
+              <div style="height: 58px; box-sizing: border-box; background: #1B1F27; padding: 10px; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 12px; font-weight: 800; color: #FFC72C">Électricité</span>
+                <span style="height: 4px; width: 62%; border-radius: 3px; background: rgba(255,255,255,0.5)"></span>
+                <span style="height: 12px; width: 44px; border-radius: 6px; background: #FFC72C; margin-top: 2px"></span>
+              </div>
+              <div style="display: flex; gap: 6px; padding: 8px 10px; background: #F2F3F6">
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #DADDE5"></span>
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #DADDE5"></span>
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #DADDE5"></span>
+              </div>
+              </Fragment>
+              )}
+            </div>
+            <div data-s="2" aria-hidden="true" style="position: absolute; left: 50%; top: 116px; width: 202px; height: 146px; margin-left: -90px; box-sizing: border-box; border-radius: 10px; overflow: hidden; background: #ffffff; box-shadow: 0 10px 24px rgba(0,0,0,0.35); transform-origin: 50% 240%; color: #06255A">
+              <div style="height: 16px; background: #15141C; display: flex; align-items: center; gap: 4px; padding: 0 8px">
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #6B7385"></span>
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #6B7385"></span>
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #6B7385"></span>
+              </div>
+              {shots.climatisation ? (
+                <Image src={shots.climatisation} alt="" width={404} widths={[202, 404]} sizes="202px" style="display: block; width: 100%; height: calc(100% - 16px); object-fit: cover; object-position: top" />
+              ) : (
+                <Fragment>
+              <div style="height: 58px; box-sizing: border-box; background: #0B0B12; padding: 10px; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 12px; font-weight: 800; color: #2EE6D6">Climatisation</span>
+                <span style="height: 4px; width: 66%; border-radius: 3px; background: rgba(167,139,250,0.6)"></span>
+                <span style="height: 12px; width: 44px; border-radius: 6px; background: #2EE6D6; margin-top: 2px"></span>
+              </div>
+              <div style="display: flex; gap: 6px; padding: 8px 10px; background: #14131C">
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #24222F"></span>
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #24222F"></span>
+                <span style="flex: 1; height: 30px; border-radius: 5px; background: #24222F"></span>
+              </div>
+              </Fragment>
+              )}
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 0 16px; flex: 1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M6 13l6 6 6-6" />
+          </svg>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: 28px; line-height: 1.15; font-weight: 800; letter-spacing: -0.015em">Être trouvé</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #3E4F73">Votre fiche Google, votre site et votre référencement, pour qu'on vous trouve en premier.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px">
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Site internet</span>
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Géo / SEO</span>
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Publicité</span>
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Google Business Profile</span>
+          </div>
+        </div>
+      </div>
+      <div class="vp-card" style="position: relative; flex: 1 1 320px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; padding: 12px 12px 28px; border-radius: 28px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 12px 32px rgba(6,37,90,0.06); color: #06255A">
+          <a class="vp-card-link" href="/receptionniste-ia/" tabindex="-1" aria-hidden="true"></a>
+        <div style="position: relative; height: 380px; overflow: hidden; border-radius: 20px; background-color: #06255A; background-image: radial-gradient(360px 240px at 20% 100%, rgba(245,130,32,0.22), transparent)">
+          <a class="h-f073a7 rb" href="/receptionniste-ia/" aria-label="Voir plus : la réceptionniste en détail" style="position: absolute; z-index: 10; top: 14px; left: 14px; border: none; cursor: pointer; font-family: inherit; transition: background .2s; display: inline-flex; align-items: center; gap: 8px; box-sizing: border-box; min-height: 44px; padding: 0 18px; border-radius: 999px; background: #F58220; color: #06255A; font-size: 14px; font-weight: 700; text-decoration: none">Voir plus<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          <div style="position: absolute; left: 50%; top: 44px; width: 240px; margin-left: -120px; box-sizing: border-box; border-radius: 38px 38px 0 0; background: #0B1220; padding: 9px 9px 0; box-shadow: 0 24px 48px rgba(0,0,0,0.4)">
+            <div style="box-sizing: border-box; height: 460px; border-radius: 30px 30px 0 0; background: #0E2250; padding: 16px 12px 0; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #ffffff"><span style="animation: vpPulse 1.8s ease-in-out infinite; width: 8px; height: 8px; border-radius: 50%; background: #3DDC84"></span>Appel en cours</div>
+              </div>
+              <div style="height: 156px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; -webkit-mask-image: linear-gradient(transparent, #000 26%); mask-image: linear-gradient(transparent, #000 26%)">
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM1 32s infinite; justify-content: flex-end">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; font-weight: 600; color: #06255A; background: #F58220; border-radius: 14px 14px 4px 14px; padding: 8px 11px">Plomberie Martin, bonjour ! Je suis son assistante, je vous écoute.</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM2 32s infinite; justify-content: flex-start">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; color: #ffffff; background: rgba(255,255,255,0.16); border-radius: 14px 14px 14px 4px; padding: 8px 11px">Bonjour, j'ai une fuite sous mon évier, ça coule depuis ce matin.</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM3 32s infinite; justify-content: flex-end">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; font-weight: 600; color: #06255A; background: #F58220; border-radius: 14px 14px 4px 14px; padding: 8px 11px">Je note ça tout de suite. Vous avez pu couper l'eau ?</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM4 32s infinite; justify-content: flex-start">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; color: #ffffff; background: rgba(255,255,255,0.16); border-radius: 14px 14px 14px 4px; padding: 8px 11px">Oui, j'ai fermé le robinet d'arrivée.</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM5 32s infinite; justify-content: flex-end">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; font-weight: 600; color: #06255A; background: #F58220; border-radius: 14px 14px 4px 14px; padding: 8px 11px">Parfait. Quelle est votre adresse ?</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM6 32s infinite; justify-content: flex-start">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; color: #ffffff; background: rgba(255,255,255,0.16); border-radius: 14px 14px 14px 4px; padding: 8px 11px">Rue des Lilas, à Carcassonne.</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM7 32s infinite; justify-content: flex-end">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; font-weight: 600; color: #06255A; background: #F58220; border-radius: 14px 14px 4px 14px; padding: 8px 11px">Merci. Votre nom et un numéro pour vous rappeler ?</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM8 32s infinite; justify-content: flex-start">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; color: #ffffff; background: rgba(255,255,255,0.16); border-radius: 14px 14px 14px 4px; padding: 8px 11px">Mme Durand, ce numéro-ci.</div>
+                </div>
+                <div style="flex: none; overflow: hidden; display: flex; animation: vpM9 32s infinite; justify-content: flex-end">
+                  <div style="max-width: 88%; margin-bottom: 8px; font-size: 12px; line-height: 1.35; font-weight: 600; color: #06255A; background: #F58220; border-radius: 14px 14px 4px 14px; padding: 8px 11px">C'est noté. Le plombier vous rappelle dans la matinée.</div>
+                </div>
+              </div>
+              <div style="animation: vpMs 32s infinite; box-sizing: border-box; display: flex; align-items: center; gap: 10px; background: #ffffff; border-radius: 14px; padding: 10px 12px">
+                <span style="flex: none; width: 26px; height: 26px; border-radius: 50%; background: #06255A; color: #ffffff; display: flex; align-items: center; justify-content: center">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12.5l4.5 4.5L19 7.5" />
+                  </svg>
+                </span>
+                <div style="display: flex; flex-direction: column; gap: 1px">
+                  <span style="font-size: 12px; font-weight: 700; color: #06255A">Résumé envoyé au patron</span>
+                  <span style="font-size: 11px; line-height: 1.35; color: #3E4F73">Fuite évier · Urgent · Mme Durand · Rappel ce matin</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 0 16px; flex: 1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M6 13l6 6 6-6" />
+          </svg>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: 28px; line-height: 1.15; font-weight: 800; letter-spacing: -0.015em">Ne plus rien rater</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #3E4F73">Un réceptionniste virtuelle répond à vos appels, mails et messages, et vous envoie un résumé.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px">
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Appels</span>
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Mails</span>
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Messages</span>
+            <span style="font-size: 13px; font-weight: 600; color: #06255A; background: #EEF2F9; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; padding: 7px 13px">Résumé sur votre téléphone</span>
+          </div>
+        </div>
+      </div>
+      <div class="vp-card" style="position: relative; flex: 1 1 320px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; padding: 12px 12px 28px; border-radius: 28px; background: #ffffff; border: 1px solid #DCE3F0; box-shadow: 0 12px 32px rgba(6,37,90,0.06); color: #06255A">
+          <a class="vp-card-link" href="/aplomb/" tabindex="-1" aria-hidden="true"></a>
+        <div style="position: relative; height: 380px; overflow: hidden; border-radius: 20px; background-color: #06255A; background-image: radial-gradient(360px 240px at 80% 100%, rgba(245,130,32,0.22), transparent)">
+          <a class="h-f073a7 rb" href="/aplomb/" aria-label="Voir plus : Aplomb en détail" style="position: absolute; z-index: 10; top: 14px; left: 14px; border: none; cursor: pointer; font-family: inherit; transition: background .2s; display: inline-flex; align-items: center; gap: 8px; box-sizing: border-box; min-height: 44px; padding: 0 18px; border-radius: 999px; background: #F58220; color: #06255A; font-size: 14px; font-weight: 700; text-decoration: none">Voir plus<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          <div style="position: absolute; left: 50%; top: 78px; width: 330px; margin-left: -165px; display: flex; flex-direction: column; align-items: center">
+            <div style="box-sizing: border-box; width: 310px; border-radius: 14px 14px 4px 4px; background: #0B1220; padding: 8px 8px 10px; box-shadow: 0 24px 48px rgba(0,0,0,0.4)">
+              <div style="position: relative; height: 236px; border-radius: 6px; overflow: hidden; display: flex; background: #F7F4EC">
+                <div style="flex: none; width: 40px; box-sizing: border-box; background: #1F3D33; padding: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 10px">
+                  <span style="width: 20px; height: 20px; border-radius: 50%; background: #D9C28A; color: #1F3D33; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">A</span>
+                  <span style="width: 14px; height: 14px; border-radius: 4px; background: #D9C28A"></span>
+                  <span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(217,194,138,0.45)"></span>
+                  <span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(217,194,138,0.45)"></span>
+                  <span style="width: 14px; height: 14px; border-radius: 4px; background: rgba(217,194,138,0.45)"></span>
+                </div>
+                <div style="flex: 1; min-width: 0; box-sizing: border-box; padding: 10px; display: flex; flex-direction: column; gap: 8px">
+                  <span style="font-size: 12px; font-weight: 800; color: #1F3D33">Tableau de bord</span>
+                  <div style="display: flex; gap: 6px">
+                    <div style="flex: 1; min-width: 0; box-sizing: border-box; background: #ffffff; border: 1px solid #E6E0CF; border-radius: 8px; padding: 6px 8px; display: flex; flex-direction: column">
+                      <span style="font-size: 10px; color: #4F5A53">Devis ouverts</span>
+                      <span style="font-size: 17px; font-weight: 800; color: #1F3D33">4</span>
+                    </div>
+                    <div style="flex: 1; min-width: 0; box-sizing: border-box; background: #ffffff; border: 1px solid #E6E0CF; border-radius: 8px; padding: 6px 8px; display: flex; flex-direction: column">
+                      <span style="font-size: 10px; color: #4F5A53">Relances</span>
+                      <span style="font-size: 17px; font-weight: 800; color: #1F3D33">3</span>
+                    </div>
+                    <div style="flex: 1; min-width: 0; box-sizing: border-box; background: #ffffff; border: 1px solid #E6E0CF; border-radius: 8px; padding: 6px 8px; display: flex; flex-direction: column">
+                      <span style="font-size: 10px; color: #4F5A53">À encaisser</span>
+                      <span style="font-size: 17px; font-weight: 800; color: #1F3D33">2</span>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff; border: 1px solid #E6E0CF; border-radius: 8px; padding: 6px 8px; font-size: 10px; color: #1F3D33">
+                    <span style="font-weight: 700">Devis · Fenêtres</span>
+                    <span style="font-size: 10px; font-weight: 700; color: #1F3D33; background: #E4ECE6; border-radius: 999px; padding: 2px 7px">Relance J+4</span>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff; border: 1px solid #E6E0CF; border-radius: 8px; padding: 6px 8px; font-size: 10px; color: #1F3D33">
+                    <span style="font-weight: 700">Facture · Extension</span>
+                    <span style="font-size: 10px; font-weight: 700; color: #1F3D33; background: #F1E6C6; border-radius: 999px; padding: 2px 7px">Payée</span>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff; border: 1px solid #E6E0CF; border-radius: 8px; padding: 6px 8px; font-size: 10px; color: #1F3D33">
+                    <span style="font-weight: 700">Compta · TVA du trimestre</span>
+                    <span style="font-size: 10px; font-weight: 700; color: #1F3D33; background: #E4ECE6; border-radius: 999px; padding: 2px 7px">Prête</span>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #ffffff; border: 1px solid #E6E0CF; border-radius: 8px; padding: 6px 8px; font-size: 10px; color: #1F3D33">
+                    <span style="font-weight: 700">Admin · Attestation d'assurance</span>
+                    <span style="font-size: 10px; font-weight: 700; color: #1F3D33; background: #E4ECE6; border-radius: 999px; padding: 2px 7px">À jour</span>
+                  </div>
+                </div>
+                <div style="animation: vpToast 8s ease-out infinite; position: absolute; right: 8px; bottom: 8px; display: flex; align-items: center; gap: 6px; background: #1F3D33; color: #ffffff; border-radius: 8px; padding: 6px 9px; font-size: 10px; font-weight: 700; box-shadow: 0 6px 14px rgba(0,0,0,0.25)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#D9C28A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Relance envoyée</div>
+              </div>
+            </div>
+            <div style="width: 350px; height: 10px; border-radius: 0 0 16px 16px; background: linear-gradient(#CBD0DA, #9AA1AE)"></div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 0 16px; flex: 1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M6 13l6 6 6-6" />
+          </svg>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: 28px; line-height: 1.15; font-weight: 800; letter-spacing: -0.015em">Tout au même endroit</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #3E4F73">Aplomb : devis, factures, relances, administratif et comptabilité dans un seul outil sur mesure fait pour vous.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px">
+            <span style="font-size: 13px; font-weight: 600; color: rgb(6, 37, 90); background: rgb(238, 242, 249); border: 1px solid rgb(220, 227, 240); border-radius: 999px; padding: 7px 13px">Devis/Facture</span>
+            <span style="font-size: 13px; font-weight: 600; color: rgb(6, 37, 90); background: rgb(238, 242, 249); border: 1px solid rgb(220, 227, 240); border-radius: 999px; padding: 7px 13px">Relances auto</span>
+            <span style="font-size: 13px; font-weight: 600; color: rgb(6, 37, 90); background: rgb(238, 242, 249); border: 1px solid rgb(220, 227, 240); border-radius: 999px; padding: 7px 13px">Admin</span>
+            <span style="font-size: 13px; font-weight: 600; color: rgb(6, 37, 90); background: rgb(238, 242, 249); border: 1px solid rgb(220, 227, 240); border-radius: 999px; padding: 7px 13px">Compta</span>
+            <span style="font-size: 13px; font-weight: 600; color: rgb(6, 37, 90); background: rgb(238, 242, 249); border: 1px solid rgb(220, 227, 240); border-radius: 999px; padding: 7px 13px">Gestion</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="box-sizing: border-box; padding: 44px clamp(24px, 4vw, 56px); border-radius: 28px; background-color: #06255A; background-image: radial-gradient(520px 320px at 100% 100%, rgba(245,130,32,0.22), transparent); color: #ffffff; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px">
+      <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: 30px; line-height: 1.2; font-weight: 800; letter-spacing: -0.01em">On regarde ensemble ce qui s'applique chez vous.</h3>
+        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #C3D0EA; max-width: 560px">30 minutes en visio pour parler de votre activité. Je vous montre une maquette adaptée à votre métier.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 15px; font-weight: 600; color: #DCE4F5">
+          <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>30 min en visio</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Sans engagement</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Réponse sous 24h</span>
+        </div>
+      </div>
+      <a class="h-f073a7 rb" href="/contact/" style="flex: none; border: none; cursor: pointer; font-family: inherit; color: #06255A; transition: background .2s; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 14px 40px; border-radius: 999px; background: #F58220; text-decoration: none; font-size: 20px; font-weight: 700">
+        <span>Voir une démo pour mon métier</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase">30 min · gratuit</span>
+      </a>
+    </div>
+  </div>
+</section>

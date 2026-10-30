@@ -1,62 +1,137 @@
----
-/**
- * Accueil — le constat / pour qui ?
- * La carte « C'est pour vous si… » se pose, puis les critères se cochent l'un après l'autre.
- */
-import SectionSep from '../SectionSep.astro';
-
-const criteria = [
-  'Votre activité est établie ou en croissance',
-  'Vous recevez des demandes de devis régulièrement',
-  'Vous avez une équipe de plusieurs salariés',
-  'Vous perdez trop de temps dans l’administratif',
-  'Vous manquez des appels quand vous êtes sur chantier',
-  'Vous voulez développer votre activité',
-];
----
-
-<section style="position:relative;background:#0A2A5E;color:#F8FAFC;padding:clamp(72px,9.5cqi,152px) clamp(18px,4cqi,64px);border-top:1px solid rgba(248,250,252,.12)">
-  <SectionSep />
-  <div style="display:flex;gap:clamp(28px,4.4cqi,88px);flex-wrap:wrap;align-items:center">
-    <div
-      data-vp-reveal="0"
-      style="flex:1 1 340px;min-width:0;border-left:2px solid #F58220;padding-left:clamp(18px,2.4cqi,34px)"
-    >
-      <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-family:'JetBrains Mono',ui-monospace,monospace;color:#94A3B8;margin-bottom:18px">
-        Le constat · Pour qui ?
-      </div>
-      <p style="margin:0;font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:clamp(21px,2.9cqi,38px);line-height:1.22;letter-spacing:-.02em;text-wrap:pretty">
-        Chaque devis oublié, chaque appel manqué sont de l’argent perdu, et chaque heure passée sur l’administratif est
-        une heure qui n’est pas sur le chantier.
-      </p>
-      <p style="margin:clamp(22px,2.6cqi,34px) 0 0;max-width:52ch;font-size:15.5px;line-height:1.7;color:#CBD5E1">
-        Les entreprises du BTP perdent plusieurs demandes de devis par mois faute de suivi, d’appels manqués, de temps
-        ou d’outils adaptés à leur métier. Pas par manque de compétence —{' '}
-        <span style="color:#F58220;font-weight:500">par manque de structure.</span>
-      </p>
+<section data-screen-label="Home — problème / solution" style="font-family:Inter,system-ui,sans-serif;color: #06255A;box-sizing:border-box;padding:clamp(72px,7.8cqi,112px) clamp(18px,4cqi,64px);background: #F3F6FC;border-top:1px solid rgba(248,250,252,.12)">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+    <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309; border: 1px solid #F58220; border-radius: 999px; padding: 8px 16px">Le constat</span>
+      <h2 style="margin: 0; font-family: Satoshi,Inter,sans-serif; font-size: clamp(32px, 4.3cqi, 56px); line-height: 1.1; font-weight: 700; letter-spacing: -0.03em; max-width: 960px">
+        <span style="display: block">Pas assez de <span style="background: linear-gradient(transparent 62%, #F58220 62%, #F58220 92%, transparent 92%)">chantiers.</span></span>
+        <span style="display: block">Des demandes qui passent à la <span style="background: linear-gradient(transparent 62%, #F58220 62%, #F58220 92%, transparent 92%)">trappe.</span></span>
+        <span style="display: block">Des <span style="background: linear-gradient(transparent 62%, #F58220 62%, #F58220 92%, transparent 92%)">heures perdues</span> dans la gestion.</span>
+      </h2>
+      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #3E4F73; max-width: 560px">Vous êtes sur le terrain, pas devant un écran.</p>
     </div>
-    <div data-vp-reveal="1" style="flex:0 1 330px;min-width:min(260px,100%);margin:0 auto;padding:12px 0">
-      <div
-        class="hv-straighten-3 vp-paper"
-        style="position:relative;background:#FFFFFF;border-radius:3px;padding:30px 26px 24px;transform:rotate(1.8deg);box-shadow:0 20px 40px rgba(2,8,22,.35);transition:transform .35s cubic-bezier(.16,1,.3,1);--vp-settle:1.4deg"
-      >
-        <span style="position:absolute;top:-9px;left:50%;width:78px;height:18px;margin-left:-39px;background:rgba(245,130,32,.85);transform:rotate(-2deg)"></span>
-        <div style="font-family:Satoshi,Inter,sans-serif;font-weight:500;font-size:22px;letter-spacing:-.03em;color:#0B2F6B">
-          C’est pour vous si…
+    <div style="display: flex; flex-direction: column; gap: 28px">
+      <div data-vp-hd="1" style="display: flex; flex-wrap: wrap; align-items: center">
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; height: 56px; padding: 0 10px 0 28px; border-radius: 999px; background: #ffffff; border: 1px solid #DCE3F0; display: flex; align-items: center; justify-content: space-between; font-size: 18px; font-weight: 600">
+          <span>Le problème</span>
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 7.5v6M12 17v.01" />
+            </svg>
+          </span>
         </div>
-        <ul class="vp-ticks" style="list-style:none;margin:18px 0 0;padding:0;display:grid;gap:11px">
-          {criteria.map((c, i) => (
-            <li
-              style={`display:flex;gap:12px;align-items:baseline${i ? ';border-top:1px dashed #CBD5E1;padding-top:11px' : ''};--i:${i}`}
-            >
-              <span aria-hidden="true" style="flex:none;font-size:13px;color:#B45309">
-                ✓
-              </span>
-              <span style="font-size:14.5px;line-height:1.45;color:#0F172A">{c}</span>
-            </li>
-          ))}
-        </ul>
+        <div style="flex: 0 0 88px"></div>
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; height: 56px; padding: 0 10px 0 28px; border-radius: 999px; background: linear-gradient(90deg, #ffffff, #F58220); border: 1px solid rgba(245,130,32,0.5); display: flex; align-items: center; justify-content: space-between; font-size: 18px; font-weight: 600">
+          <span>La solution</span>
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: #06255A; color: #ffffff; display: flex; align-items: center; justify-content: center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12.5l4.5 4.5L19 7.5" />
+            </svg>
+          </span>
+        </div>
       </div>
+      <div style="display: flex; flex-wrap: wrap; row-gap: 12px; align-items: stretch">
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: #ffffff; border: 1px solid #DCE3F0; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="width: 48px; height: 48px; border-radius: 14px; background: #EEF2F9; color: #5B6B8F; display: flex; align-items: center; justify-content: center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
+                <circle cx="12" cy="10" r="2.5" />
+              </svg>
+            </div>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6B8F">Problème 01</span>
+          </div>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; letter-spacing: -0.01em; font-size: 22px; line-height: 1.25; font-weight: 700">Pas assez de chantiers</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Un client cherche un artisan près de chez lui, tape sur Google et appelle l'un des premiers résultats. Si ce n'est pas vous, le chantier part chez un concurrent.</p>
+        </div>
+        <div data-vp-link="1" style="display:flex;align-items:center;flex:0 0 88px">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #06255A; flex: none"></span>
+          <span style="flex: 1; border-top: 2px dashed #C9D4EC"></span>
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #F58220; flex: none"></span>
+        </div>
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: linear-gradient(135deg, #FFF1E3, #ffffff); border: 1px solid rgba(245,130,32,0.5); display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="width: 48px; height: 48px; border-radius: 14px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="M16 16l4.5 4.5" />
+              </svg>
+            </div>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309">Levier 01</span>
+          </div>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; letter-spacing: -0.01em; font-size: 22px; line-height: 1.25; font-weight: 700">Être trouvé</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Votre fiche Google et votre site optimisés pour apparaître quand on cherche un artisan dans votre zone.</p>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; row-gap: 12px; align-items: stretch">
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: #ffffff; border: 1px solid #DCE3F0; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="width: 48px; height: 48px; border-radius: 14px; background: #EEF2F9; color: #5B6B8F; display: flex; align-items: center; justify-content: center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />
+                <path d="M16 3l5 5M21 3l-5 5" />
+              </svg>
+            </div>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6B8F">Problème 02</span>
+          </div>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; letter-spacing: -0.01em; font-size: 22px; line-height: 1.25; font-weight: 700">Des demandes qui passent à la trappe</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">En hauteur, en tranchée, en plein coulage : impossible de décrocher. Le client rappelle quelqu'un d'autre, et celui qui répond en premier signe.</p>
+        </div>
+        <div data-vp-link="1" style="display:flex;align-items:center;flex:0 0 88px">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #06255A; flex: none"></span>
+          <span style="flex: 1; border-top: 2px dashed #C9D4EC"></span>
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #F58220; flex: none"></span>
+        </div>
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: linear-gradient(135deg, #FFF1E3, #ffffff); border: 1px solid rgba(245,130,32,0.5); display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="width: 48px; height: 48px; border-radius: 14px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 5h16v11H9l-5 4z" />
+                <path d="M8.5 10.5l2.2 2.2 4.3-4.3" />
+              </svg>
+            </div>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309">Levier 02</span>
+          </div>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; letter-spacing: -0.01em; font-size: 22px; line-height: 1.25; font-weight: 700">Ne plus rien rater</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Une réceptionniste répond à vos appels, mails et messages, prend les infos et vous les transmet.</p>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; row-gap: 12px; align-items: stretch">
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: #ffffff; border: 1px solid #DCE3F0; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="width: 48px; height: 48px; border-radius: 14px; background: #EEF2F9; color: #5B6B8F; display: flex; align-items: center; justify-content: center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+              </svg>
+            </div>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6B8F">Problème 03</span>
+          </div>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; letter-spacing: -0.01em; font-size: 22px; line-height: 1.25; font-weight: 700">Des heures perdues dans la gestion</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Devis, relances, factures, planning. Votre métier la journée, l'administratif le soir, sur votre temps de famille.</p>
+        </div>
+        <div data-vp-link="1" style="display:flex;align-items:center;flex:0 0 88px">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #06255A; flex: none"></span>
+          <span style="flex: 1; border-top: 2px dashed #C9D4EC"></span>
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #F58220; flex: none"></span>
+        </div>
+        <div style="flex: 1 1 360px; min-width: 0; box-sizing: border-box; padding: 28px; border-radius: 24px; background: linear-gradient(135deg, #FFF1E3, #ffffff); border: 1px solid rgba(245,130,32,0.5); display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="width: 48px; height: 48px; border-radius: 14px; background: #F58220; color: #06255A; display: flex; align-items: center; justify-content: center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="4" y="3" width="16" height="18" rx="2.5" />
+                <path d="M8 8h8M8 12h8M8 16h4" />
+              </svg>
+            </div>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #B45309">Levier 03</span>
+          </div>
+          <h3 style="margin: 0; font-family: Satoshi,Inter,sans-serif; letter-spacing: -0.01em; font-size: 22px; line-height: 1.25; font-weight: 700">Tout gérer au même endroit</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3E4F73">Un outil sur mesure pour vos devis, relances, factures et suivi de chantier. Fait pour le BTP, pas un logiciel générique.</p>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+      <p style="margin: 0; font-size: 22px; line-height: 1.4; font-weight: 600; max-width: 640px">On s'occupe de tout. Vous gardez vos chantiers.</p>
+      <a href="#leviers" style="cursor:pointer;color: #06255A;display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 18px; font-weight: 600; text-decoration: none; border-bottom: 2px solid #F58220; padding-bottom: 4px" data-on-click="scrollLevers">Découvrir les 3 leviers <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg></a>
     </div>
   </div>
 </section>

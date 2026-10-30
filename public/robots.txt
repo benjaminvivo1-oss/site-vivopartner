@@ -1,6 +1,8 @@
+# robots.txt — vivopartner.com
 User-agent: *
 Allow: /
 
+# Moteurs d'IA et assistants (citation dans les réponses)
 User-agent: GPTBot
 Allow: /
 User-agent: ChatGPT-User
@@ -16,6 +18,8 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 User-agent: Bingbot
+Allow: /
+User-agent: Applebot
 Allow: /
 
 Sitemap: https://vivopartner.com/sitemap.xml

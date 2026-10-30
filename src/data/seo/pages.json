@@ -1,0 +1,83 @@
+{
+  "accueil": {
+    "url": "https://vivopartner.com/",
+    "title": "Partenaire digital du BTP à Carcassonne | Vivo Partner",
+    "title_length": 54,
+    "meta_description": "Vivo Partner accompagne le BTP, de Carcassonne à toute la France : application sur mesure, réceptionniste IA, référencement local. Audit gratuit.",
+    "description_length": 145,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/accueil.json"
+  },
+  "aplomb": {
+    "url": "https://vivopartner.com/aplomb/",
+    "title": "Logiciel de gestion BTP sur mesure : Aplomb | Vivo Partner",
+    "title_length": 58,
+    "meta_description": "Aplomb centralise demandes, devis, factures, chantiers et relances dans un outil sur mesure pour votre entreprise du BTP. Démo gratuite de 30 min en visio.",
+    "description_length": 155,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/aplomb.json"
+  },
+  "receptionniste-ia": {
+    "url": "https://vivopartner.com/receptionniste-ia/",
+    "title": "Réceptionniste IA pour artisans du BTP | Vivo Partner",
+    "title_length": 53,
+    "meta_description": "Une réceptionniste IA décroche quand vous êtes sur un chantier, pose les bonnes questions et vous envoie un résumé sur votre téléphone. Démo gratuite en visio.",
+    "description_length": 159,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/receptionniste-ia.json"
+  },
+  "visibilite-locale": {
+    "url": "https://vivopartner.com/visibilite-locale/",
+    "title": "Site internet et SEO local BTP à Carcassonne | Vivo Partner",
+    "title_length": 59,
+    "meta_description": "Site internet, fiche Google et référencement local pour que les clients de votre zone vous appellent. Pour le BTP, de Carcassonne à toute la France.",
+    "description_length": 148,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/visibilite-locale.json"
+  },
+  "a-propos": {
+    "url": "https://vivopartner.com/a-propos/",
+    "title": "Benjamin Vivo, fondateur de Vivo Partner à Carcassonne",
+    "title_length": 54,
+    "meta_description": "Derrière Vivo Partner, une seule personne : Benjamin Vivo, qui connaît le BTP de près et construit des outils pour le secteur, depuis Carcassonne.",
+    "description_length": 146,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/a-propos.json"
+  },
+  "contact": {
+    "url": "https://vivopartner.com/contact/",
+    "title": "Audit digital gratuit pour le BTP · Contact | Vivo Partner",
+    "title_length": 58,
+    "meta_description": "Réservez un audit gratuit de 30 minutes en visio avec Benjamin Vivo, ou appelez le 06 40 20 22 46. Sans engagement, réponse sous 24h.",
+    "description_length": 133,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/contact.json"
+  },
+  "faq": {
+    "url": "https://vivopartner.com/faq/",
+    "title": "FAQ : prix, engagement, délais | Vivo Partner",
+    "title_length": 45,
+    "meta_description": "Prix, engagement, délais, métiers concernés, facture électronique : les réponses de Benjamin Vivo aux questions des chefs d'entreprise du BTP.",
+    "description_length": 142,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/faq.json"
+  },
+  "mentions-legales": {
+    "url": "https://vivopartner.com/mentions-legales/",
+    "title": "Mentions légales | Vivo Partner",
+    "title_length": 31,
+    "meta_description": "Mentions légales du site Vivo Partner : éditeur, hébergement, propriété intellectuelle et données personnelles.",
+    "description_length": 111,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/mentions-legales.json"
+  },
+  "confidentialite": {
+    "url": "https://vivopartner.com/confidentialite/",
+    "title": "Politique de confidentialité | Vivo Partner",
+    "title_length": 43,
+    "meta_description": "Politique de confidentialité de Vivo Partner : données collectées, finalités, durée de conservation et vos droits.",
+    "description_length": 114,
+    "og_image": "https://vivopartner.com/assets/og-vivo-partner.jpg",
+    "jsonld_file": "seo/jsonld/confidentialite.json"
+  }
+}
